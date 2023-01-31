@@ -1,9 +1,9 @@
 # LoMap es1b
 
-
 ## Colaboradores
 <p> Pablo Calvo Gamonal - UO276220 </p>
 <p> Pablo García-Ovies Pérez - UO265314 </p>
+<p> Óscar Davila Sampedro - UO284541 </p>
 
 [![CI for LOMAP ES1B](https://github.com/Arquisoft/lomap_es1b/actions/workflows/lomap_es1b.yml/badge.svg)](https://github.com/Arquisoft/lomap_es1b/actions/workflows/lomap_es1b.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_lomap_es1b&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_lomap_es1b)
