@@ -1,10 +1,5 @@
 # LoMap es1b
 
-## Colaboradores
-<p> Pablo Calvo Gamonal - UO276220 </p>
-<p> Pablo García-Ovies Pérez - UO265314 </p>
-<p> Óscar Davila Sampedro - UO284541 </p>
-
 [![CI for LOMAP ES1B](https://github.com/Arquisoft/lomap_es1b/actions/workflows/lomap_es1b.yml/badge.svg)](https://github.com/Arquisoft/lomap_es1b/actions/workflows/lomap_es1b.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_lomap_es1b&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=Arquisoft_lomap_es1b)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Arquisoft_lomap_es1b&metric=coverage)](https://sonarcloud.io/summary/new_code?id=Arquisoft_lomap_es1b)
@@ -15,8 +10,12 @@
 <img src="https://miro.medium.com/max/365/1*Jr3NFSKTfQWRUyjblBSKeg.png" height="100">
 </p>
 
-
 This project is a basic example of website using **React** with **Typescript** and an endpoint using **NodeJS** with **express**.
+
+## Collaborators
+<p> Pablo Calvo Gamonal - uo276220@uniovi.es  </p>
+<p> Pablo García-Ovies Pérez - uo265314@uniovi.es </p>
+<p> Óscar Davila Sampedro - uo284541@uniovi.es </p>
 
 ## Quick start guide
 <mark>In case you already have node.js and npm, make sure you update them before attempting to build the images</mark>
