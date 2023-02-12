@@ -1,66 +1,28 @@
 [[section-system-scope-and-context]]
 == System Scope and Context
-
-
-[role="arc42help"]
-****
-.Contents
-System scope and context - as the name suggests - delimits your system (i.e. your scope) from all its communication partners
-(neighboring systems and users, i.e. the context of your system). It thereby specifies the external interfaces.
-
-If necessary, differentiate the business context (domain specific inputs and outputs) from the technical context (channels, protocols, hardware).
-
-.Motivation
-The domain interfaces and technical interfaces to communication partners are among your system's most critical aspects. Make sure that you completely understand them.
-
-.Form
-Various options:
-
-* Context diagrams
-* Lists of communication partners and their interfaces.
-****
-
-
 === Business Context
 
-[role="arc42help"]
-****
-.Contents
-Specification of *all* communication partners (users, IT-systems, ...) with explanations of domain specific inputs and outputs or interfaces.
-Optionally you can add domain specific formats or communication protocols.
+:imagesdir: images/
+image::03_business_context.png[]
 
-.Motivation
-All stakeholders should understand which data are exchanged with the environment of the system.
-
-.Form
-All kinds of diagrams that show the system as a black box and specify the domain interfaces to communication partners.
-
-Alternatively (or additionally) you can use a table.
-The title of the table is the name of your system, the three columns contain the name of the communication partner, the inputs, and the outputs.
-****
-
-**<Diagram or Table>**
-
-**<optionally: Explanation of external domain interfaces>**
+[options = "header",cols="1,2,2"]
+|===
+| Entity | Input | Output
+| User | The user interacts with the application via a computer or device, experiencing the frontend and sending requests to the backend. | The output is displayed in various parts of the system, covering almost all aspects.
+| User Pod | This entity generates new PODs for users who haven't created them, updates POD information, and fulfills requests by providing the requested information. | It submits the data requested by the application.
+| LoMap System | The user interacts with this system, sending requests through the interface. | It processes the incoming requests, manages the database to ensure consistency, and then displays the requested information to the user through the interface.
+| Database (MongoDB) | This entity handles queries and information requests. | It stores and maintains consistent data to support the needs of the system.
+|===
 
 === Technical Context
 
-[role="arc42help"]
-****
-.Contents
-Technical interfaces (channels and transmission media) linking your system to its environment. In addition a mapping of domain specific input/output to the channels, i.e. an explanation with I/O uses which channel.
+According to the SOLID project, shared information will be stored in each user's pod. In addition, we will implement the application using TypeScript together with React for Front-end development. Finally; we will make use of MongoDB, a NoSQL database system; and an endpoint using NodeJS with express.
 
-.Motivation
-Many stakeholders make architectural decision based on the technical interfaces between the system and its context. Especially infrastructure or hardware designers decide these technical interfaces.
-
-.Form
-E.g. UML deployment diagram describing channels to neighboring systems,
-together with a mapping table showing the relationships between channels and input/output.
-
-****
-
-**<Diagram or Table>**
-
-**<optionally: Explanation of technical interfaces>**
-
-**<Mapping Input/Output to Channels>**
+[options="header",cols="1,2"]
+|===
+| Technology | Explanation
+| TypeScript | The programming language used for development.
+| React | The programming language used for Front-end development.
+| MongoDB | The database.
+| NodeJS | Server environment used for the endpoint.
+|===
