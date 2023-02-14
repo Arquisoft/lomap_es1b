@@ -11,6 +11,7 @@ communication and the project itself.
 === Organizational and political constraints
 |===
 |*Constraint*|*Explanation*
+
 |*Team composition*|The team will consist of 4 members with a small and limited experience in the technologies that will be used.
 |*Meetings*|In each laboratory, there will be a meeting to discuss the next week tasks. In case of any extraordinary meeting to be needed,
 it will be agreed by every team member and recorded in the activity. This meetings will need a lot of coordination due to the
@@ -22,6 +23,7 @@ Necessary to take into account that one of the members won't be able to assist t
 === Conventions
 |===
 |*Constraint*|*Explanation*
+
 |*Documentation*| It will be used https://arc42.org/[Arc32] template for keeping a simple and clean documentation.
 |*Clean code*| The code must be clean and well written to keep it easier to work with and mantain.
 |*Accessibility*| The interface must be easy to understand and to navigate through for every possible user.
