@@ -18,7 +18,6 @@ image::quality tree.png[]
 |Quality goal
 |Motivation
 |Usage scenarios
-|Change scenarios
 |Priority
 
 |*Privacy*
@@ -28,8 +27,26 @@ image::quality tree.png[]
 |High
 
 |*Usability*
-|The user won't be able to add locations to the map if he can't properly distinguish them in it. Nor he will be able to use it properly if he 
-|
+|The user won't be able to add locations to the map if he can't properly distinguish them in it, needing an intuitive interface clear enough to be used, be it a client or administrators.
+|Almost every user of every age will be able to complete any task without previous knowledge of the website without taking long time.
 |
 |High
+
+|*Security*
+|The application needs to be secure enough, giving confidence enough to be used without any risk on the data being
+|The app won't allow any third parties to access the data from the users.
+| 
+|High
+
+|*Reliability*
+|There shouldn't be any error that breaks the application, them being handled by the application
+|User won't have any clear notice of any error happening while using the application.
+|
+|High
+
+|*Testability*
+|The application will be tested with different methods and by different users to ensure the requirements.
+|The 
+|
+|
 ****
