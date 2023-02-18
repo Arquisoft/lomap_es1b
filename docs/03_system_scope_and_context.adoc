@@ -22,7 +22,7 @@ According to the SOLID project, shared information will be stored in each user's
 |===
 | Technology | Explanation
 | TypeScript | The programming language used for development.
-| React | The programming language used for Front-end development.
+| React | JavaScript library used for Front-end development.
 | MongoDB | The database.
 | NodeJS | Server environment used for the endpoint.
 |===
