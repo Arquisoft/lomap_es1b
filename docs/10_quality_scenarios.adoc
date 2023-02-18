@@ -1,15 +1,10 @@
-[[section-quality-scenarios]]
 == Quality Requirements
-
-
-[role="arc42help"]
 === Quality Tree
-[role="arc42help"]
 ****
 :imagesdir: images/
 image::10_quality_scenarios_tree.png[]
-
 ****
+
 === Quality Scenarios
 ****
 |===
