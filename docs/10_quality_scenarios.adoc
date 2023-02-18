@@ -4,7 +4,7 @@
 The quality tree is represented in the following diagram:
 
 :imagesdir: images/
-image::10_quality_scenarios_tree.png[]
+image:10_quality_scenarios_tree.png["Quality Tree"]
 
 === Quality Scenarios
 ****
