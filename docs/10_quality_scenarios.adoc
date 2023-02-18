@@ -23,4 +23,5 @@ image::10_quality_scenarios_tree.png[]
 |*Efficiency*|The system should respond as smooth and efficient as possible, as the user won't use an application with bad performance.|The app must use the minimum resources possible without affecting the performance to ensure a fast and fluid use.|High
 
 |*Maintainability*|The app will go through many changes, so it is important that the code is easy to mantain and modify.|With a good quality code, we are able to perform the minimum changes required to be modified or repaired.|High
+|===
 ****
