@@ -1,31 +1,17 @@
 [[section-glossary]]
 == Glossary
 
-
-
-[role="arc42help"]
-****
-.Contents
-The most important domain and technical terms that your stakeholders use when discussing the system.
-
-You can also see the glossary as source for translations if you work in multi-language teams.
-
-.Motivation
-You should clearly define your terms, so that all stakeholders
-
-* have an identical understanding of these terms
-* do not use synonyms and homonyms
-
-.Form
-A table with columns <Term> and <Definition>.
-
-Potentially more columns in case you need translations.
-
-****
-
 [options="header"]
 |===
 | Term         | Definition
-| <Term-1>     | <definition-1>
-| <Term-2>     | <definition-2>
+| TypeScript     |  Free and open source high-level programming language developed and maintained by Microsoft. It is a superset of JavaScript that adds static typing.
+| React     | Free and open source JavaScript library for building interfaces, maintained by Meta.
+| Node.js     | Cross-platform, open source server environment, a back-end JavaScript runtime environment.
+| Express.js     | Free and open source back-end framework for developing web applications and APIs with Node.js
+| Solid     | Specification that lets users store their data securely in Pods
+| Pods     | Decentralized and secure data stores. The pod user controls who can access the data.
+| MongoDB     | Open source document-oriented NoSQL database.
+| Docker     | A set of platform as a service products that use OS-level virtualization to deliver software in containers.
+| CI, Continuous integration     | The practice of automating the integration process of a software so it can be done several times a day and errors are found as soon as possible.
+| CD, Continuous deployment     | Extension of the CI, where code changes to the application are released automatically into the production environment.
 |===
