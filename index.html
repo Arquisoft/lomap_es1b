@@ -479,10 +479,8 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-runtime-view">6. Runtime View</a>
 <ul class="sectlevel2">
-<li><a href="#_runtime_scenario_1">6.1. &lt;Runtime Scenario 1&gt;</a></li>
-<li><a href="#_runtime_scenario_2">6.2. &lt;Runtime Scenario 2&gt;</a></li>
-<li><a href="#">6.3. &#8230;&#8203;</a></li>
-<li><a href="#_runtime_scenario_n">6.4. &lt;Runtime Scenario n&gt;</a></li>
+<li><a href="#_login">6.1. Login</a></li>
+<li><a href="#_seeing_a_personalized_map">6.2. Seeing a personalized map</a></li>
 </ul>
 </li>
 <li><a href="#section-deployment-view">7. Deployment View</a>
@@ -492,9 +490,13 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </li>
 <li><a href="#section-concepts">8. Cross-cutting Concepts</a>
 <ul class="sectlevel2">
-<li><a href="#_domain_model">8.1. Domain model</a></li>
-<li><a href="#_concept_2">8.2. <em>&lt;Concept 2&gt;</em></a></li>
-<li><a href="#_concept_n">8.3. <em>&lt;Concept n&gt;</em></a></li>
+<li><a href="#_domain">8.1. Domain</a></li>
+<li><a href="#_user_experience">8.2. User Experience</a></li>
+<li><a href="#_safety_and_security">8.3. Safety and security</a></li>
+<li><a href="#_architecture_and_design">8.4. Architecture and design</a></li>
+<li><a href="#_implementation">8.5. Implementation</a></li>
+<li><a href="#_developement">8.6. Developement</a></li>
+<li><a href="#_operational">8.7. Operational</a></li>
 </ul>
 </li>
 <li><a href="#section-design-decisions">9. Design Decisions</a>
@@ -1073,96 +1075,27 @@ Necessary to take into account that one of the members won&#8217;t be able to as
 <div class="sect1">
 <h2 id="section-runtime-view">6. Runtime View</h2>
 <div class="sectionbody">
-<div class="sidebarblock arc42help">
-<div class="content">
-<div class="paragraph">
-<div class="title">Contents</div>
-<p>The runtime view describes concrete behavior and interactions of the system’s building blocks in form of scenarios from the following areas:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>important use cases or features: how do building blocks execute them?</p>
-</li>
-<li>
-<p>interactions at critical external interfaces: how do building blocks cooperate with users and neighboring systems?</p>
-</li>
-<li>
-<p>operation and administration: launch, start-up, stop</p>
-</li>
-<li>
-<p>error and exception scenarios</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>Remark: The main criterion for the choice of possible scenarios (sequences, workflows) is their <strong>architectural relevance</strong>. It is <strong>not</strong> important to describe a large number of scenarios. You should rather document a representative selection.</p>
-</div>
-<div class="paragraph">
-<div class="title">Motivation</div>
-<p>You should understand how (instances of) building blocks of your system perform their job and communicate at runtime.
-You will mainly capture scenarios in your documentation to communicate your architecture to stakeholders that are less willing or able to read and understand the static models (building block view, deployment view).</p>
-</div>
-<div class="paragraph">
-<div class="title">Form</div>
-<p>There are many notations for describing scenarios, e.g.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>numbered list of steps (in natural language)</p>
-</li>
-<li>
-<p>activity diagrams or flow charts</p>
-</li>
-<li>
-<p>sequence diagrams</p>
-</li>
-<li>
-<p>BPMN or EPCs (event process chains)</p>
-</li>
-<li>
-<p>state machines</p>
-</li>
-<li>
-<p>&#8230;&#8203;</p>
-</li>
-</ul>
-</div>
-</div>
-</div>
 <div class="sect2">
-<h3 id="_runtime_scenario_1">6.1. &lt;Runtime Scenario 1&gt;</h3>
-<div class="ulist">
-<ul>
-<li>
-<p><em>&lt;insert runtime diagram or textual description of the scenario&gt;</em></p>
-</li>
-<li>
-<p><em>&lt;insert description of the notable aspects of the interactions between the
-building block instances depicted in this diagram.&gt;</em></p>
-</li>
-</ul>
-</div>
+<h3 id="_login">6.1. Login</h3>
 <div class="paragraph">
-<p>It is possible to use a sequence diagram:</p>
+<p>When an unidentified user logs in.</p>
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="332" height="335">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="550" height="305">
 </div>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_runtime_scenario_2">6.2. &lt;Runtime Scenario 2&gt;</h3>
-
+<h3 id="_seeing_a_personalized_map">6.2. Seeing a personalized map</h3>
+<div class="paragraph">
+<p>When an identified user sees a personalized map</p>
 </div>
-<div class="sect2">
-<h3 id="">6.3. &#8230;&#8203;</h3>
-
+<div class="imageblock">
+<div class="content">
+<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="523" height="426">
 </div>
-<div class="sect2">
-<h3 id="_runtime_scenario_n">6.4. &lt;Runtime Scenario n&gt;</h3>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -1233,121 +1166,97 @@ building block instances depicted in this diagram.&gt;</em></p>
 <div class="sect1">
 <h2 id="section-concepts">8. Cross-cutting Concepts</h2>
 <div class="sectionbody">
-<div class="sidebarblock arc42help">
-<div class="content">
-<div class="paragraph">
-<div class="title">Content</div>
-<p>This section describes overall, principal regulations and solution ideas that are
-relevant in multiple parts (= cross-cutting) of your system.
-Such concepts are often related to multiple building blocks.
-They can include many different topics, such as</p>
-</div>
+<div class="sect2">
+<h3 id="_domain">8.1. Domain</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>domain models</p>
+<p><strong>Location:</strong> The application revolves around the concept of locations, which can be shops, bars, restaurants, sights, monuments, etc. Users can add locations to their personalized map, along with review scores, comments, pictures, and other information. Additionally, places can create their own digital space, allowing people to connect with them and receive recommendations.</p>
 </li>
 <li>
-<p>architecture patterns or design patterns</p>
-</li>
-<li>
-<p>rules for using specific technology</p>
-</li>
-<li>
-<p>principal, often technical decisions of overall decisions</p>
-</li>
-<li>
-<p>implementation rules</p>
+<p><strong>Personalized maps:</strong> The application allows users to create their own personalized maps, with the locations they are interested in. Users can manage the information that is accessible to other users, such as their friends or groups of friends. The information about a place stored by each user is stored in each user&#8217;s personal pod, according to the SOLID project.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<div class="title">Motivation</div>
-<p>Concepts form the basis for <em>conceptual integrity</em> (consistency, homogeneity)
-of the architecture. Thus, they are an important contribution to achieve inner qualities of your system.</p>
 </div>
-<div class="paragraph">
-<p>Some of these concepts cannot be assigned to individual building blocks
-(e.g. security or safety). This is the place in the template that we provided for a
-cohesive specification of such concepts.</p>
-</div>
-<div class="paragraph">
-<div class="title">Form</div>
-<p>The form can be varied:</p>
-</div>
+<div class="sect2">
+<h3 id="_user_experience">8.2. User Experience</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>concept papers with any kind of structure</p>
+<p><strong>Personalized maps:</strong> The ability for users to create their own maps of the places they live or visit, which puts the focus on the user and their preferences. Besides, users are thought to have full control over the mapps they create.</p>
 </li>
 <li>
-<p>cross-cutting model excerpts or scenarios using notations of the architecture views</p>
-</li>
-<li>
-<p>sample implementations, especially for technical concepts</p>
-</li>
-<li>
-<p>reference to typical usage of standard frameworks (e.g. using Hibernate for object/relational mapping)</p>
+<p><strong>Map filters:</strong> The ability for users to filter the map by category, friends, and other criteria, which helps them find the places they are interested in more easily.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<div class="title">Structure</div>
-<p>A potential (but not mandatory) structure for this section could be:</p>
 </div>
+<div class="sect2">
+<h3 id="_safety_and_security">8.3. Safety and security</h3>
 <div class="ulist">
 <ul>
 <li>
-<p>Domain concepts</p>
+<p><strong>Privacy:</strong> The application must ensure the privacy of its users. The information about a place stored by each user should not be centralized and should be stored in each user&#8217;s pod. If it is considered necessary, the system could store other information in a centralized way for performance reasons trying to respect the privacy of the users as much as possible. Security is a quality goal for the architecture, and the system must respect the privacy of the users.</p>
 </li>
 <li>
-<p>User Experience concepts (UX)</p>
+<p><strong>Access control:</strong> The system must have appropriate access controls in place to ensure that only authorized users can access and modify personal and shared data.</p>
 </li>
 <li>
-<p>Safety and security concepts</p>
-</li>
-<li>
-<p>Architecture and design patterns</p>
-</li>
-<li>
-<p>"Under-the-hood"</p>
-</li>
-<li>
-<p>development concepts</p>
-</li>
-<li>
-<p>operational concepts</p>
+<p><strong>Secure data storage:</strong> The system must ensure that data stored in user pods and other centralized data stores is secure and protected from unauthorized access.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>Note: it might be difficult to assign individual concepts to one specific topic
-on this list.</p>
 </div>
-<div class="paragraph">
-<p><span class="image"><img src="./images/08-Crosscutting-Concepts-Structure-EN.png" alt="Possible topics for crosscutting concepts"></span></p>
-</div>
+<div class="sect2">
+<h3 id="_architecture_and_design">8.4. Architecture and design</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Personal pod:</strong> This refers to the storage location where the information about a place is stored by each user. It is a decentralized storage location and the information is owned and controlled by the user, which enhaces security and privacy.</p>
+</li>
+<li>
+<p><strong>Centralized storage:</strong> In some cases, it might be necessary to store information about a place in a centralized way for performance reasons. This should be done while respecting the privacy of the users as much as possible. Apart from the security policy, an application is bound to be efficient in its response if it wants to be util for users.</p>
+</li>
+<li>
+<p><strong>Interoperability:</strong> The solution must be designed in a way that allows for interoperability between the data stored by different applications. This means that the system should be able to integrate and work with other systems and applications that might be used by stakeholders or other parties.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_domain_model">8.1. Domain model</h3>
-<div class="paragraph">
-<p><span class="image"><img src="./images/UmlDiagram.png" alt="Example UML Diagram"></span></p>
+<h3 id="_implementation">8.5. Implementation</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Testeability:</strong> The implementation must be able to be tested. Not only must we test the ability of the application to perform the appropiate operation, but also the degree in which the quality scenarios are satisfyed.</p>
+</li>
+<li>
+<p><strong>Maintenance:</strong> This refers to the activities performed to keep the system running smoothly and to address any issues that may arise. It can include tasks like patching, upgrading, and bug fixing. In order to keep the maintenance of the project under control, we must proceed very carefuly with the developement of the application and keep our code under high level of quality.</p>
+</li>
+<li>
+<p><strong>Reliability:</strong> This refers to the ability of the system to function without failure or downtime. It involves designing the system in a way that minimizes the risk of failure and ensures that any failures that do occur are quickly detected and resolved.</p>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_concept_2">8.2. <em>&lt;Concept 2&gt;</em></h3>
+<h3 id="_developement">8.6. Developement</h3>
 <div class="paragraph">
-<p><em>&lt;explanation&gt;</em></p>
-</div>
-<div class="paragraph">
-<p>&#8230;&#8203;</p>
+<p>(To be done or deleted if not necessary)</p>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_concept_n">8.3. <em>&lt;Concept n&gt;</em></h3>
-<div class="paragraph">
-<p><em>&lt;explanation&gt;</em></p>
+<h3 id="_operational">8.7. Operational</h3>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Performance:</strong> This refers to the speed and efficiency of the system in carrying out its functions. It involves ensuring that the system meets its performance requirements and that it can handle the expected load.</p>
+</li>
+<li>
+<p><strong>Reliability:</strong> This refers to the ability of the system to function without failure or downtime. It involves designing the system in a way that minimizes the risk of failure and ensures that any failures that do occur are quickly detected and resolved.</p>
+</li>
+</ul>
 </div>
 <div style="page-break-after: always;"></div>
 </div>
@@ -1427,8 +1336,6 @@ on this list.</p>
 </div>
 <div class="sect2">
 <h3 id="_quality_scenarios">10.2. Quality Scenarios</h3>
-<div class="sidebarblock">
-<div class="content">
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 25%;">
@@ -1489,8 +1396,6 @@ on this list.</p>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -1498,63 +1403,77 @@ on this list.</p>
 <div class="sect1">
 <h2 id="section-technical-risks">11. Risks and Technical Debts</h2>
 <div class="sectionbody">
-<div class="sidebarblock arc42help">
-<div class="content">
 <div class="paragraph">
-<div class="title">Contents</div>
-<p>A list of identified technical risks or technical debts, ordered by priority</p>
-</div>
-<div class="paragraph">
-<div class="title">Motivation</div>
 <p>“Risk management is project management for grown-ups” (Tim Lister, Atlantic Systems Guild.)</p>
 </div>
 <div class="paragraph">
-<p>This should be your motto for systematic detection and evaluation of risks and technical debts in the architecture, which will be needed by management stakeholders (e.g. project managers, product owners) as part of the overall risk analysis and measurement planning.</p>
+<p><em>(It will obviously be extended as we find new risks and generate others technical debts as we develop the application.)</em></p>
 </div>
-<div class="paragraph">
-<div class="title">Form</div>
-<p>List of risks and/or technical debts, probably including suggested measures to minimize, mitigate or avoid risks or reduce technical debts.</p>
-</div>
-</div>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Risks</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Priority</th>
+<th class="tableblock halign-left valign-top">Problem description</th>
+<th class="tableblock halign-left valign-top">Considerations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Huge dimension of the project</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The quality and readability of the developement solutions are mandatory in order to keep order</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Time availability of memebers of the developement team</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Good organization and distribution of the project work along the semester</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 2. Technical Debts</caption>
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Relevance</th>
+<th class="tableblock halign-left valign-top">Technical Debts</th>
+<th class="tableblock halign-left valign-top">Considerations</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Medium</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Mandatory use of SOLID</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Although it may be a great solution to the problem faced, the obligation to use this technology sets a new handicap to the start of the developement</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Low</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The usage of TypeScript and React</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Even though the advises of our professors may conduct us to use these technologies, we are not familiar with them</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Low</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lack of relation between members of the team</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Most probably it will not be a big deal, but the fact that we do not know each other may difficutl at least the beggining of the developement</p></td>
+</tr>
+</tbody>
+</table>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
 <div class="sect1">
 <h2 id="section-glossary">12. Glossary</h2>
 <div class="sectionbody">
-<div class="sidebarblock arc42help">
-<div class="content">
-<div class="paragraph">
-<div class="title">Contents</div>
-<p>The most important domain and technical terms that your stakeholders use when discussing the system.</p>
-</div>
-<div class="paragraph">
-<p>You can also see the glossary as source for translations if you work in multi-language teams.</p>
-</div>
-<div class="paragraph">
-<div class="title">Motivation</div>
-<p>You should clearly define your terms, so that all stakeholders</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>have an identical understanding of these terms</p>
-</li>
-<li>
-<p>do not use synonyms and homonyms</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<div class="title">Form</div>
-<p>A table with columns &lt;Term&gt; and &lt;Definition&gt;.</p>
-</div>
-<div class="paragraph">
-<p>Potentially more columns in case you need translations.</p>
-</div>
-</div>
-</div>
 <table class="tableblock frame-all grid-all stretch">
 <colgroup>
 <col style="width: 50%;">
@@ -1568,12 +1487,44 @@ on this list.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;Term-1&gt;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;definition-1&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">TypeScript</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free and open source high-level programming language developed and maintained by Microsoft. It is a superset of JavaScript that adds static typing.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;Term-2&gt;</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&lt;definition-2&gt;</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">React</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free and open source JavaScript library for building interfaces, maintained by Meta.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Node.js</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cross-platform, open source server environment, a back-end JavaScript runtime environment.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Express.js</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Free and open source back-end framework for developing web applications and APIs with Node.js</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Solid</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Specification that lets users store their data securely in Pods</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Pods</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Decentralized and secure data stores. The pod user controls who can access the data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MongoDB</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open source document-oriented NoSQL database.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A set of platform as a service products that use OS-level virtualization to deliver software in containers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CI, Continuous integration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The practice of automating the integration process of a software so it can be done several times a day and errors are found as soon as possible.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CD, Continuous deployment</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Extension of the CI, where code changes to the application are released automatically into the production environment.</p></td>
 </tr>
 </tbody>
 </table>
