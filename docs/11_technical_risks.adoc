@@ -5,7 +5,6 @@
 
 _(It will obviously be extended as we find new risks and generate others technical debts as we develop the application.)_
 
-****
 .Risks
 |===
 |Priority |Problem description |Considerations
@@ -36,11 +35,6 @@ _(It will obviously be extended as we find new risks and generate others technic
 |Lack of relation between members of the team
 |Most probably it will not be a big deal, but the fact that we do not know each other may difficutl at least the beggining of the developement
 
-
 |===
-
-
-****
-****
 
 
