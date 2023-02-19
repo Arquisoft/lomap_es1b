@@ -6,7 +6,6 @@
 image:10_quality_scenarios_tree.png["Quality Tree"]
 
 === Quality Scenarios
-****
 |===
 |*Quality goal*|*Motivation*|*Usage scenarios*|*Priority*
 
@@ -24,4 +23,3 @@ image:10_quality_scenarios_tree.png["Quality Tree"]
 
 |*Maintainability*|The app will go through many changes, so it is important that the code is easy to mantain and modify.|With a good quality code, we are able to perform the minimum changes required to be modified or repaired.|High
 |===
-****
