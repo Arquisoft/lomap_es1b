@@ -21,6 +21,5 @@ Mapping of building blocks to infrastructure::
 |*MongoDB*|The database chosen,  where data will be stored.
 |*POD Provider*|Provider of the pods to be used.
 |*MapProvider*|API that will be used to display a map.
-
 |===
 
