@@ -5,7 +5,7 @@
 
 When an unidentified user logs in.
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram 1",png]
 ----
 actor User
 participant LoMap
@@ -20,7 +20,7 @@ User <- LoMap: The page for identified users is shown
 
 When an identified user sees a personalized map
 
-[plantuml,"Sequence diagram",png]
+[plantuml,"Sequence diagram 2",png]
 ----
 actor User
 participant LoMap
