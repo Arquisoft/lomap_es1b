@@ -11,7 +11,6 @@ image::03_business_context.png[]
 | User | The user interacts with the application via a computer or device, experiencing the frontend and sending requests to the backend. | The output is displayed in various parts of the system, covering almost all aspects.
 | User Pod | This entity generates new PODs for users who haven't created them, updates POD information, and fulfills requests by providing the requested information. | It submits the data requested by the application.
 | LoMap System | The user interacts with this system, sending requests through the interface. | It processes the incoming requests, manages the database to ensure consistency, and then displays the requested information to the user through the interface.
-| Database (MongoDB) | This entity handles queries and information requests. | It stores and maintains consistent data to support the needs of the system.
 |===
 
 === Technical Context
