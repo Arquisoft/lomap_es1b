@@ -11,8 +11,7 @@ As the software architects and developers of the LoMap aplication we must take i
 
 * Business Goals: On request of Brussels' Council, LoMap has to provide citizens with personalized maps about local places and business. Regarding to the enterprise's expectations, the software solution should aim to be general enough to be adapted to other future projects.
 
-* Essential Features and Functional Requirements: 
-  https://github.com/Arquisoft/lomap_es1b/blob/master/docs/05_building_block_view.adoc
+* https://github.com/Arquisoft/lomap_es1b/edit/develop/docs/01_introduction_and_goals.adoc#requirements-overview[Essential Features and Functional Requirements]
 
 * Quality Goals for the Architecture:
   - The information about a place should be stored in each user’s personal pod.
@@ -27,6 +26,8 @@ As the software architects and developers of the LoMap aplication we must take i
 
 === Requirements Overview
 
+We expect the future users of the application to use it as a simpler and more friendly version of other mapps such as Google mapps, for example. Additionally, it will offer solid references of what can be expected from the city (as a general overview) and the sites that the users may introduce, post, comment, advise, etc...
+
   - The LoMap system must allow users to add locations in different categories such as shops, bars, restaurants, sights, monuments, etc. 
   - It should also enable users to show the locations on a map window and add review scores, comments, pictures, etc. about the added places. 
   - The system must allow users to manage the information accessible by other users.
@@ -34,10 +35,6 @@ As the software architects and developers of the LoMap aplication we must take i
   - Quality of technical documentation
   - Code quality and tests code coverage.
 
-
-Motivation: We expect the future users of the application to use it as a simpler and more friendly version of other mapps such as Google mapps, for example. Additionally, it will offer solid references of what can be expected from the city (as a general overview) and the sites that the users may introduce, post, comment, advise, etc...
-
-Form: More information regarding to this provided in https://github.com/Arquisoft/lomap_es1b/blob/master/docs/05_building_block_view.adoc
 
 
 === Quality Architecture Goals
@@ -49,15 +46,27 @@ Pending: How is the quality of the architecture going to be judged?
 
 
 === Stakeholders
+
+
+.Stakeholders
+[options="header",cols="1,2,2"]
+|===
+| Role/Name | Contact | Expectations 
+
+| _Brussels Council_
+| _Fatima Abid_
+| _Keep the power in the next elections_
+
+| _Happy Software_
+| _Jose Emilio Labra Gayo_
+| _Earning a lot of money and getting a polivalent software solution_
+
+| _Developement Team_
+| _https://github.com/Arquisoft/lomap_es1b/tree/master/docs[Gihub repository]_
+| _Winning the SOLID tournament_
+|===
+
+
 * Brussels Council: The final solution is bound to be evaluated in terms of the popular satisfaction with the product.
 * Happy Software: It is neccessary that the solution keep the bosses satisfyed in every aspect of the project. Documentation will be a determinant factor as long as other techincal oriented people will certainly evaluate the work performed. It is particularly important that the architecture satisfyes their requirements.
 * Developement team: Must discuss and come up with ideas and solutions related to the architecture, design, system... Of course deep knowledge about the entire software is mandatory.
-
-
-[options="header",cols="1,2,2"]
-|===
-|Role/Name|Contact|Expectations
-| _Brussels Council_ | _Fatima Abid_ | _Keep the power in the next elections_
-| _Happy Software_ | _Jose Emilio Labra Gayo_ | _Earning a lot of money and getting a polivalent software solution_
-| _Developement Team_ | _https://github.com/Arquisoft/lomap_es1b/tree/master/docs_ | _Winning the SOLID tournament_
-|===
