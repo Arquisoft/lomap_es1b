@@ -573,8 +573,7 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <p>Business Goals: On request of Brussels' Council, LoMap has to provide citizens with personalized maps about local places and business. Regarding to the enterprise&#8217;s expectations, the software solution should aim to be general enough to be adapted to other future projects.</p>
 </li>
 <li>
-<p>Essential Features and Functional Requirements:
-<a href="https://github.com/Arquisoft/lomap_es1b/blob/master/docs/05_building_block_view.adoc" class="bare">https://github.com/Arquisoft/lomap_es1b/blob/master/docs/05_building_block_view.adoc</a></p>
+<p><a href="https://github.com/Arquisoft/lomap_es1b/edit/develop/docs/01_introduction_and_goals.adoc#requirements-overview">Essential Features and Functional Requirements</a></p>
 </li>
 <li>
 <p>Quality Goals for the Architecture:</p>
@@ -605,6 +604,9 @@ For documentation of your own system you use better the <em>plain</em> version.<
 </div>
 <div class="sect2">
 <h3 id="_requirements_overview">1.1. Requirements Overview</h3>
+<div class="paragraph">
+<p>We expect the future users of the application to use it as a simpler and more friendly version of other mapps such as Google mapps, for example. Additionally, it will offer solid references of what can be expected from the city (as a general overview) and the sites that the users may introduce, post, comment, advise, etc&#8230;&#8203;</p>
+</div>
 <div class="ulist">
 <ul>
 <li>
@@ -626,12 +628,6 @@ For documentation of your own system you use better the <em>plain</em> version.<
 <p>Code quality and tests code coverage.</p>
 </li>
 </ul>
-</div>
-<div class="paragraph">
-<p>Motivation: We expect the future users of the application to use it as a simpler and more friendly version of other mapps such as Google mapps, for example. Additionally, it will offer solid references of what can be expected from the city (as a general overview) and the sites that the users may introduce, post, comment, advise, etc&#8230;&#8203;</p>
-</div>
-<div class="paragraph">
-<p>Form: More information regarding to this provided in <a href="https://github.com/Arquisoft/lomap_es1b/blob/master/docs/05_building_block_view.adoc" class="bare">https://github.com/Arquisoft/lomap_es1b/blob/master/docs/05_building_block_view.adoc</a></p>
 </div>
 </div>
 <div class="sect2">
@@ -655,20 +651,8 @@ For documentation of your own system you use better the <em>plain</em> version.<
 </div>
 <div class="sect2">
 <h3 id="_stakeholders">1.3. Stakeholders</h3>
-<div class="ulist">
-<ul>
-<li>
-<p>Brussels Council: The final solution is bound to be evaluated in terms of the popular satisfaction with the product.</p>
-</li>
-<li>
-<p>Happy Software: It is neccessary that the solution keep the bosses satisfyed in every aspect of the project. Documentation will be a determinant factor as long as other techincal oriented people will certainly evaluate the work performed. It is particularly important that the architecture satisfyes their requirements.</p>
-</li>
-<li>
-<p>Developement team: Must discuss and come up with ideas and solutions related to the architecture, design, system&#8230;&#8203; Of course deep knowledge about the entire software is mandatory.</p>
-</li>
-</ul>
-</div>
 <table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Stakeholders</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 40%;">
@@ -694,11 +678,24 @@ For documentation of your own system you use better the <em>plain</em> version.<
 </tr>
 <tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Developement Team</em></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><em><a href="https://github.com/Arquisoft/lomap_es1b/tree/master/docs" class="bare">https://github.com/Arquisoft/lomap_es1b/tree/master/docs</a></em></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><em><a href="https://github.com/Arquisoft/lomap_es1b/tree/master/docs">Gihub repository</a></em></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><em>Winning the SOLID tournament</em></p></td>
 </tr>
 </tbody>
 </table>
+<div class="ulist">
+<ul>
+<li>
+<p>Brussels Council: The final solution is bound to be evaluated in terms of the popular satisfaction with the product.</p>
+</li>
+<li>
+<p>Happy Software: It is neccessary that the solution keep the bosses satisfyed in every aspect of the project. Documentation will be a determinant factor as long as other techincal oriented people will certainly evaluate the work performed. It is particularly important that the architecture satisfyes their requirements.</p>
+</li>
+<li>
+<p>Developement team: Must discuss and come up with ideas and solutions related to the architecture, design, system&#8230;&#8203; Of course deep knowledge about the entire software is mandatory.</p>
+</li>
+</ul>
+</div>
 <div style="page-break-after: always;"></div>
 </div>
 </div>
@@ -842,11 +839,6 @@ Necessary to take into account that one of the members won&#8217;t be able to as
 <td class="tableblock halign-left valign-top"><p class="tableblock">LoMap System</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The user interacts with this system, sending requests through the interface.</p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">It processes the incoming requests, manages the database to ensure consistency, and then displays the requested information to the user through the interface.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Database (MongoDB)</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">This entity handles queries and information requests.</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">It stores and maintains consistent data to support the needs of the system.</p></td>
 </tr>
 </tbody>
 </table>
@@ -1082,7 +1074,7 @@ Necessary to take into account that one of the members won&#8217;t be able to as
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="550" height="305">
+<img src="./images/Sequence%20diagram%201.png" alt="Sequence diagram 1" width="550" height="305">
 </div>
 </div>
 </div>
@@ -1093,7 +1085,7 @@ Necessary to take into account that one of the members won&#8217;t be able to as
 </div>
 <div class="imageblock">
 <div class="content">
-<img src="./images/Sequence%20diagram.png" alt="Sequence diagram" width="523" height="426">
+<img src="./images/Sequence%20diagram%202.png" alt="Sequence diagram 2" width="523" height="426">
 </div>
 </div>
 <div style="page-break-after: always;"></div>
@@ -1410,7 +1402,7 @@ Necessary to take into account that one of the members won&#8217;t be able to as
 <p><em>(It will obviously be extended as we find new risks and generate others technical debts as we develop the application.)</em></p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Risks</caption>
+<caption class="title">Table 2. Risks</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1437,7 +1429,7 @@ Necessary to take into account that one of the members won&#8217;t be able to as
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 2. Technical Debts</caption>
+<caption class="title">Table 3. Technical Debts</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -1553,7 +1545,7 @@ Created by Dr. Peter Hruschka &amp; Dr. Gernot Starke.</p>
 </div>
 <div id="footer">
 <div id="footer-text">
-Last updated 2023-02-18 14:48:59 +0100
+Last updated 2023-01-31 09:40:58 +0100
 </div>
 </div>
 </body>
