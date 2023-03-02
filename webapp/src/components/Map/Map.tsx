@@ -38,6 +38,8 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false }) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(({ coords }) => {
                 initMap(4, new google.maps.LatLng(coords.latitude, coords.longitude))
+            }, () => {
+                initMap(4, defaultAddress);
             })
         } else {
             initMap(4, defaultAddress);
