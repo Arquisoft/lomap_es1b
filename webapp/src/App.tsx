@@ -37,7 +37,8 @@ function App(): JSX.Element {
         <EmailForm OnUserListChange={refreshUserList}/>        
         <UserList users={users}/>
         
-        <FriendForm /> // Añadimos el componente FriendForm
+        
+        <FriendForm />
         
         <Link href="https://github.com/arquisoft/lomap_0">Source code</Link>
       </Container>
