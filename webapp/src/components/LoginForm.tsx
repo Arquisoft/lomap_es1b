@@ -17,7 +17,7 @@ function LoginForm(props: LoginFormProps): JSX.Element {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    await handleIncomingRedirect();
+    await handleIncomingRedirect({restorePreviousSession: true});
 
     if (!getDefaultSession().info.isLoggedIn) {
       await login({
