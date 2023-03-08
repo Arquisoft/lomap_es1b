@@ -132,9 +132,7 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false }) => {
     };
 
     return (
-        <div className="map-container">
-            <div ref={ref} className="map"></div>
-        </div>
+        <div ref={ref} className="map"></div>
     );
 };
 

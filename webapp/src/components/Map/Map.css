@@ -1,11 +1,5 @@
-.map-container {
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-}
-
 .map {
   position: fixed !important;
-  height: 100% !important;
-  width: 100% !important;
+  height: 86% !important;
+  width: 75%;
 }

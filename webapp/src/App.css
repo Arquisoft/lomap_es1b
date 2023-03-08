@@ -33,26 +33,6 @@
   }
 }
 
-nav {
-  flex-direction: column;
-  background-color: #575757;
-  display: flex;
-  justify-content: left;
-  flex-basis: 100%;
-  font-size: medium;
-  width: 100%;
-}
-
-@media only screen and (min-width: 600px) {
-  nav {
-    flex-direction: row;
-  }
-
-  nav a:last-child {
-    margin-left: auto;
-  }
-}
-
 nav a {
   color: white;
   padding: 1em 2em;
