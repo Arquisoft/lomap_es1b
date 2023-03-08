@@ -1,35 +1,64 @@
-import React, { useState, useEffect } from 'react';
-import Box from '@mui/material/Box';
-import Link from '@mui/material/Link';
+import { useEffect, useState } from 'react';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import Container from '@mui/material/Container';
-import EmailForm from './components/EmailForm';
-import Welcome from './components/Welcome';
-import UserList from './components/UserList';
-import  {getUsers} from './api/api';
-import {User} from './shared/shareddtypes';
+import LoginForm from './components/LoginForm';
+import Map from './components/Map/Map';
+import { loadMapApi } from "./utils/GoogleMapsUtils";
 import './App.css';
+import Welcome from './components/Welcome';
 
 function App(): JSX.Element {
+  const [user, setUser] = useState<string>("");
+  const [scriptLoaded, setScriptLoaded] = useState(false);
 
-  const [users,setUsers] = useState<User[]>([]);
-
-  const refreshUserList = async () => {
-    setUsers(await getUsers());
+  const refreshUserName = async (name: string) => {
+    setUser(name)
   }
 
-  useEffect(()=>{
-    refreshUserList();
-  },[]);
+  useEffect(() => {
+    const googleMapScript = loadMapApi();
+    googleMapScript.addEventListener('load', function () {
+      setScriptLoaded(true);
+    });
+  }, []);
 
   return (
     <>
-      <Container maxWidth="sm">
-        <Welcome message="ASW students"/>
-        <Box component="div" sx={{ py: 2}}>This is a basic example of a React application using Typescript. You can add your email to the list filling the form below.</Box>
-        <EmailForm OnUserListChange={refreshUserList}/>        
-        <UserList users={users}/>
-        <Link href="https://github.com/arquisoft/lomap_0">Source code</Link>
-      </Container>
+      <BrowserRouter>
+        <Container maxWidth="sm">
+          <Welcome message={user} />
+          <nav>
+            <Link to="/">Mapa</Link>
+            <Link to="/ubications">Tus ubicaciones</Link>
+            <Link to="/friends">Tus amigos</Link>
+            <Link to="/login">Login</Link>
+          </nav>
+          <Routes>
+
+            <Route path="/" element={
+              scriptLoaded && (
+                <Map
+                  mapType={google.maps.MapTypeId.ROADMAP}
+                  mapTypeControl={true}
+                />
+              )
+            } />
+
+            <Route path="/ubications" element={
+              <Container>Componente de tus ubicaciones</Container>
+            } />
+
+            <Route path="/friends" element={
+              <Container>Componente de tus amigos</Container>
+            } />
+
+            <Route path="/login" element={
+              <LoginForm OnUserIsLoggedChange={refreshUserName} />
+            } />
+
+          </Routes>
+        </Container>
+      </BrowserRouter>
     </>
   );
 }
