@@ -4,12 +4,24 @@ import './Map.css';
 interface IMap {
     mapType: google.maps.MapTypeId;
     mapTypeControl?: boolean;
+    globalLat: number;
+    setGlobalLat: (globalLat: number) => void;
+    globalLng: number;
+    setGlobalLng: (globalLng: number) => void;
+    globalName: string;
+    globalDescription: string;
+    acceptedMarker: boolean;
+    setAcceptedMarker: (acceptedMarker: boolean) => void;
 }
 
 interface IMarker {
     address: string;
-    latitude: number;
-    longitude: number;
+    latLng: GoogleLatLng;
+}
+
+interface ICouple {
+    marker: GoogleMarker;
+    infoWindow: GoogleInfoWindow;
 }
 
 type GoogleLatLng = google.maps.LatLng;
@@ -17,11 +29,11 @@ type GoogleMap = google.maps.Map;
 type GoogleMarker = google.maps.Marker;
 type GoogleInfoWindow = google.maps.InfoWindow;
 
-const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false }) => {
-
+const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false, globalLat, setGlobalLat, globalLng, setGlobalLng, globalName, globalDescription, acceptedMarker, setAcceptedMarker }) => {
     const ref = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<GoogleMap>();
     const [marker, setMarker] = useState<IMarker>();
+    const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();
     const [activeInfoWindow, setActiveInfoWindow] = useState<GoogleInfoWindow>();
 
     const startMap = (): void => {
@@ -62,8 +74,7 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false }) => {
                 let formatted_address = results[1] ? results[1].formatted_address : "Dirección desconocida";
                 setMarker({
                     address: formatted_address,
-                    latitude: coordinate.lat(),
-                    longitude: coordinate.lng()
+                    latLng: new google.maps.LatLng(coordinate.lat(), coordinate.lng())
                 })
             }
         });
@@ -71,19 +82,30 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false }) => {
 
     useEffect(() => {
         if (marker) {
-            addMarker(new google.maps.LatLng(marker.latitude, marker.longitude), marker.address);
+            if (lastAddedCouple) {
+                if (acceptedMarker) {
+                    lastAddedCouple.marker = new google.maps.Marker();
+                    setAcceptedMarker(false);
+                }
+                lastAddedCouple.marker.setMap(null);
+
+            }
+
+            setGlobalLat(marker.latLng.lat());
+            setGlobalLng(marker.latLng.lng());
+            addMarker(marker);
         }
     }, [marker]);
 
-    const addMarker = (location: GoogleLatLng, address: string): void => {
+    const addMarker = (notAddedMarker: IMarker): void => {
         const marker: GoogleMarker = new google.maps.Marker({
-            position: location,
+            position: notAddedMarker.latLng,
             map: map
         });
 
         const infoWindow = new google.maps.InfoWindow({
-            content: "<h1>" + address + "</h1>"
-        });
+            content: "<h1>" + globalName + "</h1><p>" + globalDescription + "</p>"
+        })
 
         marker.addListener('click', () => {
             if (activeInfoWindow) {
@@ -94,7 +116,25 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false }) => {
             setActiveInfoWindow(infoWindow);
         });
 
+        setLastAddedCouple({
+            marker: marker,
+            infoWindow: infoWindow
+        });
     };
+
+    useEffect(() => {
+        if (lastAddedCouple) {
+            lastAddedCouple.marker.setPosition(new google.maps.LatLng(globalLat, globalLng));
+        } else {
+            coordinateToAddress(new google.maps.LatLng(globalLat, globalLng));
+        }
+    }, [globalLat, globalLng]);
+
+    useEffect(() => {
+        if (lastAddedCouple) {
+            lastAddedCouple.infoWindow.setContent("<h1>" + globalName + "</h1><p>" + globalDescription + "</p>");
+        }
+    }, [globalName, globalDescription]);
 
     const addHomeMarker = (location: GoogleLatLng): GoogleMarker => {
         const homeMarkerConst: GoogleMarker = new google.maps.Marker({

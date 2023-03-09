@@ -1,17 +1,15 @@
-import { useEffect, useState } from 'react';
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Stack, Container, Grid } from '@mui/material';
-import LoginForm from './components/LoginForm';
-import Map from './components/Map/Map';
-import { loadMapApi } from "./utils/GoogleMapsUtils";
 import './App.css';
 import Welcome from './components/Welcome';
-import NewUbicationForm from './components/NewUbicationForm';
+import { useEffect, useState } from 'react';
+import LoginForm from './components/LoginForm';
+import MapView from './components/Map/MapView';
+import { Stack, Container } from '@mui/material';
+import { loadMapApi } from './utils/GoogleMapsUtils';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function App(): JSX.Element {
   const [user, setUser] = useState<string>("");
   const [scriptLoaded, setScriptLoaded] = useState(false);
-
 
   const refreshUserName = async (name: string) => {
     setUser(name)
@@ -44,19 +42,7 @@ function App(): JSX.Element {
 
           <Route path="/" element={
             scriptLoaded && (
-              <Grid container>
-                <Grid item xs={9}>
-                  <Map
-                    mapType={google.maps.MapTypeId.ROADMAP}
-                    mapTypeControl={true}
-                  />
-                </Grid>
-                <Grid item xs={3}>
-                  <NewUbicationForm />
-                </Grid>
-              </Grid>
-
-            )
+              <MapView />)
           } />
 
           <Route path="/ubications" element={
