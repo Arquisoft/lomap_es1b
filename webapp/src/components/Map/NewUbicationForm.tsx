@@ -2,35 +2,32 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel } from '@mui/material';
 
-interface INewUbicationForm {
+interface INewUbicationFormProps {
   globalLat: number;
-  setGlobalLat: (globalLat: number) => void;
   globalLng: number;
-  setGlobalLng: (globalLng: number) => void;
   globalName: string;
-  setGlobalName: (globalName: string) => void;
   globalDescription: string;
+  setGlobalLat: (globalLat: number) => void;
+  setGlobalLng: (globalLng: number) => void;
+  setGlobalName: (globalName: string) => void;
   setGlobalDescription: (globalName: string) => void;
   setAcceptedMarker: (acceptedMarker: boolean) => void;
 }
 
-const NewUbicationForm: React.FC<INewUbicationForm> = ({ globalLat, setGlobalLat, globalLng, setGlobalLng,
-  globalName, setGlobalName, globalDescription, setGlobalDescription, setAcceptedMarker }) => {
-  const [formOpened, setFormOpened] = useState(false);
+const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
   const [isPublic, setIsPublic] = useState(false);
+  const [formOpened, setFormOpened] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setAcceptedMarker(true);
+    props.setAcceptedMarker(true);
   }
 
   return (
     <>
       <Button
         sx={{
-          bgcolor: '#ffffff',
-          color: '#00000',
-          marginTop: '2em',
+          color: 'white',
           fontSize: 'large',
           display: formOpened ? 'none' : 'inline'
         }}
@@ -46,8 +43,8 @@ const NewUbicationForm: React.FC<INewUbicationForm> = ({ globalLat, setGlobalLat
               name="latitude"
               label="Latitud"
               variant="outlined"
-              value={globalLat}
-              onChange={e => setGlobalLat(e.target.value as unknown as number)}
+              value={props.globalLat}
+              onChange={e => props.setGlobalLat(e.target.value as unknown as number)}
               sx={{ marginTop: 6, marginBottom: 2 }}
             />
             <TextField
@@ -56,8 +53,8 @@ const NewUbicationForm: React.FC<INewUbicationForm> = ({ globalLat, setGlobalLat
               name="longitude"
               label="Longitud"
               variant="outlined"
-              value={globalLng}
-              onChange={e => setGlobalLng(e.target.value as unknown as number)}
+              value={props.globalLng}
+              onChange={e => props.setGlobalLng(e.target.value as unknown as number)}
               sx={{ my: 2 }}
             />
             <TextField
@@ -65,8 +62,8 @@ const NewUbicationForm: React.FC<INewUbicationForm> = ({ globalLat, setGlobalLat
               name="name"
               label="Nombre"
               variant="outlined"
-              value={globalName}
-              onChange={e => setGlobalName(e.target.value)}
+              value={props.globalName}
+              onChange={e => props.setGlobalName(e.target.value)}
               sx={{ my: 2 }}
             />
             <TextField
@@ -74,8 +71,8 @@ const NewUbicationForm: React.FC<INewUbicationForm> = ({ globalLat, setGlobalLat
               name="description"
               label="Descripción"
               variant="outlined"
-              value={globalDescription}
-              onChange={e => setGlobalDescription(e.target.value)}
+              value={props.globalDescription}
+              onChange={e => props.setGlobalDescription(e.target.value)}
               sx={{ my: 2 }}
             />
 

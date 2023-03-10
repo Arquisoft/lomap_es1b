@@ -1,19 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './Map.css';
 
-interface IMap {
-    mapType: google.maps.MapTypeId;
-    mapTypeControl?: boolean;
-    globalLat: number;
-    setGlobalLat: (globalLat: number) => void;
-    globalLng: number;
-    setGlobalLng: (globalLng: number) => void;
-    globalName: string;
-    globalDescription: string;
-    acceptedMarker: boolean;
-    setAcceptedMarker: (acceptedMarker: boolean) => void;
-}
-
 interface IMarker {
     address: string;
     latLng: GoogleLatLng;
@@ -24,17 +11,29 @@ interface ICouple {
     infoWindow: GoogleInfoWindow;
 }
 
-type GoogleLatLng = google.maps.LatLng;
 type GoogleMap = google.maps.Map;
+type GoogleLatLng = google.maps.LatLng;
 type GoogleMarker = google.maps.Marker;
 type GoogleInfoWindow = google.maps.InfoWindow;
 
-const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false, globalLat, setGlobalLat, globalLng, setGlobalLng, globalName, globalDescription, acceptedMarker, setAcceptedMarker }) => {
+interface IMapProps {
+    globalLat: number;
+    globalLng: number;
+    globalName: string;
+    acceptedMarker: boolean;
+    mapTypeControl?: boolean;
+    globalDescription: string;
+    mapType: google.maps.MapTypeId;
+    setGlobalLat: (globalLat: number) => void;
+    setGlobalLng: (globalLng: number) => void;
+    setAcceptedMarker: (acceptedMarker: boolean) => void;
+}
+
+const Map: React.FC<IMapProps> = (props) => {
     const ref = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<GoogleMap>();
     const [marker, setMarker] = useState<IMarker>();
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();
-    const [activeInfoWindow, setActiveInfoWindow] = useState<GoogleInfoWindow>();
 
     const startMap = (): void => {
         if (!map) {
@@ -83,16 +82,15 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false, globalLat, setGl
     useEffect(() => {
         if (marker) {
             if (lastAddedCouple) {
-                if (acceptedMarker) {
+                if (props.acceptedMarker) {
                     lastAddedCouple.marker = new google.maps.Marker();
-                    setAcceptedMarker(false);
+                    props.setAcceptedMarker(false);
                 }
                 lastAddedCouple.marker.setMap(null);
-
             }
 
-            setGlobalLat(marker.latLng.lat());
-            setGlobalLng(marker.latLng.lng());
+            props.setGlobalLat(marker.latLng.lat());
+            props.setGlobalLng(marker.latLng.lng());
             addMarker(marker);
         }
     }, [marker]);
@@ -104,16 +102,12 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false, globalLat, setGl
         });
 
         const infoWindow = new google.maps.InfoWindow({
-            content: "<h1>" + globalName + "</h1><p>" + globalDescription + "</p>"
+            content: `<h1>${props.globalName ? props.globalName : "Sin nombre"}</h1>
+            <p>${props.globalDescription ? props.globalDescription : "Sin descripción"}</p>`
         })
 
         marker.addListener('click', () => {
-            if (activeInfoWindow) {
-                activeInfoWindow.close();
-            }
-
             infoWindow.open(map, marker);
-            setActiveInfoWindow(infoWindow);
         });
 
         setLastAddedCouple({
@@ -124,17 +118,18 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false, globalLat, setGl
 
     useEffect(() => {
         if (lastAddedCouple) {
-            lastAddedCouple.marker.setPosition(new google.maps.LatLng(globalLat, globalLng));
+            lastAddedCouple.marker.setPosition(new google.maps.LatLng(props.globalLat, props.globalLng));
         } else {
-            coordinateToAddress(new google.maps.LatLng(globalLat, globalLng));
+            coordinateToAddress(new google.maps.LatLng(props.globalLat, props.globalLng));
         }
-    }, [globalLat, globalLng]);
+    }, [props.globalLat, props.globalLng]);
 
     useEffect(() => {
         if (lastAddedCouple) {
-            lastAddedCouple.infoWindow.setContent("<h1>" + globalName + "</h1><p>" + globalDescription + "</p>");
+            lastAddedCouple.infoWindow.setContent(`<h1>${props.globalName ? props.globalName : "Sin nombre"}</h1>
+            <p>${props.globalDescription ? props.globalDescription : "Sin descripción"}</p>`);
         }
-    }, [globalName, globalDescription]);
+    }, [props.globalName, props.globalDescription]);
 
     const addHomeMarker = (location: GoogleLatLng): GoogleMarker => {
         const homeMarkerConst: GoogleMarker = new google.maps.Marker({
@@ -156,7 +151,7 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false, globalLat, setGl
                 new google.maps.Map(ref.current, {
                     zoom: zoomLevel,
                     center: address,
-                    mapTypeControl: mapTypeControl,
+                    mapTypeControl: props.mapTypeControl,
                     streetViewControl: false,
                     rotateControl: false,
                     scaleControl: true,
@@ -164,7 +159,7 @@ const Map: React.FC<IMap> = ({ mapType, mapTypeControl = false, globalLat, setGl
                     panControl: false,
                     zoomControl: true,
                     gestureHandling: 'cooperative',
-                    mapTypeId: mapType,
+                    mapTypeId: props.mapType,
                     draggableCursor: 'pointer',
                 })
             );

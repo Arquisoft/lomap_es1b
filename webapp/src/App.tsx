@@ -25,17 +25,15 @@ function App(): JSX.Element {
   return (
     <>
       <BrowserRouter>
-        <Welcome message={user} />
         <nav>
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 1, sm: 2, md: 4 }}
-            sx={{ bgcolor: '#575757' }}
           >
             <Link to="/">Mapa</Link>
             <Link to="/ubications">Mis ubicaciones</Link>
             <Link to="/friends">Mis amigos</Link>
-            <Link to="/login">Login</Link>
+            <LoginForm OnUserIsLoggedChange={refreshUserName}/>
           </Stack>
         </nav>
         <Routes>
@@ -52,11 +50,6 @@ function App(): JSX.Element {
           <Route path="/friends" element={
             <Container>Componente de tus amigos</Container>
           } />
-
-          <Route path="/login" element={
-            <LoginForm OnUserIsLoggedChange={refreshUserName} />
-          } />
-
         </Routes>
       </BrowserRouter>
     </>

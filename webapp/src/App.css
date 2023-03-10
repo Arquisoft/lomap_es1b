@@ -1,13 +1,25 @@
-nav a {
-  color: white;
-  padding: 1em 2em;
-  font-weight: bold;
-  vertical-align: bottom;
-  text-align: center;
-  margin: 1px;
+@import url('https://fonts.googleapis.com/css?family=Kanit');
+
+body {
+  font-family: 'Kanit', serif;
+
+  background: #0F2027;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #2C5364, #203A43, #0F2027);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #2C5364, #203A43, #0F2027);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 }
 
-nav a:hover {
-  background-color: #9c9c9c;
-  outline: 2px solid white;
+nav a {
+  color: white;
+  text-decoration: none;
+
+  margin: 1px;
+  padding: 1em 2em;
+}
+
+.loginForm {
+  margin-left: auto !important;
+  margin-right: 0 !important;
 }
