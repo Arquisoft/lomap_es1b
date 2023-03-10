@@ -8,6 +8,7 @@
 <img src="https://blog.wildix.com/wp-content/uploads/2020/06/react-logo.jpg" height="100">
 <img src="https://miro.medium.com/max/1200/0*RbmfNyhuBb8G3LWh.png" height="100">
 <img src="https://miro.medium.com/max/365/1*Jr3NFSKTfQWRUyjblBSKeg.png" height="100">
+<img src="https://res.cloudinary.com/hevo/image/upload/f_auto,q_auto/v1644403814/hevo-learn/springboot_MongoDB_configuration_mongodb.jpg?_i=AA" height="100">
 </p>
 
 This project is a basic example of website using **React** with **Typescript** and an endpoint using **NodeJS** with **express**.
@@ -16,6 +17,7 @@ This project is a basic example of website using **React** with **Typescript** a
 <p> Pablo Calvo Gamonal - uo276220@uniovi.es  </p>
 <p> Pablo García-Ovies Pérez - uo265314@uniovi.es </p>
 <p> Óscar Davila Sampedro - uo284541@uniovi.es </p>
+<p> Joaquín Hermida Giganto - uo271718@uniovi.es </p>
 
 ## Quick start guide
 <mark>In case you already have node.js and npm, make sure you update them before attempting to build the images</mark>
