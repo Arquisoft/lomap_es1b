@@ -7,6 +7,8 @@ import { Stack, Container } from '@mui/material';
 import { loadMapApi } from './utils/GoogleMapsUtils';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
+import FriendsList from './components/Friends/Friends';
+
 function App(): JSX.Element {
   const [user, setUser] = useState<string>("");
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -48,7 +50,8 @@ function App(): JSX.Element {
           } />
 
           <Route path="/friends" element={
-            <Container>Componente de tus amigos</Container>
+            scriptLoaded && (<FriendsList/>)
+            // <Container>Componente de tus amigos</Container>
           } />
         </Routes>
       </BrowserRouter>
