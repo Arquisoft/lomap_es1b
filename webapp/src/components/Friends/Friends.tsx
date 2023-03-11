@@ -1,5 +1,7 @@
+import Button from '@mui/material/Button/Button';
 import React, { useState } from 'react';
 import AddFriendForm from './AddFriendForm';
+import './Friends.css';
 
 interface Friend {
   id: number;
@@ -19,27 +21,63 @@ const FriendsList: React.FC = () => {
       name
     };
     setFriends([...friends, newFriend]);
+    setShowAddFriendForm(false);
   };
+
+  const handleCancel = () => {
+    setShowAddFriendForm(false);
+  }
 
   const handleRemoveFriend = (id: number) => {
     const filteredFriends = friends.filter(friend => friend.id !== id);
     setFriends(filteredFriends);
   };
 
+  const [showAddFriendForm, setShowAddFriendForm] = useState(false);
+  
+
   return (
     <div>
-      <h2>Lista de amigos</h2>
-      <ul>
-        {friends.map(friend => (
-          <li key={friend.id}>
-            {friend.name}{' '}
-            <button onClick={() => handleRemoveFriend(friend.id)}>Eliminar</button>
-          </li>
-        ))}
-      </ul>
+      <table>
+        <caption>
+          Lista de amigos
+        </caption>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Web Id</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {friends.map(friend => (
+            <tr key={friend.id}>
+              <td>{friend.name}</td>
+              <td>{friend.id}</td>
+              <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend.id)}>Eliminar</button></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      {showAddFriendForm ? (
+        <div>
+          <AddFriendForm onAddFriend={handleAddFriend} onCancel={handleCancel} />
+        </div>
+      ) : (
+        <div className='add-friend-container'>
+          <button className='button accept-button add-friend-button' type="button" onClick={() => setShowAddFriendForm(true)}>Agregar amigo</button>
+        </div>
+      )}
+    </div>
+  );
+};
+
+/*
       <AddFriendForm onAddFriend={handleAddFriend} />
     </div>
   );
 };
+*/
 
 export default FriendsList;
