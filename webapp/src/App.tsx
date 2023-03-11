@@ -1,5 +1,4 @@
 import './App.css';
-import Welcome from './components/Welcome';
 import { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import MapView from './components/Map/MapView';
