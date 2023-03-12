@@ -1,5 +1,4 @@
 import './App.css';
-import Welcome from './components/Welcome';
 import { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import MapView from './components/Map/MapView';
@@ -8,6 +7,8 @@ import { loadMapApi } from './utils/GoogleMapsUtils';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import FriendsList from './components/Friends/Friends';
+
+import FriendForm from './components/FriendForm';
 
 function App(): JSX.Element {
   const [user, setUser] = useState<string>("");
@@ -23,6 +24,10 @@ function App(): JSX.Element {
       setScriptLoaded(true);
     });
   }, []);
+
+
+
+
 
   return (
     <>

@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
+import './FriendForm.css'
 
 interface AddFriendFormProps {
   onAddFriend: (name: string) => void;
+  onCancel: () => void;
 }
 
-const AddFriendForm: React.FC<AddFriendFormProps> = ({ onAddFriend }) => {
+const AddFriendForm: React.FC<AddFriendFormProps> = ({ onAddFriend, onCancel }) => {
   const [newFriendName, setNewFriendName] = useState('');
 
   const handleAddFriend = (event: React.FormEvent<HTMLFormElement>) => {
@@ -14,12 +16,12 @@ const AddFriendForm: React.FC<AddFriendFormProps> = ({ onAddFriend }) => {
   };
 
   return (
-    <form onSubmit={handleAddFriend}>
+    <form className='add-friend' onSubmit={handleAddFriend}>
       <label>
-        Agregar amigo:
-        <input type="text" value={newFriendName} onChange={event => setNewFriendName(event.target.value)} />
+        <input type="text" value={newFriendName} onChange={event => setNewFriendName(event.target.value)} required placeholder='Name of the friend'/>
       </label>
-      <button type="submit">Agregar</button>
+      <button className='button accept-button' type="submit">Agregar</button>
+      <button className='button delete-button' type="button" onClick={onCancel}>Cancelar</button>
     </form>
   );
 };
