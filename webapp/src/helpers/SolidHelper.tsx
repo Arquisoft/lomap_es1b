@@ -1,18 +1,11 @@
 import { IPMarker } from "../shared/shareddtypes";
 import { fetch } from "@inrupt/solid-client-authn-browser";
-import { getFile, overwriteFile, getContentType, getSourceUrl, } from "@inrupt/solid-client";
-import { getSolidDataset, getStringNoLocale, Thing, getThing, saveFileInContainer } from "@inrupt/solid-client";
-
-async function getProfile(webId: string) {
-    let profileDocumentURI = webId.split("#")[0];
-    let myDataset = await getSolidDataset(profileDocumentURI);
-    return getThing(myDataset, webId) as Thing;
-}
+import { saveFileInContainer } from "@inrupt/solid-client";
+import { getFile, overwriteFile } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
     let markers: IPMarker[] = []
-    let parsedURL = webId.split("profile")[0]
-    let fileURL = `${parsedURL}private/Markers.json`;
+    let fileURL = `${parseURL(webId)}private/Markers.json`;
     try {
         await getFile(fileURL, { fetch: fetch })
             .then(async (file) => { markers = JSON.parse(await file.text()); })
@@ -27,18 +20,17 @@ export async function readMarkers(webId: string) {
                     }
                 );
             });
-            
+
     } catch (error) {
         console.error(error);
     }
-    console.log(markers)
+
     return markers;
 };
 
 export async function saveMarkers(markers: IPMarker[], webId: string) {
     if (markers.length > 0) {
-        let parsedURL = webId.split("profile")[0]
-        let fileURL = `${parsedURL}private/Markers.json`;
+        let fileURL = `${parseURL(webId)}private/Markers.json`;
         const blob = new Blob([(new TextEncoder).encode(JSON.stringify(markers))], {
             type: "application/json;charset=utf-8"
         });
@@ -54,3 +46,7 @@ export async function saveMarkers(markers: IPMarker[], webId: string) {
         }
     }
 };
+
+function parseURL(webId: string) {
+    return webId.split("profile")[0];
+}

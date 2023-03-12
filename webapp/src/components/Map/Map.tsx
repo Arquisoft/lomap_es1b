@@ -45,18 +45,9 @@ const Map: React.FC<IMapProps> = (props) => {
         } else {
             initEventListener();
             addHomeMarker(map.getCenter());
-            addMarkers(markers.map(parseMarker));
         }
     };
     useEffect(startMap, [map]);
-
-    const parseMarker = (iPMarker: IPMarker): IMarker => {
-        return {
-            name: iPMarker.name,
-            description: iPMarker.description,
-            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng)
-        };
-    }
 
     const defaultMapStart = (): void => {
         const defaultAddress = new google.maps.LatLng(43.5276892, -5.6355573);
@@ -168,7 +159,19 @@ const Map: React.FC<IMapProps> = (props) => {
             lastAddedCouple.marker = new google.maps.Marker();
             props.setAcceptedMarker(false);
         }
-    }, [props.acceptedMarker])
+    }, [props.acceptedMarker]);
+
+    useEffect(() => {
+        addMarkers(markers.map(parseMarker));
+    }, [markers]);
+
+    const parseMarker = (iPMarker: IPMarker): IMarker => {
+        return {
+            name: iPMarker.name,
+            description: iPMarker.description,
+            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng)
+        };
+    }
 
     const initMap = (zoomLevel: number, address: GoogleLatLng): void => {
         if (ref.current) {

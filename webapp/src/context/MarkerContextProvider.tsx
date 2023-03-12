@@ -8,21 +8,23 @@ export enum Types {
 }
 
 type MarkerActions = {
-        type: Types.ADD_MARKER;
-        payload: {
-            marker: IPMarker;
-        };
-    } | {
-        type: Types.SET_MARKER;
-        payload: {
-            marker: IPMarker[];
-        }
+    type: Types.ADD_MARKER;
+    payload: {
+        marker: IPMarker;
+    };
+} | {
+    type: Types.SET_MARKER;
+    payload: {
+        markers: IPMarker[];
+    }
 }
 
 export const MarkerContext = createContext<{ state: IPMarker[], dispatch: Dispatch<MarkerActions> }>({ state: [], dispatch: () => null })
 
 export const markerReducer = (state: IPMarker[], action: MarkerActions): IPMarker[] => {
     switch (action.type) {
+        case Types.SET_MARKER:
+            return action.payload.markers
         case Types.ADD_MARKER:
             return [action.payload.marker, ...state]
         default:

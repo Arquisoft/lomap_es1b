@@ -17,12 +17,11 @@ const MapView = () => {
     const { session } = useSession();
 
     const addMarker = (marker: IPMarker): void => {
-        console.log(session.info.webId!)
         dispatch({ type: Types.ADD_MARKER, payload: { marker: marker } })
     };
 
     useEffect(() => {
-        saveMarkers(markers, session.info.webId!); // usar ID proporcionada por la sesión
+        saveMarkers(markers, session.info.webId!);
     }, [markers]);
 
     return (

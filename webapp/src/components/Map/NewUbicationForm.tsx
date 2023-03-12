@@ -1,8 +1,8 @@
 import Button from '@mui/material/Button';
-import { IPMarker } from "../../shared/shareddtypes";
 import React, { useState, useContext } from 'react';
+import { IPMarker } from "../../shared/shareddtypes";
+import { MarkerContext } from '../../context/MarkerContextProvider'
 import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel } from '@mui/material';
-import { MarkerContext, Types } from '../../context/MarkerContextProvider'
 
 interface INewUbicationFormProps {
   globalLat: number;
