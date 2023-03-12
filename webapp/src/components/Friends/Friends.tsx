@@ -1,24 +1,44 @@
-import Button from '@mui/material/Button/Button';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import AddFriendForm from './AddFriendForm';
 import './Friends.css';
+import {getUserFriends, getUsers} from '../../api/api';
+import {User} from '../../shared/shareddtypes'
 
-interface Friend {
-  id: number;
-  name: string;
-}
 
 const FriendsList: React.FC = () => {
-  const [friends, setFriends] = useState<Friend[]>([
-    { id: 1, name: 'Juan' },
-    { id: 2, name: 'Pedro' },
-    { id: 3, name: 'María' }
-  ]);
+  const [friends, setFriends] = useState<User[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [showAddFriendForm, setShowAddFriendForm] = useState(false);
+
+  useEffect(() => {
+    async function fetchFriends() {
+      try {
+        const fetchedFriends = await getUsers();
+        setFriends(fetchedFriends);
+        setIsLoading(false);
+
+        if (fetchedFriends.length === 0) {
+          setFriends([
+            {id: String(1), name: 'Juan', email: 'juan' + '@uniovi.es', friends: []}
+            , {id: String(2), name: 'Pedro', email: 'pedro' + '@uniovi.es', friends: []}
+            , {id: String(3), name: 'Mateo', email: 'mateo' + '@uniovi.es', friends: []}
+            , {id: String(4), name: 'Marcos', email: 'marcos' + '@uniovi.es', friends: []}
+          ])
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchFriends();
+  }, []);
 
   const handleAddFriend = (name: string) => {
-    const newFriend: Friend = {
-      id: friends.length + 1,
-      name
+    const newFriend: User = {
+      id: String(friends.length + 1),
+      name,
+      email: name + '@uniovi.es',
+      friends: []
     };
     setFriends([...friends, newFriend]);
     setShowAddFriendForm(false);
@@ -26,15 +46,16 @@ const FriendsList: React.FC = () => {
 
   const handleCancel = () => {
     setShowAddFriendForm(false);
-  }
+  };
 
-  const handleRemoveFriend = (id: number) => {
+  const handleRemoveFriend = (id: string) => {
     const filteredFriends = friends.filter(friend => friend.id !== id);
     setFriends(filteredFriends);
   };
 
-  const [showAddFriendForm, setShowAddFriendForm] = useState(false);
-  
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
     <div>
@@ -45,6 +66,7 @@ const FriendsList: React.FC = () => {
         <thead>
           <tr>
             <th>Nombre</th>
+            <th>Email</th>
             <th>Web Id</th>
             <th></th>
           </tr>
@@ -53,6 +75,7 @@ const FriendsList: React.FC = () => {
           {friends.map(friend => (
             <tr key={friend.id}>
               <td>{friend.name}</td>
+              <td>{friend.email}</td>
               <td>{friend.id}</td>
               <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend.id)}>Eliminar</button></td>
             </tr>
@@ -73,11 +96,5 @@ const FriendsList: React.FC = () => {
   );
 };
 
-/*
-      <AddFriendForm onAddFriend={handleAddFriend} />
-    </div>
-  );
-};
-*/
-
 export default FriendsList;
+

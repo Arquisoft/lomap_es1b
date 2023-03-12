@@ -8,6 +8,8 @@ import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 import FriendsList from './components/Friends/Friends';
 
+import FriendForm from './components/FriendForm';
+
 function App(): JSX.Element {
   const [user, setUser] = useState<string>("");
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -22,6 +24,10 @@ function App(): JSX.Element {
       setScriptLoaded(true);
     });
   }, []);
+
+
+
+
 
   return (
     <>
