@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from 'express';
 import {check} from 'express-validator';
-import {v4 as uuidv4} from 'uuid';
+import {nanoid} from 'nanoid';
 
 const api:Router = express.Router()
 
@@ -37,7 +37,7 @@ api.post(
   async (req: Request, res: Response): Promise<Response> => {
     let name = req.body.name;
     let email = req.body.email;
-    let user: User = {id: uuidv4(),name:name,email:email,friends:[]}
+    let user: User = {id: nanoid(),name:name,email:email,friends:[]}
     users.push(user);
     return res.sendStatus(200);
   }
