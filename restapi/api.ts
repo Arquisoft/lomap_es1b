@@ -1,6 +1,6 @@
 import express, { Request, Response, Router } from 'express';
 import {check} from 'express-validator';
-import {nanoid} from 'nanoid';
+import {v4 as uuidv4} from 'uuid';
 
 const api:Router = express.Router()
 
@@ -28,6 +28,19 @@ api.get(
 );
 
 
+api.get(
+  "/users/get/:userId",
+  async (req: Request, res: Response): Promise<Response> => {
+      const userId = req.params.userId;
+      const user = users.find(user => user.id === userId);
+      if (!user) {
+          return res.status(404).send('User not found');
+      }
+      return res.status(200).send(user);
+  }
+);
+
+
 
 api.post(
   "/users/add",[
@@ -37,7 +50,7 @@ api.post(
   async (req: Request, res: Response): Promise<Response> => {
     let name = req.body.name;
     let email = req.body.email;
-    let user: User = {id: nanoid(),name:name,email:email,friends:[]}
+    let user: User = {id: uuidv4(),name:name,email:email,friends:[]}
     users.push(user);
     return res.sendStatus(200);
   }

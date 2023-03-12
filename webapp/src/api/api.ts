@@ -5,7 +5,7 @@ export async function addUser(name:string, email:string):Promise<boolean>{
     let response = await fetch(apiEndPoint+'/users/add', {
         method: 'POST',
         headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({'name':name, 'email':email})
+        body: JSON.stringify({'name':name, 'email':email.toLowerCase()})
       });
     if (response.status===200)
       return true;
@@ -18,6 +18,13 @@ export async function getUsers():Promise<User[]>{
     let response = await fetch(apiEndPoint+'/users/list');
     //The objects returned by the api are directly convertible to User objects
     return response.json()
+}
+
+export async function getUser(userId: string):Promise<User>{
+  const apiEndPoint= process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint+'/users/get' + userId);
+  //The objects returned by the api are directly convertible to User objects
+  return response.json()
 }
 
 
