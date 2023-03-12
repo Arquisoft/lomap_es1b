@@ -3,8 +3,9 @@ import { Grid } from '@mui/material';
 import NewUbicationForm from './NewUbicationForm';
 import { IPMarker } from "../../shared/shareddtypes";
 import { useState, useEffect, useContext } from 'react';
-import { saveMarkers } from '../../helpers/SolidHelper';
+import { readMarkers, saveMarkers } from '../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
+import { useSession } from '@inrupt/solid-ui-react';
 
 const MapView = () => {
     const [globalLat, setGlobalLat] = useState<number>(0);
@@ -13,13 +14,15 @@ const MapView = () => {
     const { state: markers, dispatch } = useContext(MarkerContext);
     const [acceptedMarker, setAcceptedMarker] = useState<boolean>(false);
     const [globalDescription, setGlobalDescription] = useState<string>("");
+    const { session } = useSession();
 
     const addMarker = (marker: IPMarker): void => {
+        console.log(session.info.webId!)
         dispatch({ type: Types.ADD_MARKER, payload: { marker: marker } })
     };
 
     useEffect(() => {
-        saveMarkers(markers, "https://oscardavilasampedro.inrupt.net/"); // usar ID proporcionada por la sesión
+        saveMarkers(markers, session.info.webId!); // usar ID proporcionada por la sesión
     }, [markers]);
 
     return (

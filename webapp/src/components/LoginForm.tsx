@@ -27,6 +27,8 @@ function LoginForm(props: LoginFormProps): JSX.Element {
       });
     }
 
+    console.log("User logged: " + getDefaultSession().info.webId!)
+
     props.OnUserIsLoggedChange(getDefaultSession().info.webId!.substring(8).split('.')[0])
   }
 

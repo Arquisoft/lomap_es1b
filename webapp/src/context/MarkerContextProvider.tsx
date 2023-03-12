@@ -1,15 +1,22 @@
 import { IPMarker } from "../shared/shareddtypes";
-import { createContext, Dispatch, useReducer } from "react";
+import { Dispatch, useReducer } from "react";
+import { createContext } from 'react';
 
 export enum Types {
-    ADD_MARKER = 'ADD_MARKER'
+    ADD_MARKER = 'ADD_MARKER',
+    SET_MARKER = 'SET_MARKER'
 }
 
 type MarkerActions = {
-    type: Types.ADD_MARKER;
-    payload: {
-        marker: IPMarker;
-    };
+        type: Types.ADD_MARKER;
+        payload: {
+            marker: IPMarker;
+        };
+    } | {
+        type: Types.SET_MARKER;
+        payload: {
+            marker: IPMarker[];
+        }
 }
 
 export const MarkerContext = createContext<{ state: IPMarker[], dispatch: Dispatch<MarkerActions> }>({ state: [], dispatch: () => null })
