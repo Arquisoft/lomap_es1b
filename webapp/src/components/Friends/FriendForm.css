@@ -1,4 +1,4 @@
-form {
+#add-friend-form {
     max-width: 400px;
     margin: 20px auto;
     padding: 20px;
@@ -6,7 +6,7 @@ form {
     text-align: center;
   }
   
-  form input[type="text"] {
+  #add-friend-form input[type="text"] {
     font-size: 1em;
     width: 100%;
     padding: 5px;
@@ -15,6 +15,6 @@ form {
     margin-bottom: 0.3em;
   }
   
-  form button[type="submit"] {
+  #add-friend-form button[type="submit"] {
     margin-right: 1em;
   }

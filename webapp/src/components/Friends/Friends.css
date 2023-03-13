@@ -1,8 +1,9 @@
-body {
+#div-friends {
   font-size: 1.5em;
+  color: white;
 }
 
-table {
+#table-friends {
     width: 80%;
     border-collapse: collapse;
     margin: auto;
@@ -11,41 +12,26 @@ table {
     border-radius: 4px;
   }
 
-  table caption {
+  #table-friends caption {
     font-size: 2em;
   }
   
-  table th {
+  #table-friends th {
     font-weight: bold;
     text-align: center;
     padding: 1rem;
     border-bottom: 2px solid #e0e0e0;
   }
   
-  table td {
+  #table-friends td {
     padding: 1rem;
     text-align: center;
     border-bottom: 2px solid #e0e0e0;
   }
   
-  table td:last-child {
+  #table-friends td:last-child {
     text-align: right;
   }
-
-
-
-
-
-  
-
-
-
-
-
-
-
-  
-
 
   .button {
     border: none;

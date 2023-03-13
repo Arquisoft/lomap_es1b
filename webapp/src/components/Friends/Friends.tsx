@@ -58,9 +58,9 @@ const FriendsList: React.FC = () => {
   }
 
   return (
-    <div>
-      <table>
-        <caption>
+    <div id='div-friends'>
+      <table id='table-friends'>
+        <caption id='table-caption-friends'>
           Lista de amigos
         </caption>
         <thead>
