@@ -15,11 +15,12 @@ interface INewUbicationFormProps {
   setGlobalName: (globalName: string) => void;
   setGlobalDescription: (globalName: string) => void;
   setAcceptedMarker: (acceptedMarker: boolean) => void;
+  formOpened: boolean;
+  setFormOpened: (formOpened: boolean) => void;
 }
 
 const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
   const [isPublic, setIsPublic] = useState(false);
-  const [formOpened, setFormOpened] = useState(false);
   const { state: markers } = useContext(MarkerContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -31,16 +32,7 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
 
   return (
     <>
-      <Button
-        sx={{
-          color: 'white',
-          fontSize: 'large',
-          display: formOpened ? 'none' : 'inline'
-        }}
-        onClick={async () => setFormOpened(!formOpened)}
-      >Nueva ubicación</Button>
-
-      <Slide direction="left" in={formOpened} mountOnEnter unmountOnExit >
+      <Slide direction="left" in={props.formOpened} mountOnEnter unmountOnExit >
         <form name="newUbication" onSubmit={handleSubmit}>
           <Stack alignItems="right" sx={{ margin: 2 }}>
             <TextField
@@ -48,38 +40,38 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               type='number'
               name="latitude"
               label="Latitud"
-              variant="outlined"
+              variant='filled'
               value={props.globalLat}
               onChange={e => props.setGlobalLat(e.target.value as unknown as number)}
-              sx={{ marginTop: 6, marginBottom: 2 }}
+              sx={{ marginTop: 6, marginBottom: 2, bgcolor:'white' }}
             />
             <TextField
               required
               type='number'
               name="longitude"
               label="Longitud"
-              variant="outlined"
+              variant='filled'
               value={props.globalLng}
               onChange={e => props.setGlobalLng(e.target.value as unknown as number)}
-              sx={{ my: 2 }}
+              sx={{ my: 2, bgcolor:'white' }}
             />
             <TextField
               required
               name="name"
               label="Nombre"
-              variant="outlined"
+              variant='filled'
               value={props.globalName}
               onChange={e => props.setGlobalName(e.target.value)}
-              sx={{ my: 2 }}
+              sx={{ my: 2, bgcolor:'white'}}
             />
             <TextField
               required
               name="description"
               label="Descripción"
-              variant="outlined"
+              variant='filled'
               value={props.globalDescription}
               onChange={e => props.setGlobalDescription(e.target.value)}
-              sx={{ my: 2 }}
+              sx={{ my: 2, bgcolor:'white' }}
             />
 
             <FormGroup>
@@ -87,11 +79,11 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
                 checked={isPublic}
                 onChange={e => setIsPublic(e.target.checked)}
                 inputProps={{ 'aria-label': 'controlled' }}
-              />} label="Ubicación pública" />
+              />} sx={{color:'white'}} label="Ubicación pública" />
             </FormGroup>
 
             <Button variant="contained" type="submit" sx={{ my: 2 }}>Aceptar</Button>
-            <Button variant="contained" onClick={async () => setFormOpened(!formOpened)} sx={{ my: 2 }}>Cancelar</Button>
+            <Button variant="contained" onClick={async () => props.setFormOpened(!props.formOpened)} sx={{ my: 2 }}>Cancelar</Button>
           </Stack>
         </form>
       </Slide>

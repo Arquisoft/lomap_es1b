@@ -14,12 +14,4 @@ body {
 nav a {
   color: white;
   text-decoration: none;
-
-  margin: 1px;
-  padding: 1em 2em;
-}
-
-.loginForm {
-  margin-left: auto !important;
-  margin-right: 0 !important;
 }

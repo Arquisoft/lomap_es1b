@@ -43,7 +43,7 @@ function LoginForm(props: LoginFormProps): JSX.Element {
         <Select
           value={proveedor}
           onChange={seleccionarProveedor}
-          sx={{ width: '12em', height: '3em', verticalAlign: 'middle' }}
+          sx={{ width: '12em', height: '3em', verticalAlign:'middle', bgcolor:'white'}}
         >
           <MenuItem value={"https://solidcommunity.net/"}>
             SOLID community
@@ -54,7 +54,7 @@ function LoginForm(props: LoginFormProps): JSX.Element {
           disabled={proveedor === "" || getDefaultSession().info.isLoggedIn}
           variant="contained"
           type="submit"
-          sx={{ width: '12em', height: '3em' }}>Iniciar sesión</Button>
+          sx={{ width: '12em', height: '3em', ":disabled":{bgcolor:'grey'}}}>Iniciar sesión</Button>
       </form>
     </>
   );
