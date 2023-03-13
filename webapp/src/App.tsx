@@ -1,11 +1,11 @@
 import './App.css';
-import Welcome from './components/Welcome';
 import { useEffect, useState } from 'react';
 import LoginForm from './components/LoginForm';
 import MapView from './components/Map/MapView';
-import { Stack, Container } from '@mui/material';
+import { Stack, Container, Box, Button } from '@mui/material';
 import { loadMapApi } from './utils/GoogleMapsUtils';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import logo from "./logo-no-background.png";
 
 function App(): JSX.Element {
   const [user, setUser] = useState<string>("");
@@ -29,11 +29,24 @@ function App(): JSX.Element {
           <Stack
             direction={{ xs: 'column', sm: 'row' }}
             spacing={{ xs: 1, sm: 2, md: 4 }}
+            alignItems='center'
+            justifyContent='left'
           >
+            <img src={logo} className="App-logo" alt="logo" height="60" />
             <Link to="/">Mapa</Link>
             <Link to="/ubications">Mis ubicaciones</Link>
             <Link to="/friends">Mis amigos</Link>
-            <LoginForm OnUserIsLoggedChange={refreshUserName}/>
+            {user === '' ?
+              <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end'>
+                <LoginForm OnUserIsLoggedChange={refreshUserName} />
+              </Stack>
+              :
+              <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end' spacing={{ xs: 1, sm: 2, md: 4 }}>
+                <Box component="p" color={'white'}>{user}</Box>
+                <Button
+                  variant="contained"
+                  sx={{ width: '12em', height: '3em', ":disabled": { bgcolor: 'grey' } }}>Cerrar sesión</Button>
+              </Stack>}
           </Stack>
         </nav>
         <Routes>
