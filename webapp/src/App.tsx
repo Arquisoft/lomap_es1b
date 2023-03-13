@@ -1,11 +1,12 @@
 import './App.css';
 import LoginForm from './components/LoginForm';
 import MapView from './components/Map/MapView';
-import { Stack, Container } from '@mui/material';
+import { Stack, Container, Button } from '@mui/material';
 import { loadMapApi } from './utils/GoogleMapsUtils';
 import FriendsList from './components/Friends/Friends';
 import { useEffect, useState, useContext } from 'react';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import UbicationsView from './components/Map/UbicationsView';
 
 
 function App(): JSX.Element {
@@ -45,7 +46,7 @@ function App(): JSX.Element {
           } />
 
           <Route path="/ubications" element={
-            <Container>Componente de tus ubicaciones</Container>
+            <UbicationsView/>
           } />
 
           <Route path="/friends" element={
