@@ -1,8 +1,11 @@
-import React, { useEffect, useRef, useState } from 'react';
 import './Map.css';
+import React, { useEffect, useRef, useState, useContext } from 'react';
+import { MarkerContext } from '../../context/MarkerContextProvider';
+import { IPMarker } from '../../shared/shareddtypes';
 
 interface IMarker {
-    address: string;
+    name: string;
+    description: string;
     latLng: GoogleLatLng;
 }
 
@@ -33,12 +36,14 @@ const Map: React.FC<IMapProps> = (props) => {
     const ref = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<GoogleMap>();
     const [marker, setMarker] = useState<IMarker>();
+    const { state: markers } = useContext(MarkerContext);
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();
 
     const startMap = (): void => {
         if (!map) {
             defaultMapStart();
         } else {
+            initEventListener();
             addHomeMarker(map.getCenter());
         }
     };
@@ -58,80 +63,60 @@ const Map: React.FC<IMapProps> = (props) => {
     };
 
     const initEventListener = (): void => {
-        if (map) {
-            google.maps.event.addListener(map, 'click', function (e) {
-                coordinateToAddress(e.latLng);
-            })
-        }
-    };
-    useEffect(initEventListener, [map]);
+        google.maps.event.addListener(map!, 'click', function (e) {
+            props.setGlobalLat(e.latLng.lat());
+            props.setGlobalLng(e.latLng.lng());
 
-    const coordinateToAddress = async (coordinate: GoogleLatLng) => {
-        const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ location: coordinate }, function (results, status) {
-            if (status === 'OK') {
-                let formatted_address = results[1] ? results[1].formatted_address : "Dirección desconocida";
-                setMarker({
-                    address: formatted_address,
-                    latLng: new google.maps.LatLng(coordinate.lat(), coordinate.lng())
-                })
-            }
-        });
+            setMarker({
+                latLng: e.latLng,
+                name: formatName(),
+                description: formatDescription(),
+            })
+        })
+    };
+
+    const formatName = (): string => {
+        return props.globalName ? props.globalName : "Sin nombre";
+    }
+
+    const formatDescription = (): string => {
+        return props.globalDescription ? props.globalDescription : "Sin descripción";
+    }
+
+    const addMarker = (iMarker: IMarker): void => {
+        if (lastAddedCouple) {
+            lastAddedCouple.marker.setMap(null);
+        }
+
+        setLastAddedCouple(generateMarker(iMarker));
     };
 
     useEffect(() => {
         if (marker) {
-            if (lastAddedCouple) {
-                if (props.acceptedMarker) {
-                    lastAddedCouple.marker = new google.maps.Marker();
-                    props.setAcceptedMarker(false);
-                }
-                lastAddedCouple.marker.setMap(null);
-            }
-
-            props.setGlobalLat(marker.latLng.lat());
-            props.setGlobalLng(marker.latLng.lng());
             addMarker(marker);
         }
     }, [marker]);
 
-    const addMarker = (notAddedMarker: IMarker): void => {
+
+    const generateMarker = (notAddedMarker: IMarker): ICouple => {
         const marker: GoogleMarker = new google.maps.Marker({
             position: notAddedMarker.latLng,
             map: map
         });
 
         const infoWindow = new google.maps.InfoWindow({
-            content: `<h1>${props.globalName ? props.globalName : "Sin nombre"}</h1>
-            <p>${props.globalDescription ? props.globalDescription : "Sin descripción"}</p>`
+            content: `<h1>${notAddedMarker.name}</h1>
+            <p>${notAddedMarker.description}</p>`
         })
 
         marker.addListener('click', () => {
             infoWindow.open(map, marker);
         });
 
-        setLastAddedCouple({
-            marker: marker,
-            infoWindow: infoWindow
-        });
-    };
+        return { marker, infoWindow };
+    }
 
-    useEffect(() => {
-        if (lastAddedCouple) {
-            lastAddedCouple.marker.setPosition(new google.maps.LatLng(props.globalLat, props.globalLng));
-        } else {
-            coordinateToAddress(new google.maps.LatLng(props.globalLat, props.globalLng));
-        }
-    }, [props.globalLat, props.globalLng]);
-
-    useEffect(() => {
-        if (lastAddedCouple) {
-            lastAddedCouple.infoWindow.setContent(`<h1>${props.globalName ? props.globalName : "Sin nombre"}</h1>
-            <p>${props.globalDescription ? props.globalDescription : "Sin descripción"}</p>`);
-        }
-    }, [props.globalName, props.globalDescription]);
-
-    const addHomeMarker = (location: GoogleLatLng): GoogleMarker => {
+    const addHomeMarker = (location: GoogleLatLng): void => {
         const homeMarkerConst: GoogleMarker = new google.maps.Marker({
             position: location,
             map: map
@@ -141,9 +126,52 @@ const Map: React.FC<IMapProps> = (props) => {
             map?.panTo(location);
             map?.setZoom(6);
         });
-
-        return homeMarkerConst;
     };
+
+    const addMarkers = (iMarkers: IMarker[]): void => {
+        iMarkers.forEach((marker) => {
+            generateMarker(marker);
+        });
+    }
+
+    useEffect(() => {
+        let location = new google.maps.LatLng(props.globalLat, props.globalLng);
+
+        if (lastAddedCouple) {
+            lastAddedCouple.marker.setPosition(location);
+        } else {
+            addMarker({
+                latLng: location,
+                name: formatName(),
+                description: formatDescription(),
+            })
+        }
+    }, [props.globalLat, props.globalLng]);
+
+    useEffect(() => {
+        if (lastAddedCouple) {
+            lastAddedCouple.infoWindow.setContent(`<h1>${formatName()}</h1><p>${formatDescription()}</p>`);
+        }
+    }, [props.globalName, props.globalDescription]);
+
+    useEffect(() => {
+        if (lastAddedCouple && props.acceptedMarker) {
+            lastAddedCouple.marker = new google.maps.Marker();
+            props.setAcceptedMarker(false);
+        }
+    }, [props.acceptedMarker]);
+
+    useEffect(() => {
+        addMarkers(markers.map(parseMarker));
+    }, [markers]);
+
+    const parseMarker = (iPMarker: IPMarker): IMarker => {
+        return {
+            name: iPMarker.name,
+            description: iPMarker.description,
+            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng)
+        };
+    }
 
     const initMap = (zoomLevel: number, address: GoogleLatLng): void => {
         if (ref.current) {
@@ -151,16 +179,16 @@ const Map: React.FC<IMapProps> = (props) => {
                 new google.maps.Map(ref.current, {
                     zoom: zoomLevel,
                     center: address,
-                    mapTypeControl: props.mapTypeControl,
-                    streetViewControl: false,
-                    rotateControl: false,
-                    scaleControl: true,
-                    fullscreenControl: false,
                     panControl: false,
                     zoomControl: true,
-                    gestureHandling: 'cooperative',
+                    scaleControl: true,
+                    rotateControl: false,
                     mapTypeId: props.mapType,
+                    streetViewControl: false,
+                    fullscreenControl: false,
                     draggableCursor: 'pointer',
+                    gestureHandling: 'cooperative',
+                    mapTypeControl: props.mapTypeControl,
                 })
             );
         }

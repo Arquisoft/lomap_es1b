@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
 import Button from '@mui/material/Button';
+import React, { useState, useContext } from 'react';
+import { IPMarker } from "../../shared/shareddtypes";
+import { MarkerContext } from '../../context/MarkerContextProvider'
 import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel } from '@mui/material';
 
 interface INewUbicationFormProps {
@@ -7,6 +9,7 @@ interface INewUbicationFormProps {
   globalLng: number;
   globalName: string;
   globalDescription: string;
+  addMarker: (marker: IPMarker) => void;
   setGlobalLat: (globalLat: number) => void;
   setGlobalLng: (globalLng: number) => void;
   setGlobalName: (globalName: string) => void;
@@ -18,9 +21,12 @@ interface INewUbicationFormProps {
 
 const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
   const [isPublic, setIsPublic] = useState(false);
+  const { state: markers } = useContext(MarkerContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    props.addMarker({ id: markers.length + 1, date: new Date(), name: props.globalName, description: props.globalDescription, lat: props.globalLat, lng: props.globalLng });
     props.setAcceptedMarker(true);
   }
 

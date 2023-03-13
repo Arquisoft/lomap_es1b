@@ -1,13 +1,17 @@
 import Map from './Map';
-import { useState } from 'react';
 import { Grid, Button, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import NewUbicationForm from './NewUbicationForm';
-
+import { IPMarker } from "../../shared/shareddtypes";
+import { useState, useEffect, useContext } from 'react';
+import { readMarkers, saveMarkers } from '../../helpers/SolidHelper';
+import { MarkerContext, Types } from '../../context/MarkerContextProvider';
+import { useSession } from '@inrupt/solid-ui-react';
 
 const MapView = () => {
     const [globalLat, setGlobalLat] = useState<number>(0);
     const [globalLng, setGlobalLng] = useState<number>(0);
     const [globalName, setGlobalName] = useState<string>("");
+    const { state: markers, dispatch } = useContext(MarkerContext);
     const [acceptedMarker, setAcceptedMarker] = useState<boolean>(false);
     const [globalDescription, setGlobalDescription] = useState<string>("");
     const [formOpened, setFormOpened] = useState<boolean>(false);
@@ -26,6 +30,15 @@ const MapView = () => {
             setUbicaciones([{ lat: 9, lon: 2 }, { lat: 9, lon: 3 }, { lat: 9, lon: 4 }]);
         }
     };
+    const { session } = useSession();
+
+    const addMarker = (marker: IPMarker): void => {
+        dispatch({ type: Types.ADD_MARKER, payload: { marker: marker } })
+    };
+
+    useEffect(() => {
+        saveMarkers(markers, session.info.webId!);
+    }, [markers]);
 
     return (
         <Grid container>
@@ -51,31 +64,32 @@ const MapView = () => {
                 >Nueva ubicación</Button>
 
                 <Map
-                    mapType={google.maps.MapTypeId.ROADMAP}
                     mapTypeControl={true}
                     globalLat={globalLat}
-                    setGlobalLat={setGlobalLat}
                     globalLng={globalLng}
-                    setGlobalLng={setGlobalLng}
                     globalName={globalName}
-                    globalDescription={globalDescription}
+                    setGlobalLat={setGlobalLat}
+                    setGlobalLng={setGlobalLng}
                     acceptedMarker={acceptedMarker}
+                    globalDescription={globalDescription}
                     setAcceptedMarker={setAcceptedMarker}
+                    mapType={google.maps.MapTypeId.ROADMAP}
                 />
             </Grid>
             <Grid item xs={3}>
                 <NewUbicationForm
                     globalLat={globalLat}
-                    setGlobalLat={setGlobalLat}
                     globalLng={globalLng}
-                    setGlobalLng={setGlobalLng}
+                    addMarker={addMarker}
                     globalName={globalName}
+                    setGlobalLat={setGlobalLat}
+                    setGlobalLng={setGlobalLng}
                     setGlobalName={setGlobalName}
                     globalDescription={globalDescription}
-                    setGlobalDescription={setGlobalDescription}
                     setAcceptedMarker={setAcceptedMarker}
                     formOpened={formOpened}
                     setFormOpened={setFormOpened}
+                    setGlobalDescription={setGlobalDescription}
                 />
             </Grid>
         </Grid>

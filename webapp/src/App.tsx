@@ -1,11 +1,13 @@
 import './App.css';
-import { useEffect, useState } from 'react';
+import { Stack, Container, Box, Button } from '@mui/material';
 import LoginForm from './components/LoginForm';
 import MapView from './components/Map/MapView';
-import { Stack, Container, Box, Button } from '@mui/material';
 import { loadMapApi } from './utils/GoogleMapsUtils';
+import FriendsList from './components/Friends/Friends';
+import { useEffect, useState, useContext } from 'react';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import logo from "./logo-no-background.png";
+import UbicationsView from './components/Map/UbicationsView';
 
 function App(): JSX.Element {
   const [user, setUser] = useState<string>("");
@@ -57,11 +59,11 @@ function App(): JSX.Element {
           } />
 
           <Route path="/ubications" element={
-            <Container>Componente de tus ubicaciones</Container>
+            <UbicationsView/>
           } />
 
           <Route path="/friends" element={
-            <Container>Componente de tus amigos</Container>
+            scriptLoaded && (<FriendsList />)
           } />
         </Routes>
       </BrowserRouter>
