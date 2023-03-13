@@ -1,30 +1,43 @@
 import React, { useState, useEffect } from 'react';
 import AddFriendForm from './AddFriendForm';
 import './Friends.css';
-import {getUserFriends, getUsers} from '../../api/api';
-import {User} from '../../shared/shareddtypes'
+import {getUserFriends, getUsers, getUser, addUser, addFriend} from '../../api/api';
+import {User} from '../../shared/shareddtypes';
 
 
 const FriendsList: React.FC = () => {
+  // Inncesario más adelante.
+  const [users, setUsers] = useState<User[]>([]);
   const [friends, setFriends] = useState<User[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [showAddFriendForm, setShowAddFriendForm] = useState(false);
 
   useEffect(() => {
+    async function fetchUsers() {
+      try {
+        const fetchedUsers = await getUsers();
+        setUsers(fetchedUsers);
+
+        if (fetchedUsers.length === 0) {
+          // Inicialización de pega:
+          defaultConfiguration();
+        }
+
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchUsers();
+  }, []);
+
+  useEffect(() => {
     async function fetchFriends() {
       try {
-        const fetchedFriends = await getUsers();
+        // takes first id
+        const id = (await getUsers()) [0].id;
+        const fetchedFriends = await getUserFriends(id);
         setFriends(fetchedFriends);
         setIsLoading(false);
-
-        if (fetchedFriends.length === 0) {
-          setFriends([
-            {id: String(1), name: 'Juan', email: 'juan' + '@uniovi.es', friends: []}
-            , {id: String(2), name: 'Pedro', email: 'pedro' + '@uniovi.es', friends: []}
-            , {id: String(3), name: 'Mateo', email: 'mateo' + '@uniovi.es', friends: []}
-            , {id: String(4), name: 'Marcos', email: 'marcos' + '@uniovi.es', friends: []}
-          ])
-        }
 
       } catch (error) {
         console.error(error);
@@ -33,13 +46,15 @@ const FriendsList: React.FC = () => {
     fetchFriends();
   }, []);
 
-  const handleAddFriend = (name: string) => {
-    const newFriend: User = {
-      id: String(friends.length + 1),
-      name,
-      email: name + '@uniovi.es',
-      friends: []
-    };
+  const handleAddFriend = async (id: string) => {
+    const user = users.find(user => user.id === id);
+    if (user) {
+
+    } else {
+      return ;
+    }
+    const newFriend : User = user
+    
     setFriends([...friends, newFriend]);
     setShowAddFriendForm(false);
   };
@@ -57,10 +72,37 @@ const FriendsList: React.FC = () => {
     return <div>Loading...</div>;
   }
 
+
+  
+
   return (
     <div id='div-friends'>
       <table id='table-friends'>
-        <caption id='table-caption-friends'>
+        <caption>
+          Lista de usuarios
+        </caption>
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Web Id</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map(user => (
+            <tr key={user.id}>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.id}</td>
+              <td></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <table id='table-friends'>
+        <caption>
           Lista de amigos
         </caption>
         <thead>
@@ -95,6 +137,13 @@ const FriendsList: React.FC = () => {
     </div>
   );
 };
+
+function defaultConfiguration() {
+  addUser('Juan', 'juan' + '@uniovi.es');
+  addUser('Pedro', 'pedro' + '@uniovi.es');
+  addUser('Mateo', 'mateo' + '@uniovi.es');
+  addUser('Marcos', 'marcos' + '@uniovi.es');
+}
 
 export default FriendsList;
 

@@ -18,7 +18,7 @@ const AddFriendForm: React.FC<AddFriendFormProps> = ({ onAddFriend, onCancel }) 
   return (
     <form id='add-friend-form' onSubmit={handleAddFriend}>
       <label>
-        <input type="text" value={newFriendName} onChange={event => setNewFriendName(event.target.value)} required placeholder='Name of the friend'/>
+        <input type="text" value={newFriendName} onChange={event => setNewFriendName(event.target.value)} required placeholder='Web Id of the user'/>
       </label>
       <button className='button accept-button' type="submit">Agregar</button>
       <button className='button delete-button' type="button" onClick={onCancel}>Cancelar</button>
