@@ -1,6 +1,6 @@
-import { IPMarker } from "../shared/shareddtypes";
-import { Dispatch, useReducer } from "react";
 import { createContext } from 'react';
+import { Dispatch, useReducer } from "react";
+import { IPMarker } from "../shared/shareddtypes";
 
 export enum Types {
     ADD_MARKER = 'ADD_MARKER',
