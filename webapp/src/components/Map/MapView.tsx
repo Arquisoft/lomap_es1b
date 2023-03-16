@@ -1,36 +1,22 @@
 import Map from './Map';
-import { Grid, Button, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 import NewUbicationForm from './NewUbicationForm';
+import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../shared/shareddtypes";
 import { useState, useEffect, useContext } from 'react';
-import { readMarkers, saveMarkers } from '../../helpers/SolidHelper';
+import { saveMarkers } from '../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
-import { useSession } from '@inrupt/solid-ui-react';
+import { Grid, Button, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
 const MapView = () => {
+    const { session } = useSession();
     const [globalLat, setGlobalLat] = useState<number>(0);
     const [globalLng, setGlobalLng] = useState<number>(0);
+    const [seleccion, setSeleccion] = useState<string>("");
     const [globalName, setGlobalName] = useState<string>("");
+    const [formOpened, setFormOpened] = useState<boolean>(false);
     const { state: markers, dispatch } = useContext(MarkerContext);
     const [acceptedMarker, setAcceptedMarker] = useState<boolean>(false);
     const [globalDescription, setGlobalDescription] = useState<string>("");
-    const [formOpened, setFormOpened] = useState<boolean>(false);
-    const [ubicaciones, setUbicaciones] = useState<any[]>([])
-    const [seleccion, setSeleccion] = useState<string>("");
-
-    const seleccionarUbicaciones = (e: SelectChangeEvent) => {
-        setSeleccion(e.target.value);
-        if (e.target.value === 'Mis') {
-            setUbicaciones([{ lat: 10, lon: 2 }, { lat: 10, lon: 3 }, { lat: 10, lon: 4 }]);
-        }
-        if (e.target.value === '1') {
-            setUbicaciones([{ lat: 11, lon: 2 }, { lat: 11, lon: 3 }, { lat: 11, lon: 4 }]);
-        }
-        if (e.target.value === 'Explorar') {
-            setUbicaciones([{ lat: 9, lon: 2 }, { lat: 9, lon: 3 }, { lat: 9, lon: 4 }]);
-        }
-    };
-    const { session } = useSession();
 
     const addMarker = (marker: IPMarker): void => {
         dispatch({ type: Types.ADD_MARKER, payload: { marker: marker } })
@@ -45,12 +31,12 @@ const MapView = () => {
             <Grid item xs={formOpened ? 9 : 12}>
                 <Select
                     value={seleccion}
-                    onChange={seleccionarUbicaciones}
+                    onChange={(e) => setSeleccion(e.target.value)}
                     sx={{ width: '15em', height: '3em', verticalAlign: 'middle', bgcolor: 'white' }}
                 >
-                    <MenuItem value={'Mis'}>Mis ubicaciones</MenuItem>
-                    <MenuItem value={'1'}>Ubicaciones de amigo</MenuItem>
-                    <MenuItem value={'Explorar'}>Explorar</MenuItem>
+                    <MenuItem value={'M'}>Mis ubicaciones</MenuItem>
+                    <MenuItem value={'A'}>Ubicaciones de amigo</MenuItem>
+                    <MenuItem value={'E'}>Explorar</MenuItem>
                 </Select>
                 <Button
                     sx={{
@@ -67,6 +53,7 @@ const MapView = () => {
                     mapTypeControl={true}
                     globalLat={globalLat}
                     globalLng={globalLng}
+                    seleccion={seleccion}
                     globalName={globalName}
                     setGlobalLat={setGlobalLat}
                     setGlobalLng={setGlobalLng}

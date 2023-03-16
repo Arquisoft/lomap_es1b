@@ -1,21 +1,16 @@
 import './App.css';
-import { Stack, Container, Box, Button } from '@mui/material';
-import LoginForm from './components/LoginForm';
+import { Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
+import logo from "./logo-no-background.png";
 import MapView from './components/Map/MapView';
 import { loadMapApi } from './utils/GoogleMapsUtils';
 import FriendsList from './components/Friends/Friends';
-import { useEffect, useState, useContext } from 'react';
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import logo from "./logo-no-background.png";
+import { LoginView } from './components/Login/LoginView';
 import UbicationsView from './components/Map/UbicationsView';
+import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function App(): JSX.Element {
-  const [user, setUser] = useState<string>("");
   const [scriptLoaded, setScriptLoaded] = useState(false);
-
-  const refreshUserName = async (name: string) => {
-    setUser(name)
-  }
 
   useEffect(() => {
     const googleMapScript = loadMapApi();
@@ -38,17 +33,7 @@ function App(): JSX.Element {
             <Link to="/">Mapa</Link>
             <Link to="/ubications">Mis ubicaciones</Link>
             <Link to="/friends">Mis amigos</Link>
-            {user === '' ?
-              <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end'>
-                <LoginForm OnUserIsLoggedChange={refreshUserName} />
-              </Stack>
-              :
-              <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end' spacing={{ xs: 1, sm: 2, md: 4 }}>
-                <Box component="p" color={'white'}>{user}</Box>
-                <Button
-                  variant="contained"
-                  sx={{ width: '12em', height: '3em', ":disabled": { bgcolor: 'grey' } }}>Cerrar sesión</Button>
-              </Stack>}
+            <LoginView />
           </Stack>
         </nav>
         <Routes>
@@ -59,11 +44,11 @@ function App(): JSX.Element {
           } />
 
           <Route path="/ubications" element={
-            <UbicationsView/>
+            <UbicationsView />
           } />
 
           <Route path="/friends" element={
-            scriptLoaded && (<FriendsList />)
+            <FriendsList />
           } />
         </Routes>
       </BrowserRouter>

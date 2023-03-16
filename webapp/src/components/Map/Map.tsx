@@ -22,6 +22,7 @@ type GoogleInfoWindow = google.maps.InfoWindow;
 interface IMapProps {
     globalLat: number;
     globalLng: number;
+    seleccion: string;
     globalName: string;
     acceptedMarker: boolean;
     mapTypeControl?: boolean;
@@ -38,6 +39,7 @@ const Map: React.FC<IMapProps> = (props) => {
     const [marker, setMarker] = useState<IMarker>();
     const { state: markers } = useContext(MarkerContext);
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();
+    const [googleMarkers, setGoogleMarkers] = useState<GoogleMarker[]>([]);
 
     const startMap = (): void => {
         if (!map) {
@@ -130,7 +132,7 @@ const Map: React.FC<IMapProps> = (props) => {
 
     const addMarkers = (iMarkers: IMarker[]): void => {
         iMarkers.forEach((marker) => {
-            generateMarker(marker);
+            setGoogleMarkers(googleMarkers => [...googleMarkers, generateMarker(marker).marker]);
         });
     }
 
@@ -156,14 +158,41 @@ const Map: React.FC<IMapProps> = (props) => {
 
     useEffect(() => {
         if (lastAddedCouple && props.acceptedMarker) {
+            setGoogleMarkers(googleMarkers => [...googleMarkers, lastAddedCouple.marker]);
             lastAddedCouple.marker = new google.maps.Marker();
             props.setAcceptedMarker(false);
         }
     }, [props.acceptedMarker]);
 
     useEffect(() => {
+        //deleteAllMarkers(); <- Solo borra el último...
+
+        switch (props.seleccion) {
+            case 'M':
+                loadContext();
+                break;
+            case 'A':
+                defaultMapStart();
+                break;
+            case 'E':
+                defaultMapStart();
+                break;
+            default:
+        }
+
+    }, [props.seleccion]);
+
+    const deleteAllMarkers = (): void => {
+        googleMarkers.forEach((googleMarker) =>
+            googleMarker.setMap(null)
+        );
+
+        setGoogleMarkers([]);
+    }
+
+    const loadContext = (): void => {
         addMarkers(markers.map(parseMarker));
-    }, [markers]);
+    }
 
     const parseMarker = (iPMarker: IPMarker): IMarker => {
         return {

@@ -1,15 +1,18 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
+import React from 'react';
+import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
+import { SessionProvider } from "@inrupt/solid-ui-react";
 import { MarkerContextProvider } from './context/MarkerContextProvider';
 
 ReactDOM.render(
   <React.StrictMode>
-    <MarkerContextProvider>
-      <App />
-    </MarkerContextProvider>
+    <SessionProvider session-id="login">
+      <MarkerContextProvider>
+        <App />
+      </MarkerContextProvider>
+    </SessionProvider>
   </React.StrictMode>,
   document.getElementById('root')
 );
