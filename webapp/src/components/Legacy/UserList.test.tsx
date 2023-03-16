@@ -1,6 +1,6 @@
 import React from 'react'
 import { render } from "@testing-library/react";
-import UserList from "../Friends/UserList";
+import UserList from "./UserList";
 import {User} from "../../shared/shareddtypes";
 
 test('check that the list of users renders propertly', async () => {
