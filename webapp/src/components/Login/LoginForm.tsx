@@ -1,31 +1,26 @@
 import { useState } from "react";
 import { LoginButton } from "@inrupt/solid-ui-react";
-import { Button, Container, FormGroup, TextField } from "@mui/material";
+import { Button, Container, FormGroup, Stack, TextField } from "@mui/material";
 
 function LoginForm(): JSX.Element {
-  const [idp, setIdp] = useState("https://inrupt.net");
+  const [oidcIssuer, setOidcIssuer] = useState("inrupt.net");
 
   return (
-    <Container fixed>
+    <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end' spacing={{ xs: 1, sm: 2, md: 4 }}>
       <FormGroup>
         <TextField
-          label="Identity Provider"
-          placeholder="Identity Provider"
           type="url"
-          value={idp}
-          onChange={(e) => setIdp(e.target.value)}
-          InputProps={{
-            endAdornment: (
-              <LoginButton oidcIssuer={idp} redirectUrl="http://localhost:3000">
-                <Button variant="contained" color="primary">
-                  Iniciar sesión
-                </Button>
-              </LoginButton>
-            ),
-          }}
+          value={oidcIssuer}
+          onChange={e => setOidcIssuer(e.target.value as string)}
+          sx={{ bgcolor: 'white' }}
         />
+        <LoginButton oidcIssuer={`https://${oidcIssuer}`} redirectUrl="http://localhost:3000">
+          <Button variant="contained" >
+            Iniciar sesión
+          </Button>
+        </LoginButton>
       </FormGroup>
-    </Container>
+    </Stack>
   );
 }
 
