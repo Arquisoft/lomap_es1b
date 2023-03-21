@@ -1,6 +1,10 @@
 name: CI for LOMAP ES1B
 
 on:
+  pull_request:
+    branches: ['**']
+  push:
+    branches: ['**']
   release:
     types: [published]
 
