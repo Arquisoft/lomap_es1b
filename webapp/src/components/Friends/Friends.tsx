@@ -40,6 +40,7 @@ const FriendsList: React.FC = () => {
   };
 
 
+  /*
   const miFuncion = async (webId: string) => {
     const amigos = await findFriends(webId)
     console.log(amigos)
@@ -50,6 +51,7 @@ const FriendsList: React.FC = () => {
 
   console.log(session.info.webId!)
   miFuncion(session.info.webId!);
+  */
 
   return (
     <div id='div-friends'>
@@ -68,7 +70,7 @@ const FriendsList: React.FC = () => {
           {personData.friends.map(friend => (
             <tr key={friend}>
               <td></td>
-              <td>{friend}</td>
+              <td><a href={friend}>{friend}</a></td>
               <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend)}>Eliminar</button></td>
             </tr>
           ))}
