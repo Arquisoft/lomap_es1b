@@ -71,8 +71,8 @@ const Map: React.FC<IMapProps> = (props) => {
 
             setMarker({
                 latLng: e.latLng,
-                name: formatName(),
-                description: formatDescription(),
+                name: "Placeholder nombre",
+                description: "Placeholder descripción",
             })
         })
     };
@@ -95,6 +95,8 @@ const Map: React.FC<IMapProps> = (props) => {
 
     useEffect(() => {
         if (marker) {
+            marker.name = formatName();
+            marker.description = formatDescription();
             addMarker(marker);
         }
     }, [marker]);
@@ -116,6 +118,16 @@ const Map: React.FC<IMapProps> = (props) => {
         });
 
         return { marker, infoWindow };
+    }
+
+    const generateInfoWindowContent = (name: string, description: string, address: string): string => {
+        let result = ""
+
+        result += `<h1>${name}</h1>`
+        result += `<p>${address}</p>`
+        result += `<p>${description}</p>`
+
+        return result;
     }
 
     const addHomeMarker = (location: GoogleLatLng): void => {
@@ -165,17 +177,17 @@ const Map: React.FC<IMapProps> = (props) => {
     }, [props.acceptedMarker]);
 
     useEffect(() => {
-        //deleteAllMarkers(); <- Solo borra el último...
+        deleteAllMarkers();
 
         switch (props.seleccion) {
             case 'M':
                 loadContext();
                 break;
             case 'A':
-                defaultMapStart();
+                //defaultMapStart();
                 break;
             case 'E':
-                defaultMapStart();
+                //defaultMapStart();
                 break;
             default:
         }
@@ -183,9 +195,10 @@ const Map: React.FC<IMapProps> = (props) => {
     }, [props.seleccion]);
 
     const deleteAllMarkers = (): void => {
-        googleMarkers.forEach((googleMarker) =>
+        googleMarkers.forEach((googleMarker) => {
+            console.log(googleMarker.getPosition()?.toString())
             googleMarker.setMap(null)
-        );
+        });
 
         setGoogleMarkers([]);
     }
