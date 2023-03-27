@@ -1,7 +1,7 @@
 import './Map.css';
-import React, { useEffect, useRef, useState, useContext } from 'react';
-import { MarkerContext } from '../../context/MarkerContextProvider';
 import { IPMarker } from '../../shared/shareddtypes';
+import { MarkerContext } from '../../context/MarkerContextProvider';
+import React, { useEffect, useRef, useState, useContext } from 'react';
 
 interface IMarker {
     name: string;
@@ -77,14 +77,6 @@ const Map: React.FC<IMapProps> = (props) => {
         })
     };
 
-    const formatName = (): string => {
-        return props.globalName ? props.globalName : "Sin nombre";
-    }
-
-    const formatDescription = (): string => {
-        return props.globalDescription ? props.globalDescription : "Sin descripción";
-    }
-
     const addMarker = (iMarker: IMarker): void => {
         if (lastAddedCouple) {
             lastAddedCouple.marker.setMap(null);
@@ -101,6 +93,13 @@ const Map: React.FC<IMapProps> = (props) => {
         }
     }, [marker]);
 
+    const formatName = (): string => {
+        return props.globalName ? props.globalName : "Sin nombre";
+    }
+
+    const formatDescription = (): string => {
+        return props.globalDescription ? props.globalDescription : "Sin descripción";
+    }
 
     const generateMarker = (notAddedMarker: IMarker): ICouple => {
         const marker: GoogleMarker = new google.maps.Marker({
@@ -120,7 +119,7 @@ const Map: React.FC<IMapProps> = (props) => {
         return { marker, infoWindow };
     }
 
-    const generateInfoWindowContent = (name: string, description: string, address: string): string => {
+    /* const generateInfoWindowContent = (name: string, description: string, address: string): string => {
         let result = ""
 
         result += `<h1>${name}</h1>`
@@ -128,7 +127,7 @@ const Map: React.FC<IMapProps> = (props) => {
         result += `<p>${description}</p>`
 
         return result;
-    }
+    } */
 
     const addHomeMarker = (location: GoogleLatLng): void => {
         const homeMarkerConst: GoogleMarker = new google.maps.Marker({
@@ -177,31 +176,28 @@ const Map: React.FC<IMapProps> = (props) => {
     }, [props.acceptedMarker]);
 
     useEffect(() => {
-        deleteAllMarkers();
-
         switch (props.seleccion) {
             case 'M':
                 loadContext();
                 break;
             case 'A':
-                //defaultMapStart();
+                defaultMapStart();
                 break;
             case 'E':
-                //defaultMapStart();
+                defaultMapStart();
                 break;
             default:
         }
 
     }, [props.seleccion]);
 
-    const deleteAllMarkers = (): void => {
+    /* const deleteAllMarkers = (): void => {
         googleMarkers.forEach((googleMarker) => {
-            console.log(googleMarker.getPosition()?.toString())
             googleMarker.setMap(null)
         });
 
         setGoogleMarkers([]);
-    }
+    } */
 
     const loadContext = (): void => {
         addMarkers(markers.map(parseMarker));
@@ -214,6 +210,16 @@ const Map: React.FC<IMapProps> = (props) => {
             latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng)
         };
     }
+
+    /* const coordinateToAddress = async (coordinate: GoogleLatLng) => {
+        const geocoder = new google.maps.Geocoder();
+        geocoder.geocode({ location: coordinate }, function (results, status) {
+            if (status === 'OK') {
+                let formatedAddress = results[1].formatted_address;
+                console.log(formatedAddress)
+            }
+        });
+    }; */
 
     const initMap = (zoomLevel: number, address: GoogleLatLng): void => {
         if (ref.current) {

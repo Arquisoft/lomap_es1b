@@ -4,8 +4,8 @@ import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../shared/shareddtypes";
 import { useState, useEffect, useContext } from 'react';
 import { saveMarkers } from '../../helpers/SolidHelper';
+import { Grid, Button, Select, MenuItem } from '@mui/material';
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
-import { Grid, Button, Select, MenuItem, SelectChangeEvent } from '@mui/material';
 
 const MapView = () => {
     const { session } = useSession();
