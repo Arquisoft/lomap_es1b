@@ -1,106 +1,58 @@
 import React, { useState, useEffect } from 'react';
 import AddFriendForm from './AddFriendForm';
 import './Friends.css';
-import {getUserFriends, getUsers, getUser, addUser, addFriend} from '../../api/api';
+import {getUsers, getUser, addUser, addFriend} from '../../api/api';
 import {User} from '../../shared/shareddtypes';
+
+import { PersonData, findFriends } from './FriendList'
+import { useSession } from '@inrupt/solid-ui-react';
+import { IriString } from '@inrupt/solid-client';
 
 
 const FriendsList: React.FC = () => {
-  // Inncesario más adelante.
-  const [users, setUsers] = useState<User[]>([]);
-  const [friends, setFriends] = useState<User[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
   const [showAddFriendForm, setShowAddFriendForm] = useState(false);
+  const { session } = useSession();
+  const [personData, setPersonData] = useState<PersonData>({ name: '', photo: '', friends: [] })
 
   useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const fetchedUsers = await getUsers();
-        setUsers(fetchedUsers);
-
-        if (fetchedUsers.length === 0) {
-          // Inicialización de pega:
-          defaultConfiguration();
-        }
-
-      } catch (error) {
-        console.error(error);
-      }
+    const loadPersonData = async () => {
+      const webId = session.info.webId
+      const data = await findFriends(webId!)
+      setPersonData(data)
     }
-    fetchUsers();
-  }, []);
+    loadPersonData()
+  }, [session])
 
-  useEffect(() => {
-    async function fetchFriends() {
-      try {
-        // takes first id
-        const id = (await getUsers()) [0].id;
-        const fetchedFriends = await getUserFriends(id);
-        setFriends(fetchedFriends);
-        setIsLoading(false);
+  
 
-      } catch (error) {
-        console.error(error);
-      }
-    }
-    fetchFriends();
-  }, []);
+  
 
   const handleAddFriend = async (id: string) => {
-    const user = users.find(user => user.id === id);
-    if (user) {
-
-    } else {
-      return ;
-    }
-    const newFriend : User = user
-    
-    setFriends([...friends, newFriend]);
+    console.log("NOT YET IMPLEMENTED")
     setShowAddFriendForm(false);
   };
-
   const handleCancel = () => {
     setShowAddFriendForm(false);
   };
 
   const handleRemoveFriend = (id: string) => {
-    const filteredFriends = friends.filter(friend => friend.id !== id);
-    setFriends(filteredFriends);
+    console.log("NOT YET IMPLEMENTED")
   };
 
-  if (isLoading) {
-    return <div>Loading...</div>;
+
+  const miFuncion = async (webId: string) => {
+    const amigos = await findFriends(webId)
+    console.log(amigos)
+    amigos.friends.forEach(element => {
+      console.log(element);
+    })
   }
 
-
-  
+  console.log(session.info.webId!)
+  miFuncion(session.info.webId!);
 
   return (
     <div id='div-friends'>
-      <table id='table-friends'>
-        <caption>
-          Lista de usuarios
-        </caption>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Email</th>
-            <th>Web Id</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map(user => (
-            <tr key={user.id}>
-              <td>{user.name}</td>
-              <td>{user.email}</td>
-              <td>{user.id}</td>
-              <td></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
       <table id='table-friends'>
         <caption>
           Lista de amigos
@@ -108,23 +60,21 @@ const FriendsList: React.FC = () => {
         <thead>
           <tr>
             <th>Nombre</th>
-            <th>Email</th>
             <th>Web Id</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {friends.map(friend => (
-            <tr key={friend.id}>
-              <td>{friend.name}</td>
-              <td>{friend.email}</td>
-              <td>{friend.id}</td>
-              <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend.id)}>Eliminar</button></td>
+          {personData.friends.map(friend => (
+            <tr key={friend}>
+              <td></td>
+              <td>{friend}</td>
+              <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend)}>Eliminar</button></td>
             </tr>
           ))}
         </tbody>
       </table>
-
+  
       {showAddFriendForm ? (
         <div>
           <AddFriendForm onAddFriend={handleAddFriend} onCancel={handleCancel} />
@@ -137,13 +87,6 @@ const FriendsList: React.FC = () => {
     </div>
   );
 };
-
-function defaultConfiguration() {
-  addUser('Juan', 'juan' + '@uniovi.es');
-  addUser('Pedro', 'pedro' + '@uniovi.es');
-  addUser('Mateo', 'mateo' + '@uniovi.es');
-  addUser('Marcos', 'marcos' + '@uniovi.es');
-}
 
 export default FriendsList;
 

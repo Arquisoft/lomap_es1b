@@ -42,9 +42,11 @@ export async function addFriend(userId: string, friendId: string): Promise<boole
     return false;
 }
 
+/*
 export async function getUserFriends(userId: string): Promise<User[]> {
   const apiEndPoint = process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
   let response = await fetch(apiEndPoint + '/users/' + userId + '/friends');
   //The objects returned by the api are directly convertible to Friend objects
   return response.json()
 }
+*/

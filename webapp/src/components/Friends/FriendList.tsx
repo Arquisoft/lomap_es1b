@@ -9,7 +9,7 @@ import {
 import { foaf, vcard, owl, rdfs } from 'rdf-namespaces'
 import { RateLimiter } from 'limiter'
 
-interface PersonData {
+export interface PersonData {
   name: string
   friends: IriString[]
   photo: IriString
