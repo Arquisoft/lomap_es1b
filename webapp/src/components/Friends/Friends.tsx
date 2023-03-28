@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import AddFriendForm from './AddFriendForm';
 import './Friends.css';
-import {getUserFriends, getUsers, getUser, addUser, addFriend} from '../../api/api';
-import {User} from '../../shared/shareddtypes';
+import {getUserFriends, getUsers, getUser, addUser, addFriend} from '../../api/API';
+import {User} from '../../shared/SharedTypes';
 
 
 const FriendsList: React.FC = () => {

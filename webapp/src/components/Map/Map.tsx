@@ -1,5 +1,5 @@
 import './Map.css';
-import { IPMarker } from '../../shared/shareddtypes';
+import { IPMarker } from '../../shared/SharedTypes';
 import { MarkerContext } from '../../context/MarkerContextProvider';
 import React, { useEffect, useRef, useState, useContext } from 'react';
 

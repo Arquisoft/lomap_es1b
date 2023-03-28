@@ -1,12 +1,11 @@
 import './App.css';
 import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
-import logo from "./logo-no-background.png";
-import MapView from './components/Map/MapView';
+import MapView from './components/map/MapView';
 import { loadMapApi } from './utils/GoogleMapsUtils';
-import FriendsList from './components/Friends/Friends';
-import { LoginView } from './components/Login/LoginView';
-import UbicationsView from './components/Map/UbicationsView';
+import FriendsList from './components/friends/Friends';
+import { LoginView } from './components/login/LoginView';
+import UbicationsView from './components/map/UbicationsView';
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 
 function App(): JSX.Element {
@@ -29,7 +28,7 @@ function App(): JSX.Element {
             alignItems='center'
             justifyContent='left'
           >
-            <img src={logo} className="App-logo" alt="logo" height="60" />
+            <img src="/logo-no-background.png" className="App-logo" alt="logo" height="60" />
             <Link to="/">Mapa</Link>
             <Link to="/ubications">Mis ubicaciones</Link>
             <Link to="/friends">Mis amigos</Link>

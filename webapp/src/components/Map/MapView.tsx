@@ -1,7 +1,7 @@
 import Map from './Map';
 import NewUbicationForm from './NewUbicationForm';
 import { useSession } from '@inrupt/solid-ui-react';
-import { IPMarker } from "../../shared/shareddtypes";
+import { IPMarker } from "../../shared/SharedTypes";
 import { useState, useEffect, useContext } from 'react';
 import { saveMarkers } from '../../helpers/SolidHelper';
 import { Grid, Button, Select, MenuItem } from '@mui/material';

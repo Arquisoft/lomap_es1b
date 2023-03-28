@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 
-import { addFriend } from '../../api/api';
-import { User } from '../../shared/shareddtypes';
+import { addFriend } from '../../api/API';
+import { User } from '../../shared/SharedTypes';
 
 type FriendFormProps = {
   // currentUser: string;
