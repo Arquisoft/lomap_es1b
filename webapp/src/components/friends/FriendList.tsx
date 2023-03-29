@@ -10,6 +10,7 @@ import { foaf, vcard, owl, rdfs } from 'rdf-namespaces'
 import { RateLimiter } from 'limiter'
 
 export interface PersonData {
+  webId: IriString
   name: string
   friends: IriString[]
   photo: IriString
@@ -78,8 +79,8 @@ const findFullPersonProfile = async (
 
 
 
-export const findFriends = async (webId: IriString): Promise<PersonData> => {
-  const data: PersonData = { name: '', photo: '', friends: [] }
+export const findPersonData = async (webId: IriString): Promise<PersonData> => {
+  const data: PersonData = { webId: webId, name: '', photo: '', friends: [] }
   if (webId) {
     const dataset = await findFullPersonProfile(webId)
     dataset.reduce((data, d) => {
