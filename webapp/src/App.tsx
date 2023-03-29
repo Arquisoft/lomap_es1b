@@ -1,12 +1,12 @@
 import './App.css';
-import { Stack } from '@mui/material';
 import { useEffect, useState } from 'react';
 import MapView from './components/map/MapView';
+import HomeView from './components/HomeView';
 import { loadMapApi } from './utils/GoogleMapsUtils';
 import FriendsList from './components/friends/Friends';
-import { LoginView } from './components/login/LoginView';
 import UbicationsView from './components/map/UbicationsView';
-import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { NavBar } from './components/NavBar';
 
 function App(): JSX.Element {
   const [scriptLoaded, setScriptLoaded] = useState(false);
@@ -21,23 +21,15 @@ function App(): JSX.Element {
   return (
     <>
       <BrowserRouter>
-        <nav>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={{ xs: 1, sm: 2, md: 4 }}
-            alignItems='center'
-            justifyContent='left'
-          >
-            <img src="/logo-no-background.png" className="App-logo" alt="logo" height="60" />
-            <Link to="/">Mapa</Link>
-            <Link to="/ubications">Mis ubicaciones</Link>
-            <Link to="/friends">Mis amigos</Link>
-            <LoginView />
-          </Stack>
-        </nav>
+        <NavBar></NavBar>
         <Routes>
 
           <Route path="/" element={
+            scriptLoaded && (
+              <HomeView />)
+          } />
+
+          <Route path="/map" element={
             scriptLoaded && (
               <MapView />)
           } />
