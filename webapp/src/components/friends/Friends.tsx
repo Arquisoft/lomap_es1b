@@ -50,6 +50,14 @@ const FriendsList: React.FC = () => {
   };
 
 
+  function searchProfileImg(photo: string): string | undefined {
+    let url = "/user.png"
+    if (photo !== ""){
+      url = photo
+    }
+    return url
+  }
+
   /*
   const miFuncion = async (webId: string) => {
     const amigos = await findFriends(webId)
@@ -65,30 +73,17 @@ const FriendsList: React.FC = () => {
 
   return (
     <div id='div-friends'>
-      <table id='table-friends'>
-        <caption>
-          Lista de amigos
-        </caption>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Web Id</th>
-            <th>Image</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {friends.map(friend => (
-            <tr key={friend.webId}>
-              <td>{friend.name}</td>
-              <td><a href={friend.webId}>{friend.webId}</a></td>
-              <td><img src={friend.photo} alt="Foto de amigo" /></td>
-              <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend.webId)}>Eliminar</button></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-  
+      <h2>Amigos</h2>
+      <div className="friends-container">
+        {friends.map((friend) => (
+          <div key={friend.webId} className="friend-card">
+            <img src={searchProfileImg(friend.photo)} alt="Foto de amigo" className="friend-photo" />
+            <h3>{friend.name}</h3>
+            <a href={friend.webId}>Solid profile</a>
+            <button className="button delete-button" onClick={() => handleRemoveFriend(friend.webId)}>Eliminar</button>
+          </div>
+        ))}
+      </div>
       {showAddFriendForm ? (
         <div>
           <AddFriendForm onAddFriend={handleAddFriend} onCancel={handleCancel} />

@@ -81,5 +81,35 @@
     background-color: #c62828;
   }
   
-  
+  #div-friends {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.friends-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+}
+
+.friend-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid black;
+  width: 250px;
+  height: 400px; /* altura fija */
+  box-sizing: border-box;
+  padding: 20px;
+}
+
+.friend-photo {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin-bottom: 20px; /* margen inferior para mantener la misma posición */
+}
+
   
