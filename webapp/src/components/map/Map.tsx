@@ -1,5 +1,5 @@
 import './Map.css';
-import { IPMarker } from '../../shared/shareddtypes';
+import { IPMarker } from '../../shared/SharedTypes';
 import { MarkerContext } from '../../context/MarkerContextProvider';
 import React, { useEffect, useRef, useState, useContext } from 'react';
 
@@ -39,7 +39,6 @@ const Map: React.FC<IMapProps> = (props) => {
     const [marker, setMarker] = useState<IMarker>();
     const { state: markers } = useContext(MarkerContext);
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();
-    const [googleMarkers, setGoogleMarkers] = useState<GoogleMarker[]>([]);
 
     const startMap = (): void => {
         if (!map) {
@@ -143,7 +142,7 @@ const Map: React.FC<IMapProps> = (props) => {
 
     const addMarkers = (iMarkers: IMarker[]): void => {
         iMarkers.forEach((marker) => {
-            setGoogleMarkers(googleMarkers => [...googleMarkers, generateMarker(marker).marker]);
+            generateMarker(marker);
         });
     }
 
@@ -169,7 +168,6 @@ const Map: React.FC<IMapProps> = (props) => {
 
     useEffect(() => {
         if (lastAddedCouple && props.acceptedMarker) {
-            setGoogleMarkers(googleMarkers => [...googleMarkers, lastAddedCouple.marker]);
             lastAddedCouple.marker = new google.maps.Marker();
             props.setAcceptedMarker(false);
         }

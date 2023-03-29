@@ -1,4 +1,4 @@
-import { IPMarker } from "../shared/shareddtypes";
+import { IPMarker } from "../shared/SharedTypes";
 import { fetch } from "@inrupt/solid-client-authn-browser";
 import { saveFileInContainer } from "@inrupt/solid-client";
 import { getFile, overwriteFile } from "@inrupt/solid-client";
