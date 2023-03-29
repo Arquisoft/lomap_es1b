@@ -2,39 +2,51 @@ import React, { useState, useEffect } from 'react';
 import AddFriendForm from './AddFriendForm';
 import './Friends.css';
 
-import { PersonData, findFriends } from './FriendList'
+import { PersonData, findPersonData } from './FriendList'
 import { useSession } from '@inrupt/solid-ui-react';
 import { IriString } from '@inrupt/solid-client';
+import { addFriendByWebId, deleteFriendByWebId } from '../../helpers/SolidHelper';
 
 
 const FriendsList: React.FC = () => {
   const [showAddFriendForm, setShowAddFriendForm] = useState(false);
   const { session } = useSession();
-  const [personData, setPersonData] = useState<PersonData>({ name: '', photo: '', friends: [] })
+  const [personData, setPersonData] = useState<PersonData>({ webId: '', name: '', photo: '', friends: [] })
+
+  const [friends, setFriendList] = useState<PersonData[]>([]);
 
   useEffect(() => {
     const loadPersonData = async () => {
       const webId = session.info.webId
-      const data = await findFriends(webId!)
+      const data = await findPersonData(webId!)
       setPersonData(data)
     }
     loadPersonData()
+
+    async function fetchFriends() {
+      const names = await Promise.all(
+        personData.friends.map((friend) => findPersonData(friend))
+      );
+      setFriendList(names);
+    }
+    fetchFriends();
+
   }, [session])
 
   
 
   
 
-  const handleAddFriend = async (id: string) => {
-    console.log("NOT YET IMPLEMENTED")
+  const handleAddFriend = async (webId: string) => {
+    addFriendByWebId(session.info.webId!, webId);
     setShowAddFriendForm(false);
   };
   const handleCancel = () => {
     setShowAddFriendForm(false);
   };
 
-  const handleRemoveFriend = (id: string) => {
-    console.log("NOT YET IMPLEMENTED")
+  const handleRemoveFriend = (webId: string) => {
+    deleteFriendByWebId(session.info.webId!, webId);
   };
 
 
@@ -61,15 +73,17 @@ const FriendsList: React.FC = () => {
           <tr>
             <th>Nombre</th>
             <th>Web Id</th>
+            <th>Image</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {personData.friends.map(friend => (
-            <tr key={friend}>
-              <td></td>
-              <td><a href={friend}>{friend}</a></td>
-              <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend)}>Eliminar</button></td>
+          {friends.map(friend => (
+            <tr key={friend.webId}>
+              <td>{friend.name}</td>
+              <td><a href={friend.webId}>{friend.webId}</a></td>
+              <td><img src={friend.photo} alt="Foto de amigo" /></td>
+              <td><button className='button delete-button' onClick={() => handleRemoveFriend(friend.webId)}>Eliminar</button></td>
             </tr>
           ))}
         </tbody>
