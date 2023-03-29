@@ -1,7 +1,8 @@
+import { FOAF } from "@inrupt/vocab-common-rdf";
 import { IPMarker } from "../shared/SharedTypes";
-import { fetch } from "@inrupt/solid-client-authn-browser";
-import { saveFileInContainer } from "@inrupt/solid-client";
-import { getFile, overwriteFile } from "@inrupt/solid-client";
+import { fetch } from "@inrupt/solid-client-authn-browser"
+import { setThing, buildThing, getFile, overwriteFile, saveSolidDatasetAt } from "@inrupt/solid-client";
+import { getSolidDataset, getThing, saveFileInContainer, Thing } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
     let markers: IPMarker[] = []
@@ -49,4 +50,22 @@ export async function saveMarkers(markers: IPMarker[], webId: string) {
 
 function parseURL(webId: string) {
     return webId.split("profile")[0];
+}
+
+export async function addFriendByWebId(webId: string, friendWebId: string) {
+    let solidDataset = await getSolidDataset(webId);
+    let friends = getThing(solidDataset, webId) as Thing;
+
+    friends = buildThing(friends).addUrl(FOAF.knows, friendWebId).build();
+    solidDataset = setThing(solidDataset, friends);
+    saveSolidDatasetAt(webId, solidDataset, { fetch: fetch })
+}
+
+export async function deleteFriendByWebId(webId: string, friendWebId: string) {
+    let solidDataset = await getSolidDataset(webId);
+    let friends = getThing(solidDataset, webId) as Thing;
+
+    friends = buildThing(friends).removeUrl(FOAF.knows, friendWebId).build();
+    solidDataset = setThing(solidDataset, friends);
+    saveSolidDatasetAt(webId, solidDataset, { fetch: fetch })
 }
