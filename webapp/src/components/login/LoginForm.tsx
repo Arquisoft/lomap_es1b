@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { LoginButton } from "@inrupt/solid-ui-react";
-import { Button, Container, FormGroup, Stack, TextField } from "@mui/material";
+import { Button, FormGroup, Stack, TextField } from "@mui/material";
 
 function LoginForm(): JSX.Element {
   const [oidcIssuer, setOidcIssuer] = useState("inrupt.net");
