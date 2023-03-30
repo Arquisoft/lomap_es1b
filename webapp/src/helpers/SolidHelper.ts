@@ -1,8 +1,8 @@
 import { FOAF } from "@inrupt/vocab-common-rdf";
 import { IPMarker } from "../shared/SharedTypes";
 import { fetch } from "@inrupt/solid-client-authn-browser"
-import { setThing, buildThing, getFile, overwriteFile, saveSolidDatasetAt } from "@inrupt/solid-client";
 import { getSolidDataset, getThing, saveFileInContainer, Thing } from "@inrupt/solid-client";
+import { setThing, buildThing, getFile, overwriteFile, saveSolidDatasetAt } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
     let markers: IPMarker[] = []
