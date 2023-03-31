@@ -4,7 +4,6 @@ import './Friends.css';
 
 import { PersonData, findPersonData } from './FriendList'
 import { useSession } from '@inrupt/solid-ui-react';
-import { IriString } from '@inrupt/solid-client';
 import { addFriendByWebId, deleteFriendByWebId } from '../../helpers/SolidHelper';
 
 
@@ -12,26 +11,30 @@ const FriendsList: React.FC = () => {
   const [showAddFriendForm, setShowAddFriendForm] = useState(false);
   const { session } = useSession();
   const [personData, setPersonData] = useState<PersonData>({ webId: '', name: '', photo: '', friends: [] })
-
   const [friends, setFriendList] = useState<PersonData[]>([]);
 
   useEffect(() => {
-    const loadPersonData = async () => {
-      const webId = session.info.webId
-      const data = await findPersonData(webId!)
-      setPersonData(data)
-    }
-    loadPersonData()
-
-    async function fetchFriends() {
-      const names = await Promise.all(
-        personData.friends.map((friend) => findPersonData(friend))
-      );
-      setFriendList(names);
-    }
+    loadPersonData();
     fetchFriends();
+  }, [showAddFriendForm]);
 
-  }, [session])
+
+  async function loadPersonData() {
+    const webId = session.info.webId
+    const data = await findPersonData(webId!)
+    setPersonData(data)
+    console.log("loadPersonData")
+  }
+  
+  async function fetchFriends() {
+    const names = await Promise.all(
+      personData.friends.map((friend) => findPersonData(friend))
+    );
+    setFriendList(names);
+    console.log(names.length)
+    console.log("fetchFriends")
+  }
+
 
   
 
@@ -40,13 +43,16 @@ const FriendsList: React.FC = () => {
   const handleAddFriend = async (webId: string) => {
     addFriendByWebId(session.info.webId!, webId);
     setShowAddFriendForm(false);
+    fetchFriends();
   };
   const handleCancel = () => {
     setShowAddFriendForm(false);
+    fetchFriends();
   };
 
   const handleRemoveFriend = (webId: string) => {
     deleteFriendByWebId(session.info.webId!, webId);
+    fetchFriends();
   };
 
 
