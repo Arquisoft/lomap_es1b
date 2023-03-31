@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { LoginButton } from "@inrupt/solid-ui-react";
+import { LoginButton, useSession } from "@inrupt/solid-ui-react";
 import { Button, Dialog, FormGroup, Stack, TextField } from "@mui/material";
+
 
 export interface LoginProps {
   open: boolean;
@@ -9,8 +10,8 @@ export interface LoginProps {
 
 function LoginForm(props: LoginProps): JSX.Element {
   const [oidcIssuer, setOidcIssuer] = useState("inrupt.net");
-
-  const { onClose, open } = props;
+ 
+  const { onClose, open } = props;  
 
   const handleClose = () => {
     onClose();

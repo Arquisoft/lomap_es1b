@@ -2,18 +2,20 @@ import Button from '@mui/material/Button';
 import React, { useState, useContext } from 'react';
 import { IPMarker } from "../../shared/SharedTypes";
 import { MarkerContext } from '../../context/MarkerContextProvider'
-import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel } from '@mui/material';
+import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel, MenuItem, Select } from '@mui/material';
 
 interface INewUbicationFormProps {
   globalLat: number;
   globalLng: number;
   globalName: string;
   globalDescription: string;
+  globalCategory: string;
   addMarker: (marker: IPMarker) => void;
   setGlobalLat: (globalLat: number) => void;
   setGlobalLng: (globalLng: number) => void;
   setGlobalName: (globalName: string) => void;
   setGlobalDescription: (globalName: string) => void;
+  setGlobalCategory: (globalName: string) => void;
   setAcceptedMarker: (acceptedMarker: boolean) => void;
   formOpened: boolean;
   setFormOpened: (formOpened: boolean) => void;
@@ -73,6 +75,22 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               onChange={e => props.setGlobalDescription(e.target.value)}
               sx={{ my: 2, bgcolor:'white' }}
             />
+            <Select
+                required
+                name="category"
+                value={props.globalCategory}
+                onChange={e => props.setGlobalCategory(e.target.value)}
+                sx={{ my: 2, bgcolor:'white' }}
+              >
+              <MenuItem value={'E'}>Edificios</MenuItem>              
+              <MenuItem value={'N'}>Entretenimiento</MenuItem>
+              <MenuItem value={'F'}>Farmacias</MenuItem>
+              <MenuItem value={'M'}>Museos</MenuItem>
+              <MenuItem value={'P'}>Parques</MenuItem>
+              <MenuItem value={'R'}>Restaurantes</MenuItem>
+              <MenuItem value={'T'}>Tiendas</MenuItem>              
+              <MenuItem value={'A'}>Transporte</MenuItem>
+            </Select>
 
             <FormGroup>
               <FormControlLabel control={<Switch

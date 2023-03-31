@@ -6,6 +6,7 @@ import { LogoutButton } from "@inrupt/solid-ui-react";
 import { readMarkers } from '../helpers/SolidHelper';
 import { MarkerContext, Types } from '../context/MarkerContextProvider';
 import { Link } from "react-router-dom";
+import { onLogout } from '@inrupt/solid-client-authn-browser';
 
 export const NavBar = () => {
     const { session } = useSession();
@@ -25,6 +26,11 @@ export const NavBar = () => {
     const handleClose = () => {
         setOpen(false);
     };
+
+    function refreshPage() {
+        setIsLogged(false);
+        window.location.reload();
+    }
 
     return (
         !isLogged ?
@@ -63,7 +69,7 @@ export const NavBar = () => {
                     <Link to="/friends">Mis amigos</Link>
                     <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end' spacing={{ xs: 1, sm: 2, md: 4 }}>
                         <Box component="p" color={'white'}>{session.info.webId?.substring(8).split('.')[0]}</Box>
-                        <LogoutButton onLogout={() => setIsLogged(false)}>
+                        <LogoutButton onLogout={() => refreshPage()}>
                             <Button variant="contained">
                                 Cerrar sesión
                             </Button>

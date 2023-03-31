@@ -5,11 +5,33 @@ import HomeView from './components/HomeView';
 import { loadMapApi } from './utils/GoogleMapsUtils';
 import FriendsList from './components/friends/Friends';
 import UbicationsView from './components/map/UbicationsView';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, useNavigate } from "react-router-dom";
 import { NavBar } from './components/NavBar';
+import { useSession } from '@inrupt/solid-ui-react';
+import { handleIncomingRedirect,  onSessionRestore } from "@inrupt/solid-client-authn-browser";
 
 function App(): JSX.Element {
   const [scriptLoaded, setScriptLoaded] = useState(false);
+
+ // const { session } = useSession();
+  //const navigate = useNavigate();
+
+  // onSessionRestore((url) => {
+  //   if (session.info.isLoggedIn)
+  //     navigate(url);
+  // });
+
+  // useEffect(() => {
+  //   handleIncomingRedirect({
+  //     restorePreviousSession: true
+  //   }).then(() => {
+  //     if (session.info.isLoggedIn) {
+  //       localStorage.setItem("webID", session.info.webId+"");
+  //       localStorage.setItem("sessionID", session.info.sessionId);
+  //       navigate("/");
+  //     }
+  //   })
+  // });
 
   useEffect(() => {
     const googleMapScript = loadMapApi();

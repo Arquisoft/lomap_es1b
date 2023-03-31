@@ -3,7 +3,7 @@ import NewUbicationForm from './NewUbicationForm';
 import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../shared/SharedTypes";
 import { useState, useEffect, useContext } from 'react';
-import { saveMarkers } from '../../helpers/SolidHelper';
+import { readMarkers, saveMarkers } from '../../helpers/SolidHelper';
 import { Grid, Button, Select, MenuItem } from '@mui/material';
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
 
@@ -17,6 +17,7 @@ const MapView = () => {
     const { state: markers, dispatch } = useContext(MarkerContext);
     const [acceptedMarker, setAcceptedMarker] = useState<boolean>(false);
     const [globalDescription, setGlobalDescription] = useState<string>("");
+    const [globalCategory, setGlobalCategory] = useState<string>("");
 
     const addMarker = (marker: IPMarker): void => {
         dispatch({ type: Types.ADD_MARKER, payload: { marker: marker } })
@@ -30,8 +31,8 @@ const MapView = () => {
         <Grid container>
             <Grid item xs={formOpened ? 9 : 12}>
                 <Select
-                    value={seleccion}
-                    onChange={(e) => setSeleccion(e.target.value)}
+                    value={session.info.isLoggedIn ? seleccion : 'E'}
+                    onChange={session.info.isLoggedIn ? (e) => setSeleccion(e.target.value) :  (e) => setSeleccion('E')}
                     sx={{ width: '15em', height: '3em', verticalAlign: 'middle', bgcolor: 'white' }}
                 >
                     <MenuItem value={'M'}>Mis ubicaciones</MenuItem>
@@ -43,7 +44,8 @@ const MapView = () => {
                         width: '15em',
                         color: 'white',
                         fontSize: 'large',
-                        display: formOpened ? 'none' : ''
+                        //display: formOpened ? 'none' : '',
+                        display: (session.info.isLoggedIn || formOpened) ? '' : 'none'
                     }}
                     variant="contained"
                     onClick={async () => setFormOpened(!formOpened)}
@@ -73,10 +75,12 @@ const MapView = () => {
                     setGlobalLng={setGlobalLng}
                     setGlobalName={setGlobalName}
                     globalDescription={globalDescription}
+                    globalCategory={globalCategory}
                     setAcceptedMarker={setAcceptedMarker}
                     formOpened={formOpened}
                     setFormOpened={setFormOpened}
                     setGlobalDescription={setGlobalDescription}
+                    setGlobalCategory={setGlobalCategory}
                 />
             </Grid>
         </Grid>
