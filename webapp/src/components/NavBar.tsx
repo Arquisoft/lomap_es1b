@@ -2,8 +2,8 @@ import LoginForm from './login/LoginForm';
 import { useState, useContext } from 'react';
 import { Stack, Box, Button } from '@mui/material';
 import { useSession } from '@inrupt/solid-ui-react';
+import { addFriendByWebId, readMarkers } from '../helpers/SolidHelper';
 import { LogoutButton } from "@inrupt/solid-ui-react";
-import { readMarkers } from '../helpers/SolidHelper';
 import { MarkerContext, Types } from '../context/MarkerContextProvider';
 import { Link } from "react-router-dom";
 
@@ -15,6 +15,7 @@ export const NavBar = () => {
 
     session.onLogin(async () => {
         setIsLogged(true);
+        addFriendByWebId(session.info.webId!, "https://alvaro2002.inrupt.net");
         dispatch({ type: Types.SET_MARKER, payload: { markers: await readMarkers(session.info.webId!) } });
     })
 

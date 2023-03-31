@@ -27,8 +27,6 @@ export async function getUser(userId: string): Promise<User> {
   return response.json()
 }
 
-
-
 export async function addFriend(userId: string, friendId: string): Promise<boolean> {
   const apiEndPoint = process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
   let response = await fetch(apiEndPoint + '/users/' + userId + '/add-friend', {
