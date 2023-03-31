@@ -39,6 +39,7 @@ const Map: React.FC<IMapProps> = (props) => {
     const [marker, setMarker] = useState<IMarker>();
     const { state: markers } = useContext(MarkerContext);
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();
+    const [googleMarkers, setGoogleMarkers] = useState<GoogleMarker[]>([]);
 
     const startMap = (): void => {
         if (!map) {
@@ -115,6 +116,8 @@ const Map: React.FC<IMapProps> = (props) => {
             infoWindow.open(map, marker);
         });
 
+        setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);
+
         return { marker, infoWindow };
     }
 
@@ -174,28 +177,30 @@ const Map: React.FC<IMapProps> = (props) => {
     }, [props.acceptedMarker]);
 
     useEffect(() => {
+        deleteAllMarkers();
+
         switch (props.seleccion) {
             case 'M':
                 loadContext();
                 break;
             case 'A':
-                defaultMapStart();
+                // <- Cargar marcadores
                 break;
             case 'E':
-                defaultMapStart();
+                // <- Cargar marcadores
                 break;
             default:
         }
 
     }, [props.seleccion]);
 
-    /* const deleteAllMarkers = (): void => {
+    const deleteAllMarkers = (): void => {
         googleMarkers.forEach((googleMarker) => {
             googleMarker.setMap(null)
         });
 
         setGoogleMarkers([]);
-    } */
+    }
 
     const loadContext = (): void => {
         addMarkers(markers.map(parseMarker));
