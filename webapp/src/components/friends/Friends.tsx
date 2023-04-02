@@ -1,23 +1,20 @@
-import React, { useState, useEffect } from 'react';
-import AddFriendForm from './AddFriendForm';
 import './Friends.css';
-
-import { PersonData, findPersonData } from './FriendList'
+import AddFriendForm from './AddFriendForm';
+import React, { useState, useEffect } from 'react';
 import { useSession } from '@inrupt/solid-ui-react';
+import { PersonData, findPersonData } from './FriendList'
 import { addFriendByWebId, deleteFriendByWebId } from '../../helpers/SolidHelper';
 
-
 const FriendsList: React.FC = () => {
-  const [showAddFriendForm, setShowAddFriendForm] = useState(false);
   const { session } = useSession();
-  const [personData, setPersonData] = useState<PersonData>({ webId: '', name: '', photo: '', friends: [] })
   const [friends, setFriendList] = useState<PersonData[]>([]);
+  const [showAddFriendForm, setShowAddFriendForm] = useState(false);
+  const [personData, setPersonData] = useState<PersonData>({ webId: '', name: '', photo: '', friends: [] })
 
   useEffect(() => {
     loadPersonData();
     fetchFriends();
   }, [showAddFriendForm]);
-
 
   async function loadPersonData() {
     const webId = session.info.webId
@@ -25,7 +22,7 @@ const FriendsList: React.FC = () => {
     setPersonData(data)
     console.log("loadPersonData")
   }
-  
+
   async function fetchFriends() {
     const names = await Promise.all(
       personData.friends.map((friend) => findPersonData(friend))
@@ -34,11 +31,6 @@ const FriendsList: React.FC = () => {
     console.log(names.length)
     console.log("fetchFriends")
   }
-
-
-  
-
-  
 
   const handleAddFriend = async (webId: string) => {
     addFriendByWebId(session.info.webId!, webId);
@@ -55,10 +47,9 @@ const FriendsList: React.FC = () => {
     fetchFriends();
   };
 
-
   function searchProfileImg(photo: string): string | undefined {
     let url = "/user.png"
-    if (photo !== ""){
+    if (photo !== "") {
       url = photo
     }
     return url

@@ -43,7 +43,7 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               variant='filled'
               value={props.globalLat}
               onChange={e => props.setGlobalLat(e.target.value as unknown as number)}
-              sx={{ marginTop: 6, marginBottom: 2, bgcolor:'white' }}
+              sx={{ marginTop: 6, marginBottom: 2, bgcolor: 'white' }}
             />
             <TextField
               required
@@ -53,7 +53,7 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               variant='filled'
               value={props.globalLng}
               onChange={e => props.setGlobalLng(e.target.value as unknown as number)}
-              sx={{ my: 2, bgcolor:'white' }}
+              sx={{ my: 2, bgcolor: 'white' }}
             />
             <TextField
               required
@@ -62,7 +62,7 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               variant='filled'
               value={props.globalName}
               onChange={e => props.setGlobalName(e.target.value)}
-              sx={{ my: 2, bgcolor:'white'}}
+              sx={{ my: 2, bgcolor: 'white' }}
             />
             <TextField
               required
@@ -71,17 +71,15 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               variant='filled'
               value={props.globalDescription}
               onChange={e => props.setGlobalDescription(e.target.value)}
-              sx={{ my: 2, bgcolor:'white' }}
+              sx={{ my: 2, bgcolor: 'white' }}
             />
-
             <FormGroup>
               <FormControlLabel control={<Switch
                 checked={isPublic}
                 onChange={e => setIsPublic(e.target.checked)}
                 inputProps={{ 'aria-label': 'controlled' }}
-              />} sx={{color:'white'}} label="Ubicación pública" />
+              />} sx={{ color: 'white' }} label="Ubicación pública" />
             </FormGroup>
-
             <Button variant="contained" type="submit" sx={{ my: 2 }}>Aceptar</Button>
             <Button variant="contained" onClick={async () => props.setFormOpened(!props.formOpened)} sx={{ my: 2 }}>Cancelar</Button>
           </Stack>

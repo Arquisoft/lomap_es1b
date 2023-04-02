@@ -69,13 +69,13 @@ const MapView = () => {
                     globalLng={globalLng}
                     addMarker={addMarker}
                     globalName={globalName}
+                    formOpened={formOpened}
                     setGlobalLat={setGlobalLat}
                     setGlobalLng={setGlobalLng}
                     setGlobalName={setGlobalName}
+                    setFormOpened={setFormOpened}
                     globalDescription={globalDescription}
                     setAcceptedMarker={setAcceptedMarker}
-                    formOpened={formOpened}
-                    setFormOpened={setFormOpened}
                     setGlobalDescription={setGlobalDescription}
                 />
             </Grid>
