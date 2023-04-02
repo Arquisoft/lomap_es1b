@@ -3,6 +3,7 @@ import App from './App';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
+import { BrowserRouter } from 'react-router-dom';
 import { SessionProvider } from "@inrupt/solid-ui-react";
 import { MarkerContextProvider } from './context/MarkerContextProvider';
 
@@ -10,7 +11,9 @@ ReactDOM.render(
   <React.StrictMode>
     <SessionProvider session-id="login">
       <MarkerContextProvider>
-        <App />
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
       </MarkerContextProvider>
     </SessionProvider>
   </React.StrictMode>,

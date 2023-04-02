@@ -15,7 +15,6 @@ export const NavBar = () => {
 
     session.onLogin(async () => {
         setIsLogged(true);
-        addFriendByWebId(session.info.webId!, "https://alvaro2002.inrupt.net");
         dispatch({ type: Types.SET_MARKER, payload: { markers: await readMarkers(session.info.webId!) } });
     })
 
@@ -39,7 +38,7 @@ export const NavBar = () => {
                     <Link to="/"><img src="/logo-no-background.png" className="App-logo" alt="logo" height="60" /></Link>
                     <Link to="/map">Mapa</Link>
                     <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end' spacing={{ xs: 1, sm: 2, md: 4 }}>
-                        <Button variant="contained" onClick={handleClickOpen}>
+                        <Button variant="contained" onClick={handleClickOpen} sx={{ margin: "1em" }}>
                             Iniciar sesión
                         </Button>
                         <LoginForm
@@ -65,7 +64,7 @@ export const NavBar = () => {
                     <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end' spacing={{ xs: 1, sm: 2, md: 4 }}>
                         <Box component="p" color={'white'}>{session.info.webId?.substring(8).split('.')[0]}</Box>
                         <LogoutButton onLogout={() => setIsLogged(false)}>
-                            <Button variant="contained">
+                            <Button variant="contained" sx={{ margin: "1em", marginLeft: "0em" }}>
                                 Cerrar sesión
                             </Button>
                         </LogoutButton>

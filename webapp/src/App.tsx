@@ -20,29 +20,25 @@ function App(): JSX.Element {
 
   return (
     <>
-      <BrowserRouter>
-        <NavBar></NavBar>
-        <Routes>
+      <NavBar></NavBar>
+      <Routes>
+        <Route path="/" element={
+          <HomeView />
+        } />
 
-          <Route path="/" element={
-            scriptLoaded && (
-              <HomeView />)
-          } />
+        <Route path="/map" element={
+          scriptLoaded && (
+            <MapView />)
+        } />
 
-          <Route path="/map" element={
-            scriptLoaded && (
-              <MapView />)
-          } />
+        <Route path="/ubications" element={
+          <UbicationsView />
+        } />
 
-          <Route path="/ubications" element={
-            <UbicationsView />
-          } />
-
-          <Route path="/friends" element={
-            <FriendsList />
-          } />
-        </Routes>
-      </BrowserRouter>
+        <Route path="/friends" element={
+          <FriendsList />
+        } />
+      </Routes>
     </>
   );
 }

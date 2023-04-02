@@ -32,7 +32,7 @@ const MapView = () => {
                 <Select
                     value={seleccion}
                     onChange={(e) => setSeleccion(e.target.value)}
-                    sx={{ width: '15em', height: '3em', verticalAlign: 'middle', bgcolor: 'white' }}
+                    sx={{ width: '15em', height: '3em', verticalAlign: 'middle', bgcolor: 'white', margin: '1em' }}
                 >
                     <MenuItem value={'M'}>Mis ubicaciones</MenuItem>
                     <MenuItem value={'A'}>Ubicaciones de amigo</MenuItem>
