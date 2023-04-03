@@ -1,6 +1,6 @@
 import './Map.css';
 import { IPMarker } from '../../shared/SharedTypes';
-import { MarkerContext } from '../../context/MarkerContextProvider';
+import { MarkerContext, Types } from '../../context/MarkerContextProvider';
 import React, { useEffect, useRef, useState, useContext } from 'react';
 
 interface IMarker {
@@ -14,6 +14,10 @@ interface IMarker {
 interface ICouple {
     marker: GoogleMarker;
     infoWindow: GoogleInfoWindow;
+}
+
+type MarkerMap = {
+    [id: number]: ICouple;
 }
 
 type GoogleMap = google.maps.Map;
@@ -41,8 +45,9 @@ interface IMapProps {
 const Map: React.FC<IMapProps> = (props) => {
     const ref = useRef<HTMLDivElement>(null);
     const [map, setMap] = useState<GoogleMap>();
+    const markerHashMap = useRef<MarkerMap>({});
     const [marker, setMarker] = useState<IMarker>();
-    const { state: markers } = useContext(MarkerContext);
+    const { state: markers, dispatch } = useContext(MarkerContext);
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();
     const [googleMarkers, setGoogleMarkers] = useState<GoogleMarker[]>([]);
 
@@ -106,10 +111,10 @@ const Map: React.FC<IMapProps> = (props) => {
             lastAddedCouple.marker.setMap(null);
         }
 
-        setLastAddedCouple(generateMarker(iMarker));
+        setLastAddedCouple(generateMarker(iMarker, markers.length + 1));
     };
 
-    const generateMarker = (notAddedMarker: IMarker): ICouple => {
+    const generateMarker = (notAddedMarker: IMarker, id: number): ICouple => {
         const marker: GoogleMarker = new google.maps.Marker({
             position: notAddedMarker.latLng,
             map: map
@@ -121,6 +126,11 @@ const Map: React.FC<IMapProps> = (props) => {
 
         marker.addListener('click', () => {
             infoWindow.open(map, marker);
+        });
+
+        marker.addListener('rightclick', () => {
+            marker.setMap(null);
+            dispatch({ type: Types.DELETE_MARKER, payload: { id: id } })
         });
 
         setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);
@@ -150,12 +160,6 @@ const Map: React.FC<IMapProps> = (props) => {
         });
     };
 
-    const addMarkers = (iMarkers: IMarker[]): void => {
-        iMarkers.forEach((marker) => {
-            generateMarker(marker);
-        });
-    }
-
     useEffect(() => {
         let location = new google.maps.LatLng(props.globalLat, props.globalLng);
         coordinateToAddress(location).then(address => props.setGlobalAddress(address));
@@ -167,8 +171,14 @@ const Map: React.FC<IMapProps> = (props) => {
 
     useEffect(() => {
         if (lastAddedCouple) {
-            lastAddedCouple.infoWindow.setContent(generateInfoWindowContent(formatName(), props.globalCategory,
-                formatDescription(), props.globalAddress));
+            lastAddedCouple.infoWindow.setContent(
+                generateInfoWindowContent(
+                    formatName(),
+                    props.globalCategory,
+                    formatDescription(),
+                    props.globalAddress
+                )
+            );
         }
     }, [props.globalName, props.globalDescription, props.globalCategory, props.globalAddress]);
 
@@ -207,7 +217,9 @@ const Map: React.FC<IMapProps> = (props) => {
     }
 
     const loadContext = (): void => {
-        addMarkers(markers.map(parseMarker));
+        markers.forEach((marker) => {
+            markerHashMap.current[marker.id] = generateMarker(parseMarker(marker), marker.id);
+        })
     }
 
     const parseMarker = (iPMarker: IPMarker): IMarker => {

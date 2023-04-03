@@ -40,21 +40,19 @@ export async function readMarkers(webId: string) {
 };
 
 export async function saveMarkers(markers: IPMarker[], webId: string) {
-    if (markers.length > 0) {
-        let fileURL = `${parseURL(webId)}private/Markers.json`;
-        const blob = new Blob([(new TextEncoder()).encode(JSON.stringify(markers))], {
-            type: "application/json;charset=utf-8"
-        });
-        try {
-            await overwriteFile(fileURL, blob,
-                {
-                    contentType: blob.type,
-                    fetch: fetch
-                }
-            );
-        } catch (error) {
-            console.error(error);
-        }
+    let fileURL = `${parseURL(webId)}private/Markers.json`;
+    const blob = new Blob([(new TextEncoder()).encode(JSON.stringify(markers))], {
+        type: "application/json;charset=utf-8"
+    });
+    try {
+        await overwriteFile(fileURL, blob,
+            {
+                contentType: blob.type,
+                fetch: fetch
+            }
+        );
+    } catch (error) {
+        console.error(error);
     }
 };
 
