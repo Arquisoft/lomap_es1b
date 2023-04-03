@@ -11,10 +11,12 @@ const MapView = () => {
     const { session } = useSession();
     const [globalLat, setGlobalLat] = useState<number>(0);
     const [globalLng, setGlobalLng] = useState<number>(0);
-    const [seleccion, setSeleccion] = useState<string>("");
+    const [seleccion, setSeleccion] = useState<string>("E");
     const [globalName, setGlobalName] = useState<string>("");
     const [formOpened, setFormOpened] = useState<boolean>(false);
     const { state: markers, dispatch } = useContext(MarkerContext);
+    const [globalAddress, setGlobalAddress] = useState<string>("");
+    const [globalCategory, setGlobalCategory] = useState<string>("Museos");
     const [acceptedMarker, setAcceptedMarker] = useState<boolean>(false);
     const [globalDescription, setGlobalDescription] = useState<string>("");
 
@@ -57,7 +59,10 @@ const MapView = () => {
                     globalName={globalName}
                     setGlobalLat={setGlobalLat}
                     setGlobalLng={setGlobalLng}
+                    globalAddress={globalAddress}
                     acceptedMarker={acceptedMarker}
+                    globalCategory={globalCategory}
+                    setGlobalAddress={setGlobalAddress}
                     globalDescription={globalDescription}
                     setAcceptedMarker={setAcceptedMarker}
                     mapType={google.maps.MapTypeId.ROADMAP}
@@ -74,9 +79,13 @@ const MapView = () => {
                     setGlobalLng={setGlobalLng}
                     setGlobalName={setGlobalName}
                     setFormOpened={setFormOpened}
+                    globalAddress={globalAddress}
+                    globalCategory={globalCategory}
                     globalDescription={globalDescription}
+                    setGlobalCategory={setGlobalCategory}
                     setAcceptedMarker={setAcceptedMarker}
                     setGlobalDescription={setGlobalDescription}
+
                 />
             </Grid>
         </Grid>

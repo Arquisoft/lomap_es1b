@@ -5,6 +5,8 @@ import React, { useEffect, useRef, useState, useContext } from 'react';
 
 interface IMarker {
     name: string;
+    address: string;
+    category: string;
     description: string;
     latLng: GoogleLatLng;
 }
@@ -24,12 +26,15 @@ interface IMapProps {
     globalLng: number;
     seleccion: string;
     globalName: string;
+    globalAddress: string;
+    globalCategory: string;
     acceptedMarker: boolean;
     mapTypeControl?: boolean;
     globalDescription: string;
     mapType: google.maps.MapTypeId;
     setGlobalLat: (globalLat: number) => void;
     setGlobalLng: (globalLng: number) => void;
+    setGlobalAddress: (globalAddress: string) => void;
     setAcceptedMarker: (acceptedMarker: boolean) => void;
 }
 
@@ -65,29 +70,24 @@ const Map: React.FC<IMapProps> = (props) => {
     };
 
     const initEventListener = (): void => {
-        google.maps.event.addListener(map!, 'click', function (e) {
+        google.maps.event.addListener(map!, 'click', async function (e) {
             props.setGlobalLat(e.latLng.lat());
             props.setGlobalLng(e.latLng.lng());
 
             setMarker({
                 latLng: e.latLng,
+                address: "",
                 name: "Placeholder nombre",
-                description: "Placeholder descripción",
+                category: "Placeholder categoría",
+                description: "Placeholder descripción"
             })
         })
-    };
-
-    const addMarker = (iMarker: IMarker): void => {
-        if (lastAddedCouple) {
-            lastAddedCouple.marker.setMap(null);
-        }
-
-        setLastAddedCouple(generateMarker(iMarker));
     };
 
     useEffect(() => {
         if (marker) {
             marker.name = formatName();
+            marker.category = props.globalCategory;
             marker.description = formatDescription();
             addMarker(marker);
         }
@@ -101,6 +101,14 @@ const Map: React.FC<IMapProps> = (props) => {
         return props.globalDescription ? props.globalDescription : "Sin descripción";
     }
 
+    const addMarker = (iMarker: IMarker): void => {
+        if (lastAddedCouple) {
+            lastAddedCouple.marker.setMap(null);
+        }
+
+        setLastAddedCouple(generateMarker(iMarker));
+    };
+
     const generateMarker = (notAddedMarker: IMarker): ICouple => {
         const marker: GoogleMarker = new google.maps.Marker({
             position: notAddedMarker.latLng,
@@ -108,8 +116,7 @@ const Map: React.FC<IMapProps> = (props) => {
         });
 
         const infoWindow = new google.maps.InfoWindow({
-            content: `<h1>${notAddedMarker.name}</h1>
-            <p>${notAddedMarker.description}</p>`
+            content: generateInfoWindowContent(notAddedMarker.name, notAddedMarker.category, notAddedMarker.description, notAddedMarker.address)
         })
 
         marker.addListener('click', () => {
@@ -121,15 +128,15 @@ const Map: React.FC<IMapProps> = (props) => {
         return { marker, infoWindow };
     }
 
-    /* const generateInfoWindowContent = (name: string, description: string, address: string): string => {
+    const generateInfoWindowContent = (name: string, category: string, description: string, address: string): string => {
         let result = ""
 
-        result += `<h1>${name}</h1>`
-        result += `<p>${address}</p>`
+        result += `<h1>${name} (${category})</h1>`
+        result += `<h2>${address}</h2>`
         result += `<p>${description}</p>`
 
         return result;
-    } */
+    }
 
     const addHomeMarker = (location: GoogleLatLng): void => {
         const homeMarkerConst: GoogleMarker = new google.maps.Marker({
@@ -151,23 +158,20 @@ const Map: React.FC<IMapProps> = (props) => {
 
     useEffect(() => {
         let location = new google.maps.LatLng(props.globalLat, props.globalLng);
+        coordinateToAddress(location).then(address => props.setGlobalAddress(address));
 
         if (lastAddedCouple) {
             lastAddedCouple.marker.setPosition(location);
-        } else {
-            addMarker({
-                latLng: location,
-                name: formatName(),
-                description: formatDescription(),
-            })
         }
     }, [props.globalLat, props.globalLng]);
 
     useEffect(() => {
         if (lastAddedCouple) {
-            lastAddedCouple.infoWindow.setContent(`<h1>${formatName()}</h1><p>${formatDescription()}</p>`);
+            lastAddedCouple.infoWindow.setContent(generateInfoWindowContent(formatName(), props.globalCategory,
+                formatDescription(), props.globalAddress));
         }
-    }, [props.globalName, props.globalDescription]);
+    }, [props.globalName, props.globalDescription, props.globalCategory, props.globalAddress]);
+
 
     useEffect(() => {
         if (lastAddedCouple && props.acceptedMarker) {
@@ -209,20 +213,34 @@ const Map: React.FC<IMapProps> = (props) => {
     const parseMarker = (iPMarker: IPMarker): IMarker => {
         return {
             name: iPMarker.name,
+            address: iPMarker.address,
+            category: iPMarker.category,
             description: iPMarker.description,
-            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng)
+            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng),
         };
     }
 
-    /* const coordinateToAddress = async (coordinate: GoogleLatLng) => {
+    const coordinateToAddress = (coordinate: GoogleLatLng): Promise<string> => {
         const geocoder = new google.maps.Geocoder();
-        geocoder.geocode({ location: coordinate }, function (results, status) {
-            if (status === 'OK') {
-                let formatedAddress = results[1].formatted_address;
-                console.log(formatedAddress)
-            }
-        });
-    }; */
+        return new Promise((resolve, reject) => {
+            geocoder.geocode(
+                {
+                    location: coordinate
+                },
+                (results, status) => {
+                    if (status === google.maps.GeocoderStatus.OK) {
+                        const formatedAddress = results[0].formatted_address;
+                        resolve(formatedAddress);
+                    } else if (status === google.maps.GeocoderStatus.ZERO_RESULTS) {
+                        const formatedAddress = "Sin resultados";
+                        resolve(formatedAddress);
+                    } else {
+                        reject(new Error(status));
+                    }
+                }
+            )
+        })
+    };
 
     const initMap = (zoomLevel: number, address: GoogleLatLng): void => {
         if (ref.current) {

@@ -11,7 +11,7 @@ function LoginForm(props: LoginProps): JSX.Element {
   const { onClose, open } = props;
   const [disabled, setDisabled] = useState<boolean>(true);
   const [oidcIssuer, setOidcIssuer] = useState<string>("");
-  const [itemSelected, setItemSelected] = useState<string>("");
+  const [itemSelected, setItemSelected] = useState<string>("https://inrupt.net/");
   
   const handleClose = () => {
     onClose();

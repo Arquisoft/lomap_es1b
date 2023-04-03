@@ -2,21 +2,24 @@ import Button from '@mui/material/Button';
 import React, { useState, useContext } from 'react';
 import { IPMarker } from "../../shared/SharedTypes";
 import { MarkerContext } from '../../context/MarkerContextProvider'
-import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel } from '@mui/material';
+import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel, Select, MenuItem } from '@mui/material';
 
 interface INewUbicationFormProps {
   globalLat: number;
   globalLng: number;
   globalName: string;
+  formOpened: boolean;
+  globalAddress: string;
+  globalCategory: string;
   globalDescription: string;
   addMarker: (marker: IPMarker) => void;
   setGlobalLat: (globalLat: number) => void;
   setGlobalLng: (globalLng: number) => void;
   setGlobalName: (globalName: string) => void;
-  setGlobalDescription: (globalName: string) => void;
-  setAcceptedMarker: (acceptedMarker: boolean) => void;
-  formOpened: boolean;
   setFormOpened: (formOpened: boolean) => void;
+  setGlobalDescription: (globalName: string) => void;
+  setGlobalCategory: (globalCategory: string) => void;
+  setAcceptedMarker: (acceptedMarker: boolean) => void;
 }
 
 const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
@@ -26,7 +29,11 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    props.addMarker({ id: markers.length + 1, date: new Date(), name: props.globalName, description: props.globalDescription, lat: props.globalLat, lng: props.globalLng });
+    props.addMarker({
+      id: markers.length + 1, date: new Date(), name: props.globalName, description: props.globalDescription,
+      lat: props.globalLat, lng: props.globalLng, category: props.globalCategory, isPublic: isPublic,
+      address: props.globalAddress
+    });
     props.setAcceptedMarker(true);
   }
 
@@ -73,6 +80,20 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               onChange={e => props.setGlobalDescription(e.target.value)}
               sx={{ my: 2, bgcolor: 'white' }}
             />
+            <Select
+              value={props.globalCategory}
+              onChange={(e) => props.setGlobalCategory(e.target.value as string)}
+              sx={{ my: 2, bgcolor: 'white' }}
+            >
+              <MenuItem value={'Museos'}>Museos</MenuItem>
+              <MenuItem value={'Parques'}>Parques</MenuItem>
+              <MenuItem value={'Tiendas'}>Tiendas</MenuItem>
+              <MenuItem value={'Edificios'}>Edificios</MenuItem>
+              <MenuItem value={'Farmacias'}>Farmacias</MenuItem>
+              <MenuItem value={'Transporte'}>Transporte</MenuItem>
+              <MenuItem value={'Restaurantes'}>Restaurantes</MenuItem>
+              <MenuItem value={'Entretenimiento'}>Entretenimiento</MenuItem>
+            </Select>
             <FormGroup>
               <FormControlLabel control={<Switch
                 checked={isPublic}
