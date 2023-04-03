@@ -1,10 +1,25 @@
 [[section-quality-requirements]]
 == Quality Requirements
 === Quality Tree
-
-:imagesdir: images/
-image:10_quality_scenarios_tree.png["Quality Tree"]
-
+[plantuml, "Quality tree", png]
+----
+left to right direction
+(Quality) as (Q)
+(Privacy) as (Pr)
+(Usability) as (U)
+(Security) as (S)
+(Reliability) as (R)
+(Testability) as (T)
+(Efficiency) as (E)
+(Maintainability) as (M)
+Q --> Pr
+Q --> U
+Q --> S
+Q --> R
+Q --> T
+Q --> E
+Q --> M
+----
 === Quality Scenarios
 |===
 |*Quality goal*|*Motivation*|*Usage scenarios*|*Priority*
