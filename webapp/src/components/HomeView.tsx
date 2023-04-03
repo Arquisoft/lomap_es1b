@@ -7,7 +7,7 @@ const HomeView = () => {
     return (
         <Container sx={{ color: 'white', textAlign: 'center' }}>
             <div>
-                <h1>¡Bienvenido!</h1>
+                <h1>¡Bienvenido{session.info.isLoggedIn ? `, ${session.info.webId?.substring(8).split('.')[0]}` : ""}!</h1>
             </div>
         </Container>
     );
