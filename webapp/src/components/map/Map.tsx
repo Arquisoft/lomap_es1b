@@ -133,6 +133,8 @@ const Map: React.FC<IMapProps> = (props) => {
             dispatch({ type: Types.DELETE_MARKER, payload: { id: id } })
         });
 
+        marker.setIcon("blue_marker.png");
+
         setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);
 
         return { marker, infoWindow };
@@ -158,6 +160,8 @@ const Map: React.FC<IMapProps> = (props) => {
             map?.panTo(location);
             map?.setZoom(6);
         });
+
+        homeMarkerConst.setIcon("blue_marker.png");
     };
 
     useEffect(() => {
