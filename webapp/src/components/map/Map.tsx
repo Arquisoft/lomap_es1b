@@ -59,7 +59,11 @@ const Map: React.FC<IMapProps> = (props) => {
             addHomeMarker(map.getCenter());
         }
     };
-    useEffect(startMap, [map]);
+
+    useEffect(() => {
+        startMap();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [map]);
 
     const defaultMapStart = (): void => {
         const defaultAddress = new google.maps.LatLng(43.5276892, -5.6355573);
@@ -80,8 +84,8 @@ const Map: React.FC<IMapProps> = (props) => {
             props.setGlobalLng(e.latLng.lng());
 
             setMarker({
-                latLng: e.latLng,
                 address: "",
+                latLng: e.latLng,
                 name: "Placeholder nombre",
                 category: "Placeholder categoría",
                 description: "Placeholder descripción"
@@ -96,6 +100,7 @@ const Map: React.FC<IMapProps> = (props) => {
             marker.description = formatDescription();
             addMarker(marker);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [marker]);
 
     const formatName = (): string => {
@@ -117,6 +122,7 @@ const Map: React.FC<IMapProps> = (props) => {
     const generateMarker = (notAddedMarker: IMarker, id: number): ICouple => {
         const marker: GoogleMarker = new google.maps.Marker({
             position: notAddedMarker.latLng,
+            icon: "blue_marker.png",
             map: map
         });
 
@@ -132,8 +138,6 @@ const Map: React.FC<IMapProps> = (props) => {
             marker.setMap(null);
             dispatch({ type: Types.DELETE_MARKER, payload: { id: id } })
         });
-
-        marker.setIcon("blue_marker.png");
 
         setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);
 
@@ -152,6 +156,7 @@ const Map: React.FC<IMapProps> = (props) => {
 
     const addHomeMarker = (location: GoogleLatLng): void => {
         const homeMarkerConst: GoogleMarker = new google.maps.Marker({
+            icon: "blue_marker.png",
             position: location,
             map: map
         });
@@ -160,8 +165,6 @@ const Map: React.FC<IMapProps> = (props) => {
             map?.panTo(location);
             map?.setZoom(6);
         });
-
-        homeMarkerConst.setIcon("blue_marker.png");
     };
 
     useEffect(() => {
@@ -171,6 +174,7 @@ const Map: React.FC<IMapProps> = (props) => {
         if (lastAddedCouple) {
             lastAddedCouple.marker.setPosition(location);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.globalLat, props.globalLng]);
 
     useEffect(() => {
@@ -184,6 +188,7 @@ const Map: React.FC<IMapProps> = (props) => {
                 )
             );
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.globalName, props.globalDescription, props.globalCategory, props.globalAddress]);
 
 
@@ -192,6 +197,7 @@ const Map: React.FC<IMapProps> = (props) => {
             lastAddedCouple.marker = new google.maps.Marker();
             props.setAcceptedMarker(false);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.acceptedMarker]);
 
     useEffect(() => {
@@ -209,7 +215,7 @@ const Map: React.FC<IMapProps> = (props) => {
                 break;
             default:
         }
-
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.seleccion]);
 
     const deleteAllMarkers = (): void => {
