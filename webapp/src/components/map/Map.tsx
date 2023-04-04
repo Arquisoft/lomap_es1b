@@ -16,9 +16,11 @@ interface ICouple {
     infoWindow: GoogleInfoWindow;
 }
 
-type MarkerMap = {
-    [id: number]: ICouple;
-}
+/*
+    type MarkerMap = {
+        [id: number]: ICouple;
+    }
+*/
 
 type GoogleMap = google.maps.Map;
 type GoogleLatLng = google.maps.LatLng;
@@ -50,7 +52,7 @@ interface IMapProps {
 const Map: React.FC<IMapProps> = (props) => {
     const ref = useRef<HTMLDivElement>(null);                               // Contenedor HTML del mapa
     const [map, setMap] = useState<GoogleMap>();                            // useState para conservar la referencia al mapa
-    const markerHashMap = useRef<MarkerMap>({});                            // HashMap para conservar una relación entre el marcador en el mapa y su versión persistente
+    // const markerHashMap = useRef<MarkerMap>({});                         // HashMap para conservar una relación entre el marcador en el mapa y su versión persistente
     const [marker, setMarker] = useState<IMarker>();                        // useState para comunicar el listener con el método
     const { state: markers, dispatch } = useContext(MarkerContext);         // Proveedor de los marcadores en el POD
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();      // Último par (marcador, ventana de información) añadidos al mapa
@@ -302,7 +304,6 @@ const Map: React.FC<IMapProps> = (props) => {
             default:
         }
 
-        addInitMarker();        // Añade un marcador en su posición para evitar problemas con los Spinner
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.seleccion]);
 
@@ -311,7 +312,9 @@ const Map: React.FC<IMapProps> = (props) => {
      */
     const deleteAllMarkers = (): void => {
         googleMarkers.forEach((googleMarker) => {
-            googleMarker.setMap(null)
+            if (googleMarker !== lastAddedCouple?.marker) {  // Si el marcador no es el último que se ha añadido...
+                googleMarker.setMap(null);                   // Lo borra
+            }
         });
 
         setGoogleMarkers([]);
