@@ -25,7 +25,10 @@ const MapView = () => {
     };
 
     useEffect(() => {
-        saveMarkers(markers, session.info.webId!);
+        if (session.info.isLoggedIn) {
+            saveMarkers(markers, session.info.webId!);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [markers]);
 
     return (
