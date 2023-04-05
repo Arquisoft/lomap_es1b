@@ -42,6 +42,8 @@ interface IMapProps {
     setGlobalLng: (globalLng: number) => void;
     setGlobalAddress: (globalAddress: string) => void;
     setAcceptedMarker: (acceptedMarker: boolean) => void;
+    setDetailedMarker: (marker: IPMarker) => void;
+    setDetailedMarkerOpened: (open: boolean) => void;
 }
 
 // Aclaración: los comentarios en los useEffect deshabilitan warnings.
@@ -70,6 +72,8 @@ const Map: React.FC<IMapProps> = (props) => {
             addHomeMarker(map.getCenter()); // Añade un marcador en la posición actual del usuario
         }
     };
+
+
 
     /**
      * UseEffect encargado de iniciar y/o inicializar el mapa
@@ -176,6 +180,9 @@ const Map: React.FC<IMapProps> = (props) => {
 
         marker.addListener('click', () => {                              // Cuando hago click en el marcador...
             infoWindow.open(map, marker);                                // Abro la ventana de información correspondiente.
+            //props.setDetailedMarker(notAddedMarker)
+            props.setDetailedMarker(markers.filter(marker => marker.id === id).at(0)!)
+            props.setDetailedMarkerOpened(true)
         });
 
         marker.addListener('rightclick', () => {                         // Cuando hago click derecho en el marcador...
@@ -187,6 +194,10 @@ const Map: React.FC<IMapProps> = (props) => {
 
         return { marker, infoWindow };
     }
+
+    useEffect(() => {
+        props.setDetailedMarkerOpened(true)
+    }, [props.setDetailedMarker]);
 
     /**
      * Crea el string que contiene el HTML a incluir en la InfoWindow
@@ -202,9 +213,12 @@ const Map: React.FC<IMapProps> = (props) => {
         result += `<h1>${name} (${category})</h1>`
         result += `<h2>${address}</h2>`
         result += `<p>${description}</p>`
+        result += `<button>Más info</button>`
 
         return result;
     }
+
+
 
     /**
      * Añade un marcador; al hacer click, el mapa se centra en él.
@@ -397,6 +411,8 @@ const Map: React.FC<IMapProps> = (props) => {
             );
         }
     };
+
+
 
     return (
         <div ref={ref} className="map"></div>
