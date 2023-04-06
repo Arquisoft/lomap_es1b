@@ -10,7 +10,7 @@ import {
     overwriteFile,
     getSolidDataset,
     saveSolidDatasetAt,
-    saveFileInContainer,
+    saveFileInContainer
 } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
@@ -71,14 +71,34 @@ export async function addFriendByWebId(webId: string, friendWebId: string) {
 }
 
 /* async function grantAccessToMarkers(webId: string, friendWebId: string) {
-    let fileURL = `${parseURL(webId)}private/Markers.json`; // <- cambio a tener en cuenta
+    let folderURL = `${parseURL(webId)}public/LoMap/`; // <- cambio a tener en cuenta
 
-    await universalAccess.setAgentAccess(
-        fileURL,
+    const myDatasetWithAcl = await getSolidDatasetWithAcl(folderURL, { fetch: fetch });
+
+    let resourceAcl;
+    if (!hasResourceAcl(myDatasetWithAcl)) {
+        if (!hasAccessibleAcl(myDatasetWithAcl)) {
+            throw new Error(
+                "The current user does not have permission to change access rights to this Resource."
+            );
+        }
+        if (!hasFallbackAcl(myDatasetWithAcl)) {
+            throw new Error(
+                "The current user does not have permission to see who currently has access to this Resource."
+            );
+        }
+        resourceAcl = createAclFromFallbackAcl(myDatasetWithAcl);
+    } else {
+        resourceAcl = getResourceAcl(myDatasetWithAcl);
+    }
+
+    const updatedAcl = setAgentResourceAccess(
+        resourceAcl,
         friendWebId,
-        { read: true, write: false },
-        { fetch: fetch }
-    )
+        { read: true, append: true, write: true, control: false }
+    );
+
+    await saveAclFor(myDatasetWithAcl, updatedAcl, { fetch: fetch });
 } */
 
 export async function deleteFriendByWebId(webId: string, friendWebId: string) {
