@@ -1,12 +1,12 @@
-import Map from './Map';
+import Map from '../Map';
 import { Close } from '@mui/icons-material';
 import NewUbicationForm from './NewUbicationForm';
 import { useSession } from '@inrupt/solid-ui-react';
-import { IPMarker } from "../../shared/SharedTypes";
+import { IPMarker } from "../../../shared/SharedTypes";
 import { useState, useEffect, useContext } from 'react';
-import { saveMarkers } from '../../helpers/SolidHelper';
-import DetailedUbicationView from './DetailedUbicationView';
-import { MarkerContext, Types } from '../../context/MarkerContextProvider';
+import { saveMarkers } from '../../../helpers/SolidHelper';
+import DetailedUbicationView from './DetailedInfoWindow';
+import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
 import { Grid, Button, Select, MenuItem, Stack, Box, Dialog, TextField, ToggleButton, ToggleButtonGroup, IconButton } from '@mui/material';
 
 const MapView = () => {

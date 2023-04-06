@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { Button, Grid, Box } from '@mui/material';
-import { IPMarker } from "../../shared/SharedTypes";
-import { MarkerContext } from '../../context/MarkerContextProvider';
+import { IPMarker } from "../../../shared/SharedTypes";
+import { MarkerContext } from '../../../context/MarkerContextProvider';
 
 const UbicationsView = () => {
 

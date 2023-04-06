@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
-import { IPMarker } from "../../shared/SharedTypes";
-import { MarkerContext, Types } from '../../context/MarkerContextProvider';
+import { IPMarker } from "../../../shared/SharedTypes";
+import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
 import { Slide, Stack, TextField, Dialog, Rating, Button } from '@mui/material';
 
 interface DetailedUbicationViewProps {
