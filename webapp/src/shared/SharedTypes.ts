@@ -14,5 +14,7 @@ export interface IPMarker {
   address: string,
   category: string,
   isPublic: boolean,
-  description: string,
+  ratings: number[],
+  comments: string[],
+  description: string
 }

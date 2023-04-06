@@ -15,7 +15,7 @@ const UbicationsView = () => {
                         <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} sx={{ padding: '2em' }}>
                             {
                                 markers.map((ubication: IPMarker) =>
-                                    <Grid item xs={6} sm={4} md={3}>
+                                    <Grid item xs={6} sm={4} md={3} key={ubication.id}>
                                         <Box sx={{ padding: '1em', bgcolor: 'white', border: 'solid', borderRadius: '2em' }}>
                                             <h1>{ubication.name}</h1>
                                             <p>{ubication.description}</p>
@@ -28,7 +28,7 @@ const UbicationsView = () => {
                             }
                         </Grid>
                     ) : (
-                        <p>Aún no has creado ninguna ubicación</p>
+                        <h1 style={{ color: 'white', textAlign: 'center' }}>Aún no has creado ninguna ubicación</h1>
                     )
             }
         </>

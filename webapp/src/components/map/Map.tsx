@@ -180,9 +180,12 @@ const Map: React.FC<IMapProps> = (props) => {
 
         marker.addListener('click', () => {                              // Cuando hago click en el marcador...
             infoWindow.open(map, marker);                                // Abro la ventana de información correspondiente.
-            //props.setDetailedMarker(notAddedMarker)
-            props.setDetailedMarker(markers.filter(marker => marker.id === id).at(0)!)
-            props.setDetailedMarkerOpened(true)
+
+            let detailedMarker = markers.filter(marker => marker.id === id).at(0)!;
+            if (detailedMarker) {
+                props.setDetailedMarker(markers.filter(marker => marker.id === id).at(0)!)
+                props.setDetailedMarkerOpened(true)
+            }
         });
 
         marker.addListener('rightclick', () => {                         // Cuando hago click derecho en el marcador...
@@ -190,14 +193,14 @@ const Map: React.FC<IMapProps> = (props) => {
             dispatch({ type: Types.DELETE_MARKER, payload: { id: id } }) // Elimino su correspondiente del contexto
         });
 
+        google.maps.event.addListener(infoWindow, 'closeclick', function() {
+            props.setDetailedMarkerOpened(false)
+        });
+
         setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);   // Actualizo el useState para conservar su referencia
 
         return { marker, infoWindow };
     }
-
-    useEffect(() => {
-        props.setDetailedMarkerOpened(true)
-    }, [props.setDetailedMarker]);
 
     /**
      * Crea el string que contiene el HTML a incluir en la InfoWindow
@@ -213,12 +216,10 @@ const Map: React.FC<IMapProps> = (props) => {
         result += `<h1>${name} (${category})</h1>`
         result += `<h2>${address}</h2>`
         result += `<p>${description}</p>`
-        result += `<button>Más info</button>`
+        // result += `<button>Más info</button>`
 
         return result;
     }
-
-
 
     /**
      * Añade un marcador; al hacer click, el mapa se centra en él.

@@ -4,28 +4,32 @@ import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../shared/SharedTypes";
 import { useState, useEffect, useContext } from 'react';
 import { saveMarkers } from '../../helpers/SolidHelper';
-import { Grid, Button, Select, MenuItem, Stack, Box, FormGroup, Container, Dialog, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
-import { MarkerContext, Types } from '../../context/MarkerContextProvider';
 import DetailedUbicationView from './DetailedUbicationView';
-import { position } from 'rdf-namespaces/dist/schema';
-import { last } from 'lodash';
+import { MarkerContext, Types } from '../../context/MarkerContextProvider';
+import { Grid, Button, Select, MenuItem, Stack, Box, Dialog, TextField, ToggleButton, ToggleButtonGroup } from '@mui/material';
 
 const MapView = () => {
     const { session } = useSession();
     const [globalLat, setGlobalLat] = useState<number>(0);
     const [globalLng, setGlobalLng] = useState<number>(0);
     const [seleccion, setSeleccion] = useState<string>("E");
-    const [globalName, setGlobalName] = useState<string>("");
+    const [globalName, setGlobalName] = useState<string>("")
     const [formOpened, setFormOpened] = useState<boolean>(false);
     const { state: markers, dispatch } = useContext(MarkerContext);
     const [globalAddress, setGlobalAddress] = useState<string>("");
+    const [openFiltros, setOpenFiltros] = useState<boolean>(false);
     const [globalCategory, setGlobalCategory] = useState<string>("Museos");
     const [acceptedMarker, setAcceptedMarker] = useState<boolean>(false);
     const [globalDescription, setGlobalDescription] = useState<string>("");
-    const [detailedMarker, setDetailedMarker] = useState<IPMarker>({ id: -1, date: new Date(), lat: 0, lng: 0, name: "sin nombre", address: "sin direccion", category: "sin categoría", isPublic: false, description: "sin descripcion" });
     const [detailedMarkerOpened, setDetailedMarkerOpened] = useState<boolean>(false);
-    const [openFiltros, setOpenFiltros] = useState<boolean>(false);
-    const [formats, setFormats] = useState(() => ['museos', 'parques', 'tiendas', 'edificios', 'farmacias', 'transporte', 'restaurantes', 'entretenimiento']);
+    const [formats, setFormats] = useState(() => ['museos', 'parques', 'tiendas',
+        'edificios', 'farmacias', 'transporte',
+        'restaurantes', 'entretenimiento']);
+    const [detailedMarker, setDetailedMarker] = useState<IPMarker>({
+        id: -1, date: new Date(), lat: 0, lng: 0, name: "Sin nombre", address: "Sin dirección",
+        category: "Sin categoría", isPublic: false, description: "Sin descripción",
+        ratings: [], comments: []
+    });
 
     const handleFormat = (
         event: React.MouseEvent<HTMLElement>,
@@ -46,9 +50,9 @@ const MapView = () => {
     }, [markers]);
 
     return (
-        <Grid container>
+        <Grid container sx={{ width: '100%', height: '100%' }}>
             <Grid item xs={12}>
-                <Stack direction={'row'} alignItems={'center'} sx={{ color: 'white', bgcolor: 'rgba(0,0,0,0.3)' }}>
+                <Stack direction={'row'} alignItems={'center'} sx={{ color: 'white' }}>
                     <Select
                         value={seleccion}
                         onChange={(e) => setSeleccion(e.target.value)}
@@ -60,9 +64,9 @@ const MapView = () => {
                     </Select>
                     <Button
                         sx={{
-                            bgcolor: 'white',
                             color: 'black',
-                            fontSize: 'large',
+                            bgcolor: 'white',
+                            fontSize: 'large'
                         }}
                         variant="contained"
                         onClick={() => setOpenFiltros(true)}
@@ -93,9 +97,9 @@ const MapView = () => {
                     <Button
                         sx={{
                             width: '15em',
-                            color: 'white',
+                            margin: '1em',
                             fontSize: 'large',
-                            display: formOpened ? 'none' : ''
+                            display: formOpened ? 'none' : '',
                         }}
                         variant="contained"
                         onClick={async () => setFormOpened(!formOpened)}
@@ -104,13 +108,13 @@ const MapView = () => {
             </Grid>
             <Grid item xs={detailedMarkerOpened ? 3 : 0}>
                 <DetailedUbicationView
-                    detailedMarkerOpened={detailedMarkerOpened}
-                    setDetailedMarkerOpened={setDetailedMarkerOpened}
                     detailedMarker={detailedMarker}
                     setDetailedMarker={setDetailedMarker}
+                    detailedMarkerOpened={detailedMarkerOpened}
+                    setDetailedMarkerOpened={setDetailedMarkerOpened}
                 />
             </Grid>
-            <Grid item xs={12 - (formOpened ? 3 : 0) - (detailedMarkerOpened ? 3 : 0)}>
+            <Grid item xs={12 - (formOpened ? 3 : 0) - (detailedMarkerOpened ? 3 : 0)} sx={{ width: '100%', height: '100%' }}>
                 <Map
                     mapTypeControl={true}
                     globalLat={globalLat}
@@ -147,7 +151,6 @@ const MapView = () => {
                     setGlobalCategory={setGlobalCategory}
                     setAcceptedMarker={setAcceptedMarker}
                     setGlobalDescription={setGlobalDescription}
-
                 />
             </Grid>
         </Grid>
