@@ -1,7 +1,7 @@
 import './Map.css';
 import { IPMarker } from '../../shared/SharedTypes';
-import { MarkerContext, Types } from '../../context/MarkerContextProvider';
 import React, { useEffect, useRef, useState, useContext } from 'react';
+import { MarkerContext, Types } from '../../context/MarkerContextProvider';
 
 interface IMarker {
     name: string;
@@ -30,20 +30,20 @@ type GoogleInfoWindow = google.maps.InfoWindow;
 interface IMapProps {
     globalLat: number;
     globalLng: number;
-    seleccion: string;
     globalName: string;
-    selectedName: string;
+    globalMode: string;
     globalAddress: string;
     globalCategory: string;
     acceptedMarker: boolean;
+    globalFilterName: string;
     mapTypeControl?: boolean;
     globalDescription: string;
-    selectedCategories: string[];
     mapType: google.maps.MapTypeId;
+    globalFilterCategories: string[];
     setGlobalLat: (globalLat: number) => void;
     setGlobalLng: (globalLng: number) => void;
-    setDetailedMarker: (marker: IPMarker) => void;
-    setDetailedMarkerOpened: (open: boolean) => void;
+    setMarkerShown: (marker: IPMarker) => void;
+    setDetailedIWOpen: (open: boolean) => void;
     setGlobalAddress: (globalAddress: string) => void;
     setAcceptedMarker: (acceptedMarker: boolean) => void;
 }
@@ -181,10 +181,10 @@ const Map: React.FC<IMapProps> = (props) => {
         marker.addListener('click', () => {                              // Cuando hago click en el marcador...
             infoWindow.open(map, marker);                                // Abro la ventana de información correspondiente.
 
-            let detailedMarker = markers.filter(marker => marker.id === id).at(0)!;
+            let detailedMarker = markers.find(marker => marker.id === id);
             if (detailedMarker) {
-                props.setDetailedMarker(markers.filter(marker => marker.id === id).at(0)!)
-                props.setDetailedMarkerOpened(true)
+                props.setMarkerShown(detailedMarker);
+                props.setDetailedIWOpen(true);
             }
         });
 
@@ -194,7 +194,7 @@ const Map: React.FC<IMapProps> = (props) => {
         });
 
         google.maps.event.addListener(infoWindow, 'closeclick', function () {
-            props.setDetailedMarkerOpened(false)
+            props.setDetailedIWOpen(false)
         });
 
         setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);   // Actualizo el useState para conservar su referencia
@@ -306,7 +306,7 @@ const Map: React.FC<IMapProps> = (props) => {
     useEffect(() => {
         deleteAllMarkers();     // Borra todos los marcadores del mapa
 
-        switch (props.seleccion) {
+        switch (props.globalMode) {
             case 'M':
                 loadContext();  // Carga los marcadores del contexto
                 break;
@@ -320,7 +320,7 @@ const Map: React.FC<IMapProps> = (props) => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.seleccion, props.selectedName, props.selectedCategories]);
+    }, [props.globalMode, props.globalFilterName, props.globalFilterCategories]);
 
     /**
      * Borra todos los marcadores del mapa y vacía el useState correspondiente
@@ -339,7 +339,7 @@ const Map: React.FC<IMapProps> = (props) => {
      * Carga los marcadores del contexto
      */
     const loadContext = (): void => {
-        markers.filter(m => props.selectedCategories.includes(m.category) && m.name.includes(props.selectedName)).forEach((marker) => {
+        markers.filter(m => props.globalFilterCategories.includes(m.category) && m.name.includes(props.globalFilterName)).forEach((marker) => {
             generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
         })
     }
@@ -412,8 +412,6 @@ const Map: React.FC<IMapProps> = (props) => {
             );
         }
     };
-
-
 
     return (
         <div ref={ref} className="map"></div>

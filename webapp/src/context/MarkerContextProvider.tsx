@@ -4,7 +4,7 @@ import { IPMarker } from "../shared/SharedTypes";
 
 export enum Types {
     ADD_MARKER = 'ADD_MARKER',
-    SET_MARKER = 'SET_MARKER',
+    SET_MARKERS = 'SET_MARKERS',
     DELETE_MARKER = 'DELETE_MARKER',
     UPDATE_MARKER = 'UPDATE_MARKER'
 }
@@ -15,7 +15,7 @@ type MarkerActions = {
         marker: IPMarker;
     };
 } | {
-    type: Types.SET_MARKER;
+    type: Types.SET_MARKERS;
     payload: {
         markers: IPMarker[];
     }
@@ -35,7 +35,7 @@ export const MarkerContext = createContext<{ state: IPMarker[], dispatch: Dispat
 
 export const markerReducer = (state: IPMarker[], action: MarkerActions): IPMarker[] => {
     switch (action.type) {
-        case Types.SET_MARKER:
+        case Types.SET_MARKERS:
             return action.payload.markers
         case Types.ADD_MARKER:
             return [action.payload.marker, ...state]

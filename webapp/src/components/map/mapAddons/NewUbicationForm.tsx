@@ -50,7 +50,7 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               variant='filled'
               value={props.globalLat}
               onChange={e => props.setGlobalLat(e.target.value as unknown as number)}
-              sx={{ marginBottom: '16px', bgcolor: 'white' }}
+              sx={{ marginBottom: '1em', bgcolor: 'white' }}
             />
             <TextField
               required
@@ -95,14 +95,17 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               <MenuItem value={'Entretenimiento'}>Entretenimiento</MenuItem>
             </Select>
             <FormGroup>
-              <FormControlLabel control={<Switch
-                checked={isPublic}
-                onChange={e => setIsPublic(e.target.checked)}
-                inputProps={{ 'aria-label': 'controlled' }}
-              />} sx={{ color: 'white' }} label="Ubicación pública" />
+              <FormControlLabel control={
+                <Switch
+                  checked={isPublic}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                  onChange={e => setIsPublic(e.target.checked)}
+                />
+              }
+                sx={{ color: 'white' }} label="Ubicación pública" />
             </FormGroup>
             <Button variant="contained" type="submit" sx={{ my: 2 }}>Aceptar</Button>
-            <Button variant="contained" onClick={async () => props.setFormOpened(!props.formOpened)} sx={{ my: 2 }}>Cancelar</Button>
+            <Button variant="contained" onClick={() => props.setFormOpened(false)} sx={{ my: 2 }}>Cancelar</Button>
           </Stack>
         </form>
       </Slide>

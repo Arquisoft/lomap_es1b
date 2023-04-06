@@ -2,10 +2,10 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import HomeView from './components/HomeView';
 import { NavBar } from './components/NavBar';
-import MapView from './components/map/mapAddons/MapView';
 import { Routes, Route } from "react-router-dom";
 import { loadMapApi } from './utils/GoogleMapsUtils';
 import FriendsList from './components/friends/Friends';
+import MapView from './components/map/mapAddons/MapView';
 import UbicationsView from './components/map/mapAddons/UbicationsView';
 
 function App(): JSX.Element {
@@ -25,9 +25,8 @@ function App(): JSX.Element {
         <Route path="/" element={
           <HomeView />
         } />
-        <Route path="/map" element={
-          scriptLoaded && (
-            <MapView />)
+        <Route path="/map" element={scriptLoaded &&
+          (<MapView />)
         } />
         <Route path="/ubications" element={
           <UbicationsView />

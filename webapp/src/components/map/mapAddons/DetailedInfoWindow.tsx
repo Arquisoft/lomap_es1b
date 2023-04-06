@@ -1,34 +1,37 @@
+import { Close } from '@mui/icons-material';
 import React, { useContext, useState } from 'react';
 import { IPMarker } from "../../../shared/SharedTypes";
 import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
-import { Slide, Stack, TextField, Dialog, Rating, Button } from '@mui/material';
+import { Slide, Stack, TextField, Dialog, Rating, Button, IconButton } from '@mui/material';
 
 interface DetailedUbicationViewProps {
-  detailedMarker: IPMarker;
-  detailedMarkerOpened: boolean;
-  setDetailedMarker: (detailedMarker: IPMarker) => void;
-  setDetailedMarkerOpened: (detailedMarkerOpened: boolean) => void;
+  markerShown: IPMarker;
+  isDetailedIWOpen: boolean;
+  setMarkerShown: (detailedMarker: IPMarker) => void;
+  setDetailedIWOpen: (detailedMarkerOpened: boolean) => void;
 }
 
 const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
   const { state: markers, dispatch } = useContext(MarkerContext);
-  const [openValoracion, setOpenValoracion] = useState<boolean>(false);
+  const [isRatingOpen, setRatingOpen] = useState<boolean>(false);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    let marker = markers.filter(marker => marker.id === props.detailedMarker.id).at(0)!
+    let marker = markers.find(marker => marker.id = props.markerShown.id)!;
     marker.ratings.push(rating);
     marker.comments.push(comment);
 
-    dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } })
+    dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } });
   }
 
   const getRatingMean = () => {
-    let sum = props.detailedMarker.ratings.map(n => parseInt(n.toString())).reduce((previous, current) => current += previous, 0);
-    let total = props.detailedMarker.ratings.length;
+    let sum = props.markerShown.ratings
+      .map(n => parseInt(n.toString()))
+      .reduce((previous, current) => current += previous, 0);
+    let total = props.markerShown.ratings.length;
     let result = sum / total;
 
     return result;
@@ -36,52 +39,44 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
 
   return (
     <>
-      <Slide style={{ color: 'white' }} direction="right" in={props.detailedMarkerOpened} mountOnEnter unmountOnExit>
-        <Stack alignItems="right" sx={{
-          margin: 2,
-          display: props.detailedMarkerOpened ? '' : 'none'
-        }}>
-          <h1 style={{ marginTop: '0em' }}>{props.detailedMarker.name}</h1>
-          <p style={{ marginTop: '0em' }}>Dirección: {props.detailedMarker.address}</p>
-          <p>Categoría: {props.detailedMarker.category}</p>
-          <p>Descripción: {props.detailedMarker.description}</p>
+      <Slide style={{ color: 'white' }} direction="right" in={props.isDetailedIWOpen} mountOnEnter unmountOnExit>
+        <Stack alignItems="right" sx={{ margin: 2, display: props.isDetailedIWOpen ? '' : 'none' }}>
+          <h1 style={{ marginTop: '0em' }}>{props.markerShown.name}</h1>
+          <p style={{ marginTop: '0em' }}>Dirección: {props.markerShown.address}</p>
+          <p>Categoría: {props.markerShown.category}</p>
+          <p>Descripción: {props.markerShown.description}</p>
           <h2>Resumen de reseñas</h2>
           <Rating value={getRatingMean()} readOnly />
           <ul>
-            {props.detailedMarker.comments.map(comment =>
+            {props.markerShown.comments.map(comment =>
               <li key={comment}>{comment}</li>
             )}
           </ul>
-          <Button variant="contained" type="submit" sx={{ my: 2 }} onClick={() => setOpenValoracion(true)}>Dejar valoración</Button>
-          <Dialog onClose={() => setOpenValoracion(false)} open={openValoracion}>
-            <form name="newValoracion" onSubmit={handleSubmit}>
-              <Stack direction='column' padding={'2em'}>
-                <h1>Valora esta ubicación</h1>
-                <TextField
-                  required
-                  type='number'
-                  InputProps={{
-                    inputProps: {
-                      max: 5, min: 0
-                    }
-                  }}
+          <Button variant="contained" type="submit" sx={{ my: 2 }} onClick={() => setRatingOpen(true)}>Escribir una reseña</Button>
+          <Dialog onClose={() => setRatingOpen(false)} open={isRatingOpen}>
+            <form name="newRating" onSubmit={handleSubmit}>
+              <Stack direction='column' sx={{ width: '30em', padding: '1em' }}>
+                <Stack direction='row'>
+                  <h1 style={{ margin: '0' }}>Valora esta ubicación</h1>
+                  <IconButton sx={{ marginLeft: 'auto', marginRight: '0em' }} onClick={async () => setRatingOpen(false)}><Close /></IconButton>
+                </Stack>
+                <Rating
                   value={rating}
-                  name="puntuacion"
-                  label="Puntuación"
-                  sx={{ marginTop: 6, marginBottom: 2, bgcolor: 'white' }}
-                  onChange={(e) => setRating(e.target.value as unknown as number)}
+                  name="rating"
+                  sx={{ margin: '0.5em 0em 0.5em' }}
+                  onChange={(_, value) => setRating(value as unknown as number)}
                 />
                 <TextField
                   rows={4}
                   required
                   multiline
                   value={comment}
-                  name="comentario"
+                  name="comment"
                   label="Comentario"
                   onChange={(e) => setComment(e.target.value as string)}
-                  sx={{ marginTop: 6, marginBottom: 2, bgcolor: 'white', width: '30em' }}
+                  sx={{ margin: '0.5em 0em 0.5em' }}
                 />
-                <Button variant="contained" type="submit" sx={{ my: 2, alignSelf: 'flex-start' }}>Enviar</Button>
+                <Button variant="contained" type="submit" sx={{ marginTop: '0.5em' }}>Enviar</Button>
               </Stack>
             </form>
           </Dialog>

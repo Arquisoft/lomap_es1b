@@ -22,7 +22,7 @@ export const NavBar = () => {
     })
 
     function setMarkers(markers: IPMarker[]) {
-        dispatch({ type: Types.SET_MARKER, payload: { markers: markers } });
+        dispatch({ type: Types.SET_MARKERS, payload: { markers: markers } });
     }
 
     const handleClickOpen = () => {

@@ -2,16 +2,15 @@ import { FOAF } from "@inrupt/vocab-common-rdf";
 import { IPMarker } from "../shared/SharedTypes";
 import { fetch } from "@inrupt/solid-client-authn-browser"
 import {
-    getSolidDataset,
-    getThing,
-    saveFileInContainer,
     Thing,
-    setThing,
-    buildThing,
     getFile,
+    setThing,
+    getThing,
+    buildThing,
     overwriteFile,
+    getSolidDataset,
     saveSolidDatasetAt,
-    universalAccess
+    saveFileInContainer,
 } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
@@ -71,7 +70,7 @@ export async function addFriendByWebId(webId: string, friendWebId: string) {
     // grantAccessToMarkers(webId, friendWebId);
 }
 
-async function grantAccessToMarkers(webId: string, friendWebId: string) {
+/* async function grantAccessToMarkers(webId: string, friendWebId: string) {
     let fileURL = `${parseURL(webId)}private/Markers.json`; // <- cambio a tener en cuenta
 
     await universalAccess.setAgentAccess(
@@ -80,7 +79,7 @@ async function grantAccessToMarkers(webId: string, friendWebId: string) {
         { read: true, write: false },
         { fetch: fetch }
     )
-}
+} */
 
 export async function deleteFriendByWebId(webId: string, friendWebId: string) {
     let solidDataset = await getSolidDataset(webId);
