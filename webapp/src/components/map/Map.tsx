@@ -32,18 +32,20 @@ interface IMapProps {
     globalLng: number;
     seleccion: string;
     globalName: string;
+    selectedName: string;
     globalAddress: string;
     globalCategory: string;
     acceptedMarker: boolean;
     mapTypeControl?: boolean;
     globalDescription: string;
+    selectedCategories: string[];
     mapType: google.maps.MapTypeId;
     setGlobalLat: (globalLat: number) => void;
     setGlobalLng: (globalLng: number) => void;
-    setGlobalAddress: (globalAddress: string) => void;
-    setAcceptedMarker: (acceptedMarker: boolean) => void;
     setDetailedMarker: (marker: IPMarker) => void;
     setDetailedMarkerOpened: (open: boolean) => void;
+    setGlobalAddress: (globalAddress: string) => void;
+    setAcceptedMarker: (acceptedMarker: boolean) => void;
 }
 
 // Aclaración: los comentarios en los useEffect deshabilitan warnings.
@@ -72,8 +74,6 @@ const Map: React.FC<IMapProps> = (props) => {
             addHomeMarker(map.getCenter()); // Añade un marcador en la posición actual del usuario
         }
     };
-
-
 
     /**
      * UseEffect encargado de iniciar y/o inicializar el mapa
@@ -193,7 +193,7 @@ const Map: React.FC<IMapProps> = (props) => {
             dispatch({ type: Types.DELETE_MARKER, payload: { id: id } }) // Elimino su correspondiente del contexto
         });
 
-        google.maps.event.addListener(infoWindow, 'closeclick', function() {
+        google.maps.event.addListener(infoWindow, 'closeclick', function () {
             props.setDetailedMarkerOpened(false)
         });
 
@@ -320,7 +320,7 @@ const Map: React.FC<IMapProps> = (props) => {
         }
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [props.seleccion]);
+    }, [props.seleccion, props.selectedName, props.selectedCategories]);
 
     /**
      * Borra todos los marcadores del mapa y vacía el useState correspondiente
@@ -339,7 +339,7 @@ const Map: React.FC<IMapProps> = (props) => {
      * Carga los marcadores del contexto
      */
     const loadContext = (): void => {
-        markers.forEach((marker) => {
+        markers.filter(m => props.selectedCategories.includes(m.category) && m.name.includes(props.selectedName)).forEach((marker) => {
             generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
         })
     }

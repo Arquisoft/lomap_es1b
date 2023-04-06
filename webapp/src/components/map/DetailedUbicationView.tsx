@@ -1,8 +1,7 @@
-import { Close } from '@mui/icons-material';
 import React, { useContext, useState } from 'react';
 import { IPMarker } from "../../shared/SharedTypes";
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
-import { Slide, Stack, TextField, Dialog, Rating, IconButton, Button } from '@mui/material';
+import { Slide, Stack, TextField, Dialog, Rating, Button } from '@mui/material';
 
 interface DetailedUbicationViewProps {
   detailedMarker: IPMarker;
@@ -28,6 +27,14 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
     dispatch({ type: Types.ADD_MARKER, payload: { marker: marker } });
   }
 
+  const getRatingMean = () => {
+    let sum = props.detailedMarker.ratings.map(n => parseInt(n.toString())).reduce((previous, current) => current += previous, 0);
+    let total = props.detailedMarker.ratings.length;
+    let result = sum / total;
+
+    return result;
+  }
+
   return (
     <>
       <Slide style={{ color: 'white' }} direction="right" in={props.detailedMarkerOpened} mountOnEnter unmountOnExit>
@@ -35,16 +42,15 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
           margin: 2,
           display: props.detailedMarkerOpened ? '' : 'none'
         }}>
-          <IconButton onClick={async () => props.setDetailedMarkerOpened(!props.detailedMarkerOpened)} sx={{ my: 2, alignSelf: 'flex-end', bgcolor: 'white', color: 'black' }}><Close /></IconButton>
-          <h1 style={{ marginTop: '0em' }}>{props.detailedMarker.name}</h1>
+          <h1>{props.detailedMarker.name}</h1>
           <p style={{ marginTop: '0em' }}>Dirección: {props.detailedMarker.address}</p>
           <p>Categoría: {props.detailedMarker.category}</p>
           <p>Descripción: {props.detailedMarker.description}</p>
           <h2>Resumen de reseñas</h2>
-          <Rating value={props.detailedMarker.ratings.reduce((previous, current) => current += previous, 0) / props.detailedMarker.ratings.length} readOnly />
+          <Rating value={getRatingMean()} readOnly />
           <ul>
-            {props.detailedMarker.comments.map(c =>
-              <li key={c}>{c}</li>
+            {props.detailedMarker.comments.map(comment =>
+              <li key={comment}>{comment}</li>
             )}
           </ul>
           <Button variant="contained" type="submit" sx={{ my: 2 }} onClick={() => setOpenValoracion(true)}>Dejar valoración</Button>
@@ -77,7 +83,6 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
                   sx={{ marginTop: 6, marginBottom: 2, bgcolor: 'white', width: '30em' }}
                 />
                 <Button variant="contained" type="submit" sx={{ my: 2, alignSelf: 'flex-start' }}>Enviar</Button>
-
               </Stack>
             </form>
           </Dialog>

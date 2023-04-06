@@ -40,7 +40,6 @@ const limitedFetch: typeof fetch = async (...props) => {
   return await fetchWithTimeout(8000)(...props)
 }
 
-
 /**
  * Fetch all profile documents connected to the webId by owl:sameAs or rdfs.seeAlso
  */
@@ -76,8 +75,6 @@ const findFullPersonProfile = async (
   }
   return response
 }
-
-
 
 export const findPersonData = async (webId: IriString): Promise<PersonData> => {
   const data: PersonData = { webId: webId, name: '', photo: '', friends: [] }
