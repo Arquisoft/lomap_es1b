@@ -50,7 +50,7 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               variant='filled'
               value={props.globalLat}
               onChange={e => props.setGlobalLat(e.target.value as unknown as number)}
-              sx={{ marginTop: 6, marginBottom: 2, bgcolor: 'white' }}
+              sx={{ marginBottom: '16px', bgcolor: 'white' }}
             />
             <TextField
               required

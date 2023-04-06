@@ -41,7 +41,7 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
           margin: 2,
           display: props.detailedMarkerOpened ? '' : 'none'
         }}>
-          <h1>{props.detailedMarker.name}</h1>
+          <h1 style={{ marginTop: '0em' }}>{props.detailedMarker.name}</h1>
           <p style={{ marginTop: '0em' }}>Dirección: {props.detailedMarker.address}</p>
           <p>Categoría: {props.detailedMarker.category}</p>
           <p>Descripción: {props.detailedMarker.description}</p>
