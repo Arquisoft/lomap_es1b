@@ -75,8 +75,10 @@ const MapView = () => {
                     >Filtros</Button>
                     <Dialog onClose={() => setOpenFiltros(false)} open={openFiltros}>
                         <Stack direction='column' padding={'2em'}>
-                            <IconButton onClick={async () => setOpenFiltros(false)} sx={{ alignSelf: 'flex-end' }}><Close /></IconButton>
-                            <h1>Filtros</h1>
+                            <Stack direction='row'>
+                                <h1 style={{ margin: '0' }}>Filtra las ubicaciones</h1>
+                                <IconButton sx={{ marginLeft: 'auto', marginRight: '0em' }} onClick={async () => setOpenFiltros(false)}><Close /></IconButton>
+                            </Stack>
                             <h2>Nombre</h2>
                             <TextField value={selectedName} onChange={(e) => setSelectedName(e.target.value as string)}></TextField>
                             <h2>Categorías</h2>

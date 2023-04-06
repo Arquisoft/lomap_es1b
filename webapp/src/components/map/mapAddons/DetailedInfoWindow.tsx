@@ -23,8 +23,7 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
     marker.ratings.push(rating);
     marker.comments.push(comment);
 
-    dispatch({ type: Types.DELETE_MARKER, payload: { id: marker.id } });
-    dispatch({ type: Types.ADD_MARKER, payload: { marker: marker } });
+    dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } })
   }
 
   const getRatingMean = () => {
