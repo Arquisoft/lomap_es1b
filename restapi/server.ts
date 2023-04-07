@@ -7,6 +7,8 @@ import api from "./api";
 const app: Application = express();
 const port: number = 5000;
 
+const mongoose = require('mongoose')
+
 const metricsMiddleware:RequestHandler = promBundle({includeMethod: true});
 app.use(metricsMiddleware);
 
@@ -21,3 +23,8 @@ app.listen(port, ():void => {
     console.error('Error occured: ' + error.message);
 });
 
+const user = process.env.MONGODB_USER
+const password = process.env.MONGODB_PASSWORD
+const database = process.env.MONGODB_DATABASE
+
+mongoose.connect('mongodb+srv://' + user + ':' + password + '@' + database +'/LoMapDB?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true }); 

@@ -4,12 +4,51 @@ import {v4 as uuidv4} from 'uuid';
 
 const api:Router = express.Router()
 
+const mongoose = require("mongoose");
+
+const ubicacionSchema = new mongoose.Schema({
+  id: Number,
+  date: Date,
+  lat: Number,
+  lng: Number,
+  name: String,
+  address: String,
+  category: String,
+  descripcion: String
+})
+
+const Ubicacion = mongoose.model("ubicaciones", ubicacionSchema);
+
 interface User {
     id: string;
     name: string;
     email: string;
     friends: Array<string>;
 }
+
+api.get(
+  "/ubicaciones/list",
+  async (req: Request, res: Response): Promise<Response> => { 
+    const ubicaciones = await Ubicacion.find()
+    return res.status(200).send(ubicaciones);
+  }
+);
+
+api.post("/ubicaciones/add", [
+  check('webid').isLength({ min: 1 }).trim().escape(),
+],
+async (req: Request, res: Response): Promise<Response> => {
+  let id = req.body.id;
+  let date = req.body.date;
+  let lat = req.body.lat;
+  let lng = req.body.lng;
+  let name = req.body.name;
+  let address = req.body.address;
+  let category = req.body.category;
+  let descripcion = req.body.descripcion;
+  new Ubicacion({id, date, lat, lng, name, address, category, descripcion}).save();
+  return res.sendStatus(200);
+})
 
 //This is not a restapi as it mantains state but it is here for
 //simplicity. A database should be used instead.
