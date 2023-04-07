@@ -1,8 +1,9 @@
 import Button from '@mui/material/Button';
-import React, { useState, useContext } from 'react';
 import { IPMarker } from "../../../shared/SharedTypes";
-import { MarkerContext } from '../../../context/MarkerContextProvider'
-import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel, Select, MenuItem } from '@mui/material';
+import React, { useState, MutableRefObject, useContext } from 'react';
+import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel, Select, MenuItem } from '@mui/material'
+import { randomUUID } from '../../../helpers/SolidHelper';
+import { MarkerContext } from '../../../context/MarkerContextProvider';
 
 interface INewUbicationFormProps {
   globalLat: number;
@@ -12,6 +13,7 @@ interface INewUbicationFormProps {
   globalAddress: string;
   globalCategory: string;
   globalDescription: string;
+  nextID: MutableRefObject<string>;
   addMarker: (marker: IPMarker) => void;
   setGlobalLat: (globalLat: number) => void;
   setGlobalLng: (globalLng: number) => void;
@@ -24,16 +26,16 @@ interface INewUbicationFormProps {
 
 const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
   const [isPublic, setIsPublic] = useState(false);
-  const { state: markers } = useContext(MarkerContext);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     props.addMarker({
-      id: markers.length + 1, date: new Date(), name: props.globalName, description: props.globalDescription,
+      id: props.nextID.current, date: new Date(), name: props.globalName, description: props.globalDescription,
       lat: props.globalLat, lng: props.globalLng, category: props.globalCategory, isPublic: isPublic,
       address: props.globalAddress, ratings: [], comments: []
     });
+
     props.setAcceptedMarker(true);
   }
 

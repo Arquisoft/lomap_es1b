@@ -5,7 +5,7 @@ import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
 
 const UbicationsView = () => {
     const { state: markers, dispatch } = useContext(MarkerContext);
-    const deleteUbication = (id: number) => {
+    const deleteUbication = (id: string) => {
         dispatch({ type: Types.DELETE_MARKER, payload: { id: id } });
     }
 

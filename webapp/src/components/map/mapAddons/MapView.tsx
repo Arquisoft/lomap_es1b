@@ -3,8 +3,8 @@ import { Close } from '@mui/icons-material';
 import NewUbicationForm from './NewUbicationForm';
 import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../../shared/SharedTypes";
-import { useState, useEffect, useContext } from 'react';
-import { saveMarkers } from '../../../helpers/SolidHelper';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { saveMarkers, randomUUID } from '../../../helpers/SolidHelper';
 import DetailedUbicationView from './DetailedInfoWindow';
 import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
 import {
@@ -23,6 +23,7 @@ import {
 
 const MapView = () => {
     const { session } = useSession();
+    const nextID = useRef<string>(randomUUID());
     const [globalLat, setGlobalLat] = useState<number>(0);
     const [globalLng, setGlobalLng] = useState<number>(0);
     const [globalName, setGlobalName] = useState<string>("");
@@ -42,7 +43,7 @@ const MapView = () => {
         'Restaurantes', 'Entretenimiento'
     ]);
     const [markerShown, setMarkerShown] = useState<IPMarker>({
-        id: -1, date: new Date(), lat: 0, lng: 0, name: "Sin nombre", address: "Sin dirección",
+        id: "", date: new Date(), lat: 0, lng: 0, name: "Sin nombre", address: "Sin dirección",
         category: "Sin categoría", isPublic: false, description: "Sin descripción",
         ratings: [], comments: []
     });
@@ -138,6 +139,7 @@ const MapView = () => {
             </Grid>
             <Grid item xs={12 - (isFormOpened ? 3 : 0) - (isDetailedIWOpen ? 3 : 0)} sx={{ width: '100%', height: '100%' }}>
                 <Map
+                    nextID={nextID}
                     mapTypeControl={true}
                     globalLat={globalLat}
                     globalLng={globalLng}
@@ -145,21 +147,22 @@ const MapView = () => {
                     globalName={globalName}
                     setGlobalLat={setGlobalLat}
                     setGlobalLng={setGlobalLng}
-                    globalFilterName={globalFilterName}
                     globalAddress={globalAddress}
                     acceptedMarker={acceptedMarker}
                     globalCategory={globalCategory}
-                    setGlobalAddress={setGlobalAddress}
-                    setAcceptedMarker={setAcceptedMarker}
                     setMarkerShown={setMarkerShown}
+                    setGlobalAddress={setGlobalAddress}
+                    globalFilterName={globalFilterName}
+                    setAcceptedMarker={setAcceptedMarker}
                     globalDescription={globalDescription}
+                    setDetailedIWOpen={setDetailedIWOpen}
                     mapType={google.maps.MapTypeId.ROADMAP}
                     globalFilterCategories={globalFilterCategories}
-                    setDetailedIWOpen={setDetailedIWOpen}
                 />
             </Grid>
             <Grid item xs={3}>
                 <NewUbicationForm
+                    nextID={nextID}
                     globalLat={globalLat}
                     globalLng={globalLng}
                     addMarker={addMarker}

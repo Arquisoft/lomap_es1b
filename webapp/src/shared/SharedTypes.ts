@@ -6,7 +6,7 @@ export type User = {
 }
 
 export interface IPMarker {
-  id: number,
+  id: string,
   date: Date,
   lat: number,
   lng: number,

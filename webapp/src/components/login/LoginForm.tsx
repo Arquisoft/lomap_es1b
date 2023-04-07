@@ -1,6 +1,6 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { LoginButton } from "@inrupt/solid-ui-react";
-import { Button, Dialog, FormGroup, Stack, Select, MenuItem, SelectChangeEvent, TextField, Container } from "@mui/material";
+import { Button, Dialog, FormGroup, Stack, Select, MenuItem, TextField, Container } from "@mui/material";
 
 export interface LoginProps {
   open: boolean;
@@ -12,13 +12,13 @@ function LoginForm(props: LoginProps): JSX.Element {
   const [disabled, setDisabled] = useState<boolean>(true);
   const [oidcIssuer, setOidcIssuer] = useState<string>("");
   const [itemSelected, setItemSelected] = useState<string>("https://inrupt.net/");
-  
+
   const handleClose = () => {
     onClose();
   };
 
   useEffect(() => {
-    if (itemSelected != "otro") {
+    if (itemSelected !== "otro") {
       setOidcIssuer(itemSelected);
       setDisabled(true);
     } else {

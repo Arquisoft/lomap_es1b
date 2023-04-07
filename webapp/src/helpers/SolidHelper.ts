@@ -109,3 +109,7 @@ export async function deleteFriendByWebId(webId: string, friendWebId: string) {
     solidDataset = setThing(solidDataset, friends);
     saveSolidDatasetAt(webId, solidDataset, { fetch: fetch })
 }
+
+export function randomUUID() {
+    return String(Math.floor(Math.random() * 9e15))
+}
