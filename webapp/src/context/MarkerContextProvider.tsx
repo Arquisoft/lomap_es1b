@@ -22,12 +22,12 @@ type MarkerActions = {
 } | {
     type: Types.DELETE_MARKER;
     payload: {
-        id: number;
+        id: string;
     };
 } | {
     type: Types.UPDATE_MARKER;
     payload: {
-        id: number, marker: IPMarker;
+        id: string, marker: IPMarker;
     };
 }
 

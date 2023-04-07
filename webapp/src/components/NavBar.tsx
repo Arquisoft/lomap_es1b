@@ -1,29 +1,13 @@
+import { useState} from 'react';
 import { Link } from "react-router-dom";
 import LoginForm from './login/LoginForm';
-import { useState, useContext } from 'react';
-import { IPMarker } from "../shared/SharedTypes";
 import { Stack, Box, Button } from '@mui/material';
 import { useSession } from '@inrupt/solid-ui-react';
-import { readMarkers } from '../helpers/SolidHelper';
 import { LogoutButton } from "@inrupt/solid-ui-react";
-import { MarkerContext, Types } from '../context/MarkerContextProvider';
 
 export const NavBar = () => {
     const { session } = useSession();
     const [open, setOpen] = useState(false);
-    const { dispatch } = useContext(MarkerContext);
-
-    session.onLogin(async () => {
-        setMarkers(await readMarkers(session.info.webId!));
-    })
-
-    session.onLogout(async () => {
-        setMarkers([])
-    })
-
-    function setMarkers(markers: IPMarker[]) {
-        dispatch({ type: Types.SET_MARKERS, payload: { markers: markers } });
-    }
 
     const handleClickOpen = () => {
         setOpen(true);

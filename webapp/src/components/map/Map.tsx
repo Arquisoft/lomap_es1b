@@ -1,7 +1,9 @@
 import './Map.css';
 import { IPMarker } from '../../shared/SharedTypes';
-import React, { useEffect, useRef, useState, useContext } from 'react';
+import { useSession } from '@inrupt/solid-ui-react';
+import { randomUUID } from '../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
+import React, { useEffect, useRef, useState, useContext, MutableRefObject } from 'react';
 
 interface IMarker {
     name: string;
@@ -40,6 +42,7 @@ interface IMapProps {
     globalDescription: string;
     mapType: google.maps.MapTypeId;
     globalFilterCategories: string[];
+    nextID: MutableRefObject<string>;
     setGlobalLat: (globalLat: number) => void;
     setGlobalLng: (globalLng: number) => void;
     setMarkerShown: (marker: IPMarker) => void;
@@ -54,6 +57,7 @@ interface IMapProps {
 // del ámbito de esta asignatura.
 
 const Map: React.FC<IMapProps> = (props) => {
+    const { session } = useSession();
     const ref = useRef<HTMLDivElement>(null);                               // Contenedor HTML del mapa
     const [map, setMap] = useState<GoogleMap>();                            // useState para conservar la referencia al mapa
     // const markerHashMap = useRef<MarkerMap>({});                         // HashMap para conservar una relación entre el marcador en el mapa y su versión persistente
@@ -156,7 +160,7 @@ const Map: React.FC<IMapProps> = (props) => {
             lastAddedCouple.marker.setMap(null);                            // Elimina del mapa el último marcador añadido
         }
 
-        setLastAddedCouple(generateMarker(iMarker, markers.length + 1));    // Genera un par (marcador, ventana de información) y actualiza el useState correspondiente
+        setLastAddedCouple(generateMarker(iMarker, props.nextID.current));    // Genera un par (marcador, ventana de información) y actualiza el useState correspondiente
     };
 
     /**
@@ -165,7 +169,7 @@ const Map: React.FC<IMapProps> = (props) => {
      * @param id id del marcador correspondiente en el POD 
      * @returns ICouple par(marcador, ventana de información) 
      */
-    const generateMarker = (notAddedMarker: IMarker, id: number): ICouple => {
+    const generateMarker = (notAddedMarker: IMarker, id: string): ICouple => {
         const marker: GoogleMarker = new google.maps.Marker({
             position: notAddedMarker.latLng,                             // Posición del marcador
             icon: "blue_marker.png",                                     // Icono del marcador
@@ -188,13 +192,17 @@ const Map: React.FC<IMapProps> = (props) => {
             }
         });
 
-        marker.addListener('rightclick', () => {                         // Cuando hago click derecho en el marcador...
-            marker.setMap(null);                                         // Lo elimino del mapa
-            dispatch({ type: Types.DELETE_MARKER, payload: { id: id } }) // Elimino su correspondiente del contexto
+        marker.addListener('rightclick', () => {
+            if (markers.find(marker => marker.id === id)) {
+                props.setDetailedIWOpen(false);
+
+                marker.setMap(null);
+                dispatch({ type: Types.DELETE_MARKER, payload: { id: id } })
+            }
         });
 
         google.maps.event.addListener(infoWindow, 'closeclick', function () {
-            props.setDetailedIWOpen(false)
+            props.setDetailedIWOpen(false);
         });
 
         setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);   // Actualizo el useState para conservar su referencia
@@ -283,12 +291,25 @@ const Map: React.FC<IMapProps> = (props) => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [props.globalName, props.globalDescription, props.globalCategory, props.globalAddress]);
 
+    /**
+     * Función auxiliar para evitar tener que guardar referencias
+     * a los listener del último marcador
+     */
+    const updateMarkerListeners = () => {
+        let updatedMarker = markers.find(marker => marker.id === props.nextID.current)!; // Toma su versión persistente
+        generateMarker(parseMarker(updatedMarker), updatedMarker.id);                    // La añade al mapa
+        props.nextID.current = randomUUID();                                             // Actualiza el próximo ID a utilizar
+
+        lastAddedCouple!.marker.setMap(null);                                            // Borra su versión obsoleta del mapa
+    }
 
     /**
      * UseEffect atento a la propiedad "marcador aceptado"
      */
     useEffect(() => {
-        if (lastAddedCouple && props.acceptedMarker) {                  // Al pulsar aceptar en el formulario...
+        if (lastAddedCouple && props.acceptedMarker) {
+            updateMarkerListeners();                                    // Debemos actualizar sus listener, pues hacen referencia a valores antiguos...
+
             lastAddedCouple.marker = new google.maps.Marker();          // Corta la referencia al último marcador añadido
             lastAddedCouple.infoWindow = new google.maps.InfoWindow();  // Corta la referencia a su ventana de información
 
@@ -304,14 +325,14 @@ const Map: React.FC<IMapProps> = (props) => {
      * en función de la opción seleccionada
      */
     useEffect(() => {
-        deleteAllMarkers();     // Borra todos los marcadores del mapa
+        deleteAllMarkers(); // Borra todos los marcadores del mapa
 
         switch (props.globalMode) {
             case 'M':
-                loadContext();  // Carga los marcadores del contexto
+                loadContext(); // Carga los marcadores del contexto
                 break;
             case 'A':
-                // <- Cargar marcadores
+                loadFriendMarkers();
                 break;
             case 'E':
                 // <- Cargar marcadores
@@ -339,9 +360,19 @@ const Map: React.FC<IMapProps> = (props) => {
      * Carga los marcadores del contexto
      */
     const loadContext = (): void => {
-        markers.filter(m => props.globalFilterCategories.includes(m.category) && m.name.includes(props.globalFilterName)).forEach((marker) => {
-            generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
-        })
+        markers.filter(m => m.webId === session.info.webId!
+            && props.globalFilterCategories.includes(m.category)
+            && m.name.includes(props.globalFilterName)).forEach((marker) => {
+                generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
+            })
+    }
+
+    const loadFriendMarkers = (): void => {
+        markers.filter(m => m.webId !== session.info.webId!
+            && props.globalFilterCategories.includes(m.category)
+            && m.name.includes(props.globalFilterName)).forEach((marker) => {
+                generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
+            })
     }
 
     /**

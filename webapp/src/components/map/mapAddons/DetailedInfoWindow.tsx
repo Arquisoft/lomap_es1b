@@ -1,6 +1,8 @@
 import { Close } from '@mui/icons-material';
-import React, { useContext, useState } from 'react';
+import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../../shared/SharedTypes";
+import React, { useContext, useEffect, useState } from 'react';
+import { savePublicMarker } from '../../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
 import { Slide, Stack, TextField, Dialog, Rating, Button, IconButton } from '@mui/material';
 
@@ -12,8 +14,10 @@ interface DetailedUbicationViewProps {
 }
 
 const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
+  const { session } = useSession();
   const [rating, setRating] = useState<number>(0);
   const [comment, setComment] = useState<string>("");
+  const [isPublic, setPublic] = useState<boolean>(false);
   const { state: markers, dispatch } = useContext(MarkerContext);
   const [isRatingOpen, setRatingOpen] = useState<boolean>(false);
 
@@ -37,6 +41,26 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
     return result;
   }
 
+  useEffect(() => {
+    setPublic(props.markerShown.isPublic);
+  }, [props.markerShown]);
+
+  useEffect(() => {
+    let id = props.markerShown.id;
+
+    if (id !== "") {
+      let marker = markers.find(marker => marker.id = id)!;
+
+      if (isPublic) {
+        marker.isPublic = true;
+        savePublicMarker(marker, session.info.webId!);
+        dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } });
+      }
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isPublic]);
+
   return (
     <>
       <Slide style={{ color: 'white' }} direction="right" in={props.isDetailedIWOpen} mountOnEnter unmountOnExit>
@@ -45,6 +69,7 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
           <p style={{ marginTop: '0em' }}>Dirección: {props.markerShown.address}</p>
           <p>Categoría: {props.markerShown.category}</p>
           <p>Descripción: {props.markerShown.description}</p>
+          <Button variant="contained" sx={{ my: 2 }} onClick={() => setPublic(true)} disabled={isPublic}>Compartir ubicación</Button>
           <h2>Resumen de reseñas</h2>
           <Rating value={getRatingMean()} readOnly />
           <ul>
@@ -52,7 +77,7 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
               <li key={comment}>{comment}</li>
             )}
           </ul>
-          <Button variant="contained" type="submit" sx={{ my: 2 }} onClick={() => setRatingOpen(true)}>Escribir una reseña</Button>
+          <Button variant="contained" sx={{ my: 2 }} onClick={() => setRatingOpen(true)}>Escribir una reseña</Button>
           <Dialog onClose={() => setRatingOpen(false)} open={isRatingOpen}>
             <form name="newRating" onSubmit={handleSubmit}>
               <Stack direction='column' sx={{ width: '30em', padding: '1em' }}>

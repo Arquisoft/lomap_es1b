@@ -1,8 +1,8 @@
 import Button from '@mui/material/Button';
-import React, { useState, useContext } from 'react';
+import React, { MutableRefObject } from 'react';
+import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../../shared/SharedTypes";
-import { MarkerContext } from '../../../context/MarkerContextProvider'
-import { Slide, Stack, TextField, Switch, FormGroup, FormControlLabel, Select, MenuItem } from '@mui/material';
+import { Slide, Stack, TextField, Select, MenuItem } from '@mui/material'
 
 interface INewUbicationFormProps {
   globalLat: number;
@@ -12,6 +12,7 @@ interface INewUbicationFormProps {
   globalAddress: string;
   globalCategory: string;
   globalDescription: string;
+  nextID: MutableRefObject<string>;
   addMarker: (marker: IPMarker) => void;
   setGlobalLat: (globalLat: number) => void;
   setGlobalLng: (globalLng: number) => void;
@@ -23,17 +24,17 @@ interface INewUbicationFormProps {
 }
 
 const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
-  const [isPublic, setIsPublic] = useState(false);
-  const { state: markers } = useContext(MarkerContext);
+  const { session } = useSession();
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     props.addMarker({
-      id: markers.length + 1, date: new Date(), name: props.globalName, description: props.globalDescription,
-      lat: props.globalLat, lng: props.globalLng, category: props.globalCategory, isPublic: isPublic,
-      address: props.globalAddress, ratings: [], comments: []
+      id: props.nextID.current, date: new Date(), name: props.globalName, description: props.globalDescription,
+      lat: props.globalLat, lng: props.globalLng, category: props.globalCategory, isPublic: false,
+      address: props.globalAddress, ratings: [], comments: [], webId: session.info.webId!
     });
+
     props.setAcceptedMarker(true);
   }
 
@@ -94,16 +95,6 @@ const NewUbicationForm: React.FC<INewUbicationFormProps> = (props) => {
               <MenuItem value={'Restaurantes'}>Restaurantes</MenuItem>
               <MenuItem value={'Entretenimiento'}>Entretenimiento</MenuItem>
             </Select>
-            <FormGroup>
-              <FormControlLabel control={
-                <Switch
-                  checked={isPublic}
-                  inputProps={{ 'aria-label': 'controlled' }}
-                  onChange={e => setIsPublic(e.target.checked)}
-                />
-              }
-                sx={{ color: 'white' }} label="Ubicación pública" />
-            </FormGroup>
             <Button variant="contained" type="submit" sx={{ my: 2 }}>Aceptar</Button>
             <Button variant="contained" onClick={() => props.setFormOpened(false)} sx={{ my: 2 }}>Cancelar</Button>
           </Stack>
