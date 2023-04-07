@@ -11,6 +11,7 @@ export interface IPMarker {
   lat: number,
   lng: number,
   name: string,
+  webId: string,
   address: string,
   category: string,
   isPublic: boolean,

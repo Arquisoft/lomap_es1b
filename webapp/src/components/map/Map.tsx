@@ -1,8 +1,9 @@
 import './Map.css';
 import { IPMarker } from '../../shared/SharedTypes';
+import { useSession } from '@inrupt/solid-ui-react';
+import { randomUUID } from '../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
 import React, { useEffect, useRef, useState, useContext, MutableRefObject } from 'react';
-import { randomUUID } from '../../helpers/SolidHelper';
 
 interface IMarker {
     name: string;
@@ -56,6 +57,7 @@ interface IMapProps {
 // del ámbito de esta asignatura.
 
 const Map: React.FC<IMapProps> = (props) => {
+    const { session } = useSession();
     const ref = useRef<HTMLDivElement>(null);                               // Contenedor HTML del mapa
     const [map, setMap] = useState<GoogleMap>();                            // useState para conservar la referencia al mapa
     // const markerHashMap = useRef<MarkerMap>({});                         // HashMap para conservar una relación entre el marcador en el mapa y su versión persistente
@@ -330,7 +332,7 @@ const Map: React.FC<IMapProps> = (props) => {
                 loadContext(); // Carga los marcadores del contexto
                 break;
             case 'A':
-                // <- Cargar marcadores
+                loadFriendMarkers();
                 break;
             case 'E':
                 // <- Cargar marcadores
@@ -358,9 +360,19 @@ const Map: React.FC<IMapProps> = (props) => {
      * Carga los marcadores del contexto
      */
     const loadContext = (): void => {
-        markers.filter(m => props.globalFilterCategories.includes(m.category) && m.name.includes(props.globalFilterName)).forEach((marker) => {
-            generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
-        })
+        markers.filter(m => m.webId === session.info.webId!
+            && props.globalFilterCategories.includes(m.category)
+            && m.name.includes(props.globalFilterName)).forEach((marker) => {
+                generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
+            })
+    }
+
+    const loadFriendMarkers = (): void => {
+        markers.filter(m => m.webId !== session.info.webId!
+            && props.globalFilterCategories.includes(m.category)
+            && m.name.includes(props.globalFilterName)).forEach((marker) => {
+                generateMarker(parseMarker(marker), marker.id); // Lo parsea y lo añade al mapa
+            })
     }
 
     /**

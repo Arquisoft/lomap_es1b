@@ -3,9 +3,9 @@ import { Close } from '@mui/icons-material';
 import NewUbicationForm from './NewUbicationForm';
 import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../../shared/SharedTypes";
+import DetailedUbicationView from './DetailedInfoWindow';
 import { useState, useEffect, useContext, useRef } from 'react';
 import { saveMarkers, randomUUID } from '../../../helpers/SolidHelper';
-import DetailedUbicationView from './DetailedInfoWindow';
 import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
 import {
     Box,
@@ -45,7 +45,7 @@ const MapView = () => {
     const [markerShown, setMarkerShown] = useState<IPMarker>({
         id: "", date: new Date(), lat: 0, lng: 0, name: "Sin nombre", address: "Sin dirección",
         category: "Sin categoría", isPublic: false, description: "Sin descripción",
-        ratings: [], comments: []
+        ratings: [], comments: [], webId: ""
     });
 
     const addMarker = (marker: IPMarker) => {
@@ -54,7 +54,8 @@ const MapView = () => {
 
     useEffect(() => {
         if (session.info.isLoggedIn) {
-            saveMarkers(markers, session.info.webId!);
+            saveMarkers(markers.filter((marker) => marker.webId === session.info.webId!),
+                session.info.webId!);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [markers]);
