@@ -17,9 +17,10 @@ import {
     hasAccessibleAcl,
     saveSolidDatasetAt,
     saveFileInContainer,
+    setAgentDefaultAccess,
     getSolidDatasetWithAcl,
-    setPublicResourceAccess,
-    createAclFromFallbackAcl,
+    setAgentResourceAccess,
+    createAclFromFallbackAcl
 } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
@@ -93,7 +94,7 @@ export async function addFriendByWebId(webId: string, friendWebId: string) {
     solidDataset = setThing(solidDataset, friends);
     saveSolidDatasetAt(webId, solidDataset, { fetch: fetch })
 
-    //grantAccessToMarkers(webId, friendWebId, true);
+    grantAccessToMarkers(webId, friendWebId, true);
 }
 
 export async function deleteFriendByWebId(webId: string, friendWebId: string) {
@@ -104,7 +105,7 @@ export async function deleteFriendByWebId(webId: string, friendWebId: string) {
     solidDataset = setThing(solidDataset, friends);
     saveSolidDatasetAt(webId, solidDataset, { fetch: fetch });
 
-    //grantAccessToMarkers(webId, friendWebId, false);
+    grantAccessToMarkers(webId, friendWebId, false);
 }
 
 async function grantAccessToMarkers(webId: string, friendWebId: string, access: boolean) {
@@ -143,10 +144,16 @@ async function grantAccessToMarkers(webId: string, friendWebId: string, access: 
         resourceAcl = getResourceAcl(myDatasetWithAcl);
     }
 
-    const updatedAcl = setPublicResourceAccess(
+    let updatedAcl = setAgentResourceAccess(
         resourceAcl,
-        { read: access, append: access, write: access, control: access }
+        friendWebId,
+        { read: true, append: access, write: access, control: false },
     );
+    updatedAcl = setAgentDefaultAccess(
+        updatedAcl,
+        friendWebId,
+        { read: true, append: access, write: access, control: false }
+    )
 
     await saveAclFor(myDatasetWithAcl, updatedAcl, { fetch: fetch });
 }
