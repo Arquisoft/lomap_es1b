@@ -2,9 +2,9 @@ import { Close } from '@mui/icons-material';
 import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../../shared/SharedTypes";
 import React, { useContext, useEffect, useState } from 'react';
-import { savePublicMarker } from '../../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
-import { Slide, Stack, TextField, Dialog, Rating, Button, IconButton } from '@mui/material';
+import { deletePublicMarker, savePublicMarker } from '../../../helpers/SolidHelper';
+import { Slide, Stack, TextField, Dialog, Rating, Button, IconButton, FormGroup, Switch, FormControlLabel } from '@mui/material';
 
 interface DetailedUbicationViewProps {
   markerShown: IPMarker;
@@ -29,6 +29,9 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
     marker.comments.push(comment);
 
     dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } });
+    if (marker.webId !== session.info.webId!) {
+      await savePublicMarker(marker, marker.webId);
+    }
   }
 
   const getRatingMean = () => {
@@ -54,8 +57,11 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
       if (isPublic) {
         marker.isPublic = true;
         savePublicMarker(marker, session.info.webId!);
-        dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } });
+      } else {
+        marker.isPublic = false;
+        deletePublicMarker(marker, session.info.webId!);
       }
+      dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } });
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -69,7 +75,16 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
           <p style={{ marginTop: '0em' }}>Dirección: {props.markerShown.address}</p>
           <p>Categoría: {props.markerShown.category}</p>
           <p>Descripción: {props.markerShown.description}</p>
-          <Button variant="contained" sx={{ my: 2 }} onClick={() => setPublic(true)} disabled={isPublic}>Compartir ubicación</Button>
+          <FormGroup>
+            <FormControlLabel control={
+              <Switch
+                checked={isPublic}
+                inputProps={{ 'aria-label': 'controlled' }}
+                onChange={e => setPublic(e.target.checked)}
+              />
+            }
+              sx={{ color: 'white', my: 2 }} label="Compartir ubicación" />
+          </FormGroup>
           <h2>Resumen de reseñas</h2>
           <Rating value={getRatingMean()} readOnly />
           <ul>

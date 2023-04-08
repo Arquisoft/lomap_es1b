@@ -17,9 +17,9 @@ import {
     hasAccessibleAcl,
     saveSolidDatasetAt,
     saveFileInContainer,
-    setAgentResourceAccess,
     getSolidDatasetWithAcl,
-    createAclFromFallbackAcl
+    setPublicResourceAccess,
+    createAclFromFallbackAcl,
 } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
@@ -93,7 +93,7 @@ export async function addFriendByWebId(webId: string, friendWebId: string) {
     solidDataset = setThing(solidDataset, friends);
     saveSolidDatasetAt(webId, solidDataset, { fetch: fetch })
 
-    grantAccessToMarkers(webId, friendWebId, true);
+    //grantAccessToMarkers(webId, friendWebId, true);
 }
 
 export async function deleteFriendByWebId(webId: string, friendWebId: string) {
@@ -104,7 +104,7 @@ export async function deleteFriendByWebId(webId: string, friendWebId: string) {
     solidDataset = setThing(solidDataset, friends);
     saveSolidDatasetAt(webId, solidDataset, { fetch: fetch });
 
-    grantAccessToMarkers(webId, friendWebId, false);
+    //grantAccessToMarkers(webId, friendWebId, false);
 }
 
 async function grantAccessToMarkers(webId: string, friendWebId: string, access: boolean) {
@@ -143,10 +143,9 @@ async function grantAccessToMarkers(webId: string, friendWebId: string, access: 
         resourceAcl = getResourceAcl(myDatasetWithAcl);
     }
 
-    const updatedAcl = setAgentResourceAccess(
+    const updatedAcl = setPublicResourceAccess(
         resourceAcl,
-        friendWebId,
-        { read: access, append: access, write: access, control: false }
+        { read: access, append: access, write: access, control: access }
     );
 
     await saveAclFor(myDatasetWithAcl, updatedAcl, { fetch: fetch });
@@ -186,6 +185,21 @@ export async function readFriendMarkers(webId: string) {
 }
 
 export async function savePublicMarker(publicMarker: IPMarker, webId: string) {
+    let { markers, fileURL } = await filterPublicMarker(webId, publicMarker);
+    markers.push(publicMarker);
+
+    await saveMarkersToFile(markers, fileURL);
+
+    return markers;
+}
+
+export async function deletePublicMarker(publicMarker: IPMarker, webId: string) {
+    let { markers, fileURL } = await filterPublicMarker(webId, publicMarker);
+
+    await saveMarkersToFile(markers, fileURL);
+}
+
+async function filterPublicMarker(webId: string, publicMarker: IPMarker) {
     let fileURL = `${parseURL(webId)}public/lomap/markers.json`;
     let markers = await readMarkersFromFile(fileURL);
 
@@ -193,9 +207,5 @@ export async function savePublicMarker(publicMarker: IPMarker, webId: string) {
         markers = [];
     }
     markers = markers.filter((marker) => marker.id !== publicMarker.id);
-    markers.push(publicMarker);
-
-    await saveMarkersToFile(markers, fileURL);
-
-    return markers;
+    return { markers, fileURL };
 }
