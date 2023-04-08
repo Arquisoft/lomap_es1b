@@ -11,19 +11,6 @@ import { MarkerContext, Types } from '../context/MarkerContextProvider';
 export const NavBar = () => {
     const { session } = useSession();
     const [open, setOpen] = useState(false);
-    const { dispatch } = useContext(MarkerContext);
-
-    session.onLogin(async () => {
-        setMarkers(await readMarkers(session.info.webId!));
-    })
-
-    session.onLogout(async () => {
-        setMarkers([])
-    })
-
-    function setMarkers(markers: IPMarker[]) {
-        dispatch({ type: Types.SET_MARKERS, payload: { markers: markers } });
-    }
 
     const handleClickOpen = () => {
         setOpen(true);
