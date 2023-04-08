@@ -1,4 +1,32 @@
-import { User } from '../shared/SharedTypes';
+import { IPMarker, User } from '../shared/SharedTypes';
+
+export async function getUbicaciones(): Promise<any[]> {
+  const apiEndPoint = process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint + '/ubicaciones/list');
+  return response.json()
+}
+
+export async function addUbicacion(ubicacion: IPMarker): Promise<boolean> {
+  const apiEndPoint = process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
+  let response = await fetch(apiEndPoint + '/ubicaciones/add', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      'id': ubicacion.id,
+      'date': ubicacion.date,
+      'lat': ubicacion.lat,
+      'lng': ubicacion.lng,
+      'name': ubicacion.name,
+      'address': ubicacion.address,
+      'category': ubicacion.category,
+      'descripcion': ubicacion.description,
+    })
+  });
+  if (response.status === 200)
+    return true;
+  else
+    return false;
+}
 
 export async function addUser(name: string, email: string): Promise<boolean> {
   const apiEndPoint = process.env.REACT_APP_API_URI || 'http://localhost:5000/api'
