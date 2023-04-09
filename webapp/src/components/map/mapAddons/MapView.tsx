@@ -1,11 +1,12 @@
 import Map from '../Map';
+import { v4 as uuid } from 'uuid';
 import { Close } from '@mui/icons-material';
 import NewUbicationForm from './NewUbicationForm';
 import { useSession } from '@inrupt/solid-ui-react';
 import { IPMarker } from "../../../shared/SharedTypes";
 import DetailedUbicationView from './DetailedInfoWindow';
+import { saveMarkers } from '../../../helpers/SolidHelper';
 import { useState, useEffect, useContext, useRef } from 'react';
-import { saveMarkers, randomUUID } from '../../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
 import {
     Box,
@@ -23,7 +24,7 @@ import {
 
 const MapView = () => {
     const { session } = useSession();
-    const nextID = useRef<string>(randomUUID());
+    const nextID = useRef<string>(uuid());
     const [globalLat, setGlobalLat] = useState<number>(0);
     const [globalLng, setGlobalLng] = useState<number>(0);
     const [globalName, setGlobalName] = useState<string>("");

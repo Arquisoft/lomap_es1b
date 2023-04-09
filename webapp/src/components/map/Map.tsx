@@ -1,7 +1,7 @@
 import './Map.css';
+import { v4 as uuid } from 'uuid';
 import { IPMarker } from '../../shared/SharedTypes';
 import { useSession } from '@inrupt/solid-ui-react';
-import { randomUUID } from '../../helpers/SolidHelper';
 import { MarkerContext, Types } from '../../context/MarkerContextProvider';
 import React, { useEffect, useRef, useState, useContext, MutableRefObject } from 'react';
 
@@ -205,12 +205,8 @@ const Map: React.FC<IMapProps> = (props) => {
                 props.setDetailedIWOpen(false);
 
                 marker.setMap(null);
-                dispatch({ type: Types.DELETE_MARKER, payload: { id: id } })
+                dispatch({ type: Types.DELETE_MARKER, payload: { id: id } });
             }
-        });
-
-        google.maps.event.addListener(infoWindow, 'closeclick', function () {
-            props.setDetailedIWOpen(false);
         });
 
         setGoogleMarkers(googleMarkers => [...googleMarkers, marker]);   // Actualizo el useState para conservar su referencia
@@ -306,7 +302,7 @@ const Map: React.FC<IMapProps> = (props) => {
     const updateMarkerListeners = () => {
         let updatedMarker = markers.find(marker => marker.id === props.nextID.current)!; // Toma su versión persistente
         generateMarker(parseMarker(updatedMarker), updatedMarker.id);                    // La añade al mapa
-        props.nextID.current = randomUUID();                                             // Actualiza el próximo ID a utilizar
+        props.nextID.current = uuid();                                             // Actualiza el próximo ID a utilizar
 
         lastAddedCouple?.marker.setMap(null);                                            // Borra su versión obsoleta del mapa
     }

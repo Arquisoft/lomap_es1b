@@ -54,11 +54,10 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
     if (id !== "") {
       let marker = markers.find(marker => marker.id = id)!;
 
+      marker.isPublic = isPublic;
       if (isPublic) {
-        marker.isPublic = true;
         savePublicMarker(marker, session.info.webId!);
       } else {
-        marker.isPublic = false;
         deletePublicMarker(marker, session.info.webId!);
       }
       dispatch({ type: Types.UPDATE_MARKER, payload: { id: marker.id, marker: marker } });
@@ -71,7 +70,10 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
     <>
       <Slide style={{ color: 'white' }} direction="right" in={props.isDetailedIWOpen} mountOnEnter unmountOnExit>
         <Stack alignItems="right" sx={{ margin: 2, display: props.isDetailedIWOpen ? '' : 'none' }}>
-          <h1 style={{ marginTop: '0em' }}>{props.markerShown.name}</h1>
+          <Stack direction='row'>
+            <h1 style={{ marginTop: '0em' }}>{props.markerShown.name}</h1>
+            <IconButton sx={{ marginLeft: 'auto', marginRight: '0em' }} onClick={async () => props.setDetailedIWOpen(false)}><Close /></IconButton>
+          </Stack>
           <p style={{ marginTop: '0em' }}>Dirección: {props.markerShown.address}</p>
           <p>Categoría: {props.markerShown.category}</p>
           <p>Descripción: {props.markerShown.description}</p>

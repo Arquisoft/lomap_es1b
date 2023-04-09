@@ -1,21 +1,18 @@
 import { useContext } from 'react';
-import { Button, Grid, Box } from '@mui/material';
-import { IPMarker } from "../../../shared/SharedTypes";
-import { MarkerContext, Types } from '../../../context/MarkerContextProvider';
+import { Grid, Box } from '@mui/material';
 import { useSession } from '@inrupt/solid-ui-react';
+import { IPMarker } from "../../../shared/SharedTypes";
+import { MarkerContext } from '../../../context/MarkerContextProvider';
 
 const UbicationsView = () => {
     const { session } = useSession();
-    const { state: markers, dispatch } = useContext(MarkerContext);
+    const { state: markers } = useContext(MarkerContext);
 
     const getMyUbications = () => {
         if (session.info.isLoggedIn) {
             return markers.filter((marker) => marker.webId === session.info.webId!);
         }
         return [];
-    }
-    const deleteUbication = (id: string) => {
-        dispatch({ type: Types.DELETE_MARKER, payload: { id: id } });
     }
 
     return (
@@ -28,12 +25,10 @@ const UbicationsView = () => {
                                 getMyUbications().map((ubication: IPMarker) =>
                                     <Grid item xs={6} sm={4} md={3} key={ubication.id}>
                                         <Box sx={{ padding: '1em', bgcolor: 'white', border: 'solid', borderRadius: '2em' }}>
-                                            <h1>{ubication.name}, ({ubication.category})</h1>
-                                            <h2>{ubication.address}</h2>
-                                            <p>{ubication.description}</p>
-                                            <Button onClick={() => deleteUbication(ubication.id)}>
-                                                Borrar
-                                            </Button>
+                                            <h1 style={{ marginTop: '0em' }}>{ubication.name}</h1>
+                                            <p style={{ marginTop: '0em' }}>Dirección: {ubication.address}</p>
+                                            <p>Categoría: {ubication.category}</p>
+                                            <p>Descripción: {ubication.description}</p>
                                         </Box>
                                     </Grid>
                                 )

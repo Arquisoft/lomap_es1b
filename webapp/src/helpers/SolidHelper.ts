@@ -144,10 +144,6 @@ async function grantAccessToMarkers(webId: string, friendWebId: string, access: 
     await saveAclFor(myDatasetWithAcl, updatedAcl, { fetch: fetch });
 }
 
-export function randomUUID() {
-    return String(Math.floor(Math.random() * 9e15))
-}
-
 export async function readFriendMarkers(webId: string) {
     let markers: IPMarker[] = [];
 
