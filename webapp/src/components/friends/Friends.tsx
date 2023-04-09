@@ -5,7 +5,12 @@ import { useSession } from '@inrupt/solid-ui-react';
 import { PersonData, findPersonData } from './FriendList'
 import { addFriendByWebId, deleteFriendByWebId } from '../../helpers/SolidHelper';
 
-const FriendsList: React.FC = () => {
+interface FriendsListProps {
+  isLoggedIn: boolean;
+}
+
+
+const FriendsList: React.FC<FriendsListProps> = ({ isLoggedIn }) => {
   const { session } = useSession();
   const [friends, setFriendList] = useState<PersonData[]>([]);
   const [showAddFriendForm, setShowAddFriendForm] = useState(false);
@@ -14,7 +19,7 @@ const FriendsList: React.FC = () => {
   useEffect(() => {
     loadPersonData();
     fetchFriends();
-  }, [showAddFriendForm]);
+  }, [isLoggedIn, showAddFriendForm]);
 
   async function loadPersonData() {
     const webId = session.info.webId
@@ -95,4 +100,5 @@ const FriendsList: React.FC = () => {
 };
 
 export default FriendsList;
+
 

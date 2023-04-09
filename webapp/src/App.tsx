@@ -16,6 +16,7 @@ function App(): JSX.Element {
   const { session } = useSession();
   const { dispatch } = useContext(MarkerContext);
   const [scriptLoaded, setScriptLoaded] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     const googleMapScript = loadMapApi();
@@ -29,10 +30,14 @@ function App(): JSX.Element {
     (await readMarkers(session.info.webId!)).forEach(m => markers.push(m));
 
     setMarkers(markers);
+
+    setIsLoggedIn(true);
   })
 
   session.onLogout(async () => {
     setMarkers([])
+
+    setIsLoggedIn(false);
   })
 
   function setMarkers(markers: IPMarker[]) {
@@ -53,7 +58,7 @@ function App(): JSX.Element {
           <UbicationsView />
         } />
         <Route path="/friends" element={
-          <FriendsList />
+          <FriendsList isLoggedIn={isLoggedIn} />
         } />
       </Routes>
     </>
