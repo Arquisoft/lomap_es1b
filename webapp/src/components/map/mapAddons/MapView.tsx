@@ -68,8 +68,6 @@ const MapView = () => {
     };
 
     session.onLogout(() => {
-        setGlobalLat(0);
-        setGlobalLng(0);
         setGlobalMode("E");
         setFormOpened(false);
     });

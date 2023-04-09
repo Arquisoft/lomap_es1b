@@ -125,6 +125,7 @@ const Map: React.FC<IMapProps> = (props) => {
     };
 
     session.onLogout(() => {
+        lastAddedCouple?.marker.setMap(null);
         google.maps.event.removeListener(listenerRef.current!);
     });
 
@@ -307,7 +308,7 @@ const Map: React.FC<IMapProps> = (props) => {
         generateMarker(parseMarker(updatedMarker), updatedMarker.id);                    // La añade al mapa
         props.nextID.current = randomUUID();                                             // Actualiza el próximo ID a utilizar
 
-        lastAddedCouple!.marker.setMap(null);                                            // Borra su versión obsoleta del mapa
+        lastAddedCouple?.marker.setMap(null);                                            // Borra su versión obsoleta del mapa
     }
 
     /**
