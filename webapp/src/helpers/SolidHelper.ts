@@ -110,20 +110,6 @@ export async function deleteFriendByWebId(webId: string, friendWebId: string) {
 
 async function grantAccessToMarkers(webId: string, friendWebId: string, access: boolean) {
     let folderURL = `${parseURL(webId)}public/lomap/`;
-    let fileURL = folderURL + "markers.json";
-    const blob = new Blob(undefined, {
-        type: "application/json;charset=utf-8"
-    });
-    try {
-        await overwriteFile(fileURL, blob,
-            {
-                contentType: blob.type,
-                fetch: fetch
-            }
-        );
-    } catch (error) {
-        console.error(error);
-    }
 
     const myDatasetWithAcl = await getSolidDatasetWithAcl(folderURL, { fetch: fetch });
 
