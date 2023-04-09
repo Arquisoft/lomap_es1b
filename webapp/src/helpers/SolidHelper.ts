@@ -17,10 +17,10 @@ import {
     hasAccessibleAcl,
     saveSolidDatasetAt,
     saveFileInContainer,
-    setAgentDefaultAccess,
+    setPublicDefaultAccess,
     getSolidDatasetWithAcl,
-    setAgentResourceAccess,
-    createAclFromFallbackAcl
+    setPublicResourceAccess,
+    createAclFromFallbackAcl,
 } from "@inrupt/solid-client";
 
 export async function readMarkers(webId: string) {
@@ -94,7 +94,7 @@ export async function addFriendByWebId(webId: string, friendWebId: string) {
     solidDataset = setThing(solidDataset, friends);
     saveSolidDatasetAt(webId, solidDataset, { fetch: fetch })
 
-    grantAccessToMarkers(webId, friendWebId, true);
+    grantAccessToMarkers(webId, true);
 }
 
 export async function deleteFriendByWebId(webId: string, friendWebId: string) {
@@ -104,12 +104,32 @@ export async function deleteFriendByWebId(webId: string, friendWebId: string) {
     friends = buildThing(friends).removeUrl(FOAF.knows, friendWebId).build();
     solidDataset = setThing(solidDataset, friends);
     saveSolidDatasetAt(webId, solidDataset, { fetch: fetch });
-
-    grantAccessToMarkers(webId, friendWebId, false);
 }
 
-async function grantAccessToMarkers(webId: string, friendWebId: string, access: boolean) {
+async function grantAccessToMarkers(webId: string, access: boolean) {
     let folderURL = `${parseURL(webId)}public/lomap/`;
+    let fileURL = `${folderURL}markers.json`;
+
+    try {
+        await getFile(fileURL, { fetch: fetch })
+            .catch(async () => {
+                const blob = new Blob(undefined, {
+                    type: "application/json;charset=utf-8"
+                });
+                try {
+                    await overwriteFile(fileURL, blob,
+                        {
+                            contentType: blob.type,
+                            fetch: fetch
+                        }
+                    );
+                } catch (error) {
+                    console.error(error);
+                }
+            });
+    } catch (error) {
+        console.error(error);
+    }
 
     const myDatasetWithAcl = await getSolidDatasetWithAcl(folderURL, { fetch: fetch });
 
@@ -130,14 +150,12 @@ async function grantAccessToMarkers(webId: string, friendWebId: string, access: 
         resourceAcl = getResourceAcl(myDatasetWithAcl);
     }
 
-    let updatedAcl = setAgentResourceAccess(
+    let updatedAcl = setPublicResourceAccess(
         resourceAcl,
-        friendWebId,
         { read: true, append: access, write: access, control: false },
     );
-    updatedAcl = setAgentDefaultAccess(
+    updatedAcl = setPublicDefaultAccess(
         updatedAcl,
-        friendWebId,
         { read: true, append: access, write: access, control: false }
     )
 

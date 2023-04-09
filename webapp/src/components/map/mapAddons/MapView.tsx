@@ -71,6 +71,7 @@ const MapView = () => {
     session.onLogout(() => {
         setGlobalMode("E");
         setFormOpened(false);
+        setDetailedIWOpen(false);
     });
 
     return (
