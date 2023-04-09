@@ -67,6 +67,13 @@ const MapView = () => {
         setGlobalFilterCategories(newCategories);
     };
 
+    session.onLogout(() => {
+        setGlobalLat(0);
+        setGlobalLng(0);
+        setGlobalMode("E");
+        setFormOpened(false);
+    });
+
     return (
         <Grid container sx={{ width: '100%', height: '100%' }}>
             <Grid item xs={12}>
@@ -83,8 +90,7 @@ const MapView = () => {
                         </Select>
                         :
                         <Select
-                            value={globalMode}
-                            onChange={(e) => setGlobalMode(e.target.value)}
+                            value={'E'}
                             sx={{ width: '15em', height: '3em', bgcolor: 'white', margin: '1em' }}
                         >
                             <MenuItem value={'E'}>Explorar</MenuItem>
@@ -118,16 +124,18 @@ const MapView = () => {
                         </Stack>
                     </Dialog>
                     <Box sx={{ flexGrow: 2 }}></Box>
-                    <Button
-                        variant="contained"
-                        sx={{
-                            width: '15em',
-                            margin: '1em',
-                            fontSize: 'large',
-                            display: isFormOpened ? 'none' : '',
-                        }}
-                        onClick={async () => setFormOpened(!isFormOpened)}
-                    >Nueva ubicación</Button>
+                    {session.info.isLoggedIn &&
+                        <Button
+                            variant="contained"
+                            sx={{
+                                width: '15em',
+                                margin: '1em',
+                                fontSize: 'large',
+                                display: isFormOpened ? 'none' : '',
+                            }}
+                            onClick={async () => setFormOpened(!isFormOpened)}
+                        >Nueva ubicación</Button>
+                    }
                 </Stack>
             </Grid>
             <Grid item xs={isDetailedIWOpen ? 3 : 0}>

@@ -62,6 +62,7 @@ const Map: React.FC<IMapProps> = (props) => {
     const [map, setMap] = useState<GoogleMap>();                            // useState para conservar la referencia al mapa
     // const markerHashMap = useRef<MarkerMap>({});                         // HashMap para conservar una relación entre el marcador en el mapa y su versión persistente
     const [marker, setMarker] = useState<IMarker>();                        // useState para comunicar el listener con el método
+    const listenerRef = useRef<google.maps.MapsEventListener>();
     const { state: markers, dispatch } = useContext(MarkerContext);         // Proveedor de los marcadores en el POD
     const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();      // Último par (marcador, ventana de información) añadidos al mapa
     const [googleMarkers, setGoogleMarkers] = useState<GoogleMarker[]>([]); // useState para conservar referencias a todos los marcadores que se crean
@@ -73,8 +74,10 @@ const Map: React.FC<IMapProps> = (props) => {
         if (!map) {
             defaultMapStart();              // Si el mapa no está iniciado, lo inicia
         } else {
-            addInitMarker();                // Añade un marcador para evitar problemas con los Spinner del formulario
-            initEventListener();            // Inicia el listener encargado de escuchar clicks en el mapa
+            if (session.info.isLoggedIn) {
+                addInitMarker();                // Añade un marcador para evitar problemas con los Spinner del formulario
+                initEventListener();            // Inicia el listener encargado de escuchar clicks en el mapa
+            }
             addHomeMarker(map.getCenter()); // Añade un marcador en la posición actual del usuario
         }
     };
@@ -107,7 +110,7 @@ const Map: React.FC<IMapProps> = (props) => {
      * Inicia el listener encargado de escuchar clicks en el mapa
      */
     const initEventListener = (): void => {
-        google.maps.event.addListener(map!, 'click', async function (e) { // Una vez se recibe un click...
+        listenerRef.current = google.maps.event.addListener(map!, 'click', async function (e) { // Una vez se recibe un click...
             props.setGlobalLat(e.latLng.lat());                           // Cambio las coordenadas en los campos del formulario
             props.setGlobalLng(e.latLng.lng());
 
@@ -120,6 +123,10 @@ const Map: React.FC<IMapProps> = (props) => {
             })
         })
     };
+
+    session.onLogout(() => {
+        google.maps.event.removeListener(listenerRef.current!);
+    });
 
     /**
      * UseEffect encargado de añadir un marcador cuando se actualiza el useState "marker"

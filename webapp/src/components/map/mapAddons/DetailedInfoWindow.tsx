@@ -75,16 +75,19 @@ const DetailedUbicationView: React.FC<DetailedUbicationViewProps> = (props) => {
           <p style={{ marginTop: '0em' }}>Dirección: {props.markerShown.address}</p>
           <p>Categoría: {props.markerShown.category}</p>
           <p>Descripción: {props.markerShown.description}</p>
-          <FormGroup>
-            <FormControlLabel control={
-              <Switch
-                checked={isPublic}
-                inputProps={{ 'aria-label': 'controlled' }}
-                onChange={e => setPublic(e.target.checked)}
-              />
-            }
-              sx={{ color: 'white', my: 2 }} label="Compartir ubicación" />
-          </FormGroup>
+          {props.markerShown.webId === session.info.webId
+            &&
+            <FormGroup>
+              <FormControlLabel control={
+                <Switch
+                  checked={isPublic}
+                  inputProps={{ 'aria-label': 'controlled' }}
+                  onChange={e => setPublic(e.target.checked)}
+                />
+              }
+                sx={{ color: 'white', my: 2 }} label="Compartir ubicación" />
+            </FormGroup>
+          }
           <h2>Resumen de reseñas</h2>
           <Rating value={getRatingMean()} readOnly />
           <ul>
