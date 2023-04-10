@@ -26,7 +26,6 @@ const FriendsList: React.FC = () => {
     const webId = session.info.webId
     const data = await findPersonData(webId!)
     setPersonData(data)
-    console.log("loadPersonData")
   }
 
   async function fetchFriends() {
@@ -34,8 +33,6 @@ const FriendsList: React.FC = () => {
       personData.friends.map((friend) => findPersonData(friend))
     );
     setFriendList(names);
-    console.log(names.length)
-    console.log("fetchFriends")
   }
 
   const handleAddFriend = async (webId: string) => {

@@ -13,16 +13,10 @@
         latLng: GoogleLatLng;
     }
 
-    interface ICouple {
-        marker: GoogleMarker;
-        infoWindow: GoogleInfoWindow;
-    }
-
-    /*
-        type MarkerMap = {
-            [id: number]: ICouple;
-        }
-    */
+interface ICouple {
+    marker: GoogleMarker;
+    infoWindow: GoogleInfoWindow;
+}
 
     type GoogleMap = google.maps.Map;
     type GoogleLatLng = google.maps.LatLng;
@@ -56,16 +50,15 @@
     // quebraderos de cabeza y/o bucles infinitos, lo que se escapa
     // del ámbito de esta asignatura.
 
-    const Map: React.FC<IMapProps> = (props) => {
-        const { session } = useSession();
-        const ref = useRef<HTMLDivElement>(null);                               // Contenedor HTML del mapa
-        const [map, setMap] = useState<GoogleMap>();                            // useState para conservar la referencia al mapa
-        // const markerHashMap = useRef<MarkerMap>({});                         // HashMap para conservar una relación entre el marcador en el mapa y su versión persistente
-        const [marker, setMarker] = useState<IMarker>();                        // useState para comunicar el listener con el método
-        const listenerRef = useRef<google.maps.MapsEventListener>();
-        const { state: markers, dispatch } = useContext(MarkerContext);         // Proveedor de los marcadores en el POD
-        const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();      // Último par (marcador, ventana de información) añadidos al mapa
-        const [googleMarkers, setGoogleMarkers] = useState<GoogleMarker[]>([]); // useState para conservar referencias a todos los marcadores que se crean
+const Map: React.FC<IMapProps> = (props) => {
+    const { session } = useSession();
+    const ref = useRef<HTMLDivElement>(null);                               // Contenedor HTML del mapa
+    const [map, setMap] = useState<GoogleMap>();                            // useState para conservar la referencia al mapa
+    const [marker, setMarker] = useState<IMarker>();                        // useState para comunicar el listener con el método
+    const listenerRef = useRef<google.maps.MapsEventListener>();
+    const { state: markers, dispatch } = useContext(MarkerContext);         // Proveedor de los marcadores en el POD
+    const [lastAddedCouple, setLastAddedCouple] = useState<ICouple>();      // Último par (marcador, ventana de información) añadidos al mapa
+    const [googleMarkers, setGoogleMarkers] = useState<GoogleMarker[]>([]); // useState para conservar referencias a todos los marcadores que se crean
 
         /**
          * Inicia y/o inicializa el mapa
@@ -379,21 +372,21 @@
                 })
         }
 
-        /**
-         * Transforma la versión persistente de un marcador 
-         * a su versión correspondiente en el mapa
-         * @param iPMarker marcador persistente
-         * @returns parámetros necesarios para generar un marcador
-         */
-        const parseMarker = (iPMarker: IPMarker): IMarker => {
-            return {
-                name: iPMarker.name,
-                address: iPMarker.address,
-                category: iPMarker.category,
-                description: iPMarker.description,
-                latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng),
-            };
-        }
+    /**
+     * Transforma la versión persistente de un marcador 
+     * a su versión correspondiente en el mapa
+     * @param iPMarker marcador persistente
+     * @returns parámetros necesarios para generar un marcador
+     */
+    const parseMarker = (iPMarker: IPMarker): IMarker => {
+        return {
+            name: iPMarker.name,
+            address: iPMarker.address,
+            category: iPMarker.category,
+            description: iPMarker.description,
+            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng)
+        };
+    }
 
         /**
          * Usa geolocalización inversa para obtener la dirección de unas coordenadas
