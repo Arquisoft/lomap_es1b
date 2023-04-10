@@ -65,7 +65,7 @@ const findFullPersonProfile = async (
       const see: string[] = getTermAll(person, rdfs.seeAlso).map(a => a.value)
 
       for (const uri of [...same, ...see]) {
-        console.log('extending', uri)
+        //console.log('extending', uri)
         if (!visited.has(uri))
           await findFullPersonProfile(webId, visited, response, false, uri)
       }
