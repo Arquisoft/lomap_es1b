@@ -18,12 +18,6 @@ interface ICouple {
     infoWindow: GoogleInfoWindow;
 }
 
-/*
-    type MarkerMap = {
-        [id: number]: ICouple;
-    }
-*/
-
 type GoogleMap = google.maps.Map;
 type GoogleLatLng = google.maps.LatLng;
 type GoogleMarker = google.maps.Marker;
@@ -60,7 +54,6 @@ const Map: React.FC<IMapProps> = (props) => {
     const { session } = useSession();
     const ref = useRef<HTMLDivElement>(null);                               // Contenedor HTML del mapa
     const [map, setMap] = useState<GoogleMap>();                            // useState para conservar la referencia al mapa
-    // const markerHashMap = useRef<MarkerMap>({});                         // HashMap para conservar una relación entre el marcador en el mapa y su versión persistente
     const [marker, setMarker] = useState<IMarker>();                        // useState para comunicar el listener con el método
     const listenerRef = useRef<google.maps.MapsEventListener>();
     const { state: markers, dispatch } = useContext(MarkerContext);         // Proveedor de los marcadores en el POD
@@ -391,7 +384,7 @@ const Map: React.FC<IMapProps> = (props) => {
             address: iPMarker.address,
             category: iPMarker.category,
             description: iPMarker.description,
-            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng),
+            latLng: new google.maps.LatLng(iPMarker.lat, iPMarker.lng)
         };
     }
 
