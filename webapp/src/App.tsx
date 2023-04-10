@@ -32,7 +32,7 @@ function App(): JSX.Element {
   })
 
   session.onLogout(async () => {
-    setMarkers([]);
+    setMarkers([])
   })
 
   function setMarkers(markers: IPMarker[]) {
@@ -53,7 +53,7 @@ function App(): JSX.Element {
           <UbicationsView />
         } />
         <Route path="/friends" element={
-          <FriendsList/>
+          <FriendsList />
         } />
       </Routes>
     </>

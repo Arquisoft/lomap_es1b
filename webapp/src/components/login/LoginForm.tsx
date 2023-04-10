@@ -36,6 +36,7 @@ function LoginForm(props: LoginProps): JSX.Element {
           <Stack direction={{ xs: 'column', sm: 'row' }} alignItems='center' sx={{ flexGrow: '2' }} justifyContent='flex-end' spacing={{ xs: 1, sm: 2, md: 4 }}>
             <FormGroup>
               <Select
+                role="slcRole"
                 value={itemSelected}
                 onChange={e => setItemSelected(e.target.value as string)}
                 sx={{ width: '15em', margin: '0.5em' }}
@@ -45,6 +46,7 @@ function LoginForm(props: LoginProps): JSX.Element {
                 <MenuItem value={"otro"}>Otro proveedor</MenuItem>
               </Select>
               <TextField
+                role="txtRole"
                 type="url"
                 value={oidcIssuer}
                 onChange={e => setOidcIssuer(e.target.value as string)}

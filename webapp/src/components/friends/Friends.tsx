@@ -11,11 +11,16 @@ const FriendsList: React.FC = () => {
   const [friends, setFriendList] = useState<PersonData[]>([]);
   const [showAddFriendForm, setShowAddFriendForm] = useState(false);
   const [personData, setPersonData] = useState<PersonData>({ webId: '', name: '', photo: '', friends: [] })
+  const [showFriends, setShowFriends] = useState(false)
 
   useEffect(() => {
-    loadPersonData();
-    fetchFriends();
-  }, [showAddFriendForm]);
+    const loadData = async () => {
+      await loadPersonData();
+      await fetchFriends();
+    };
+  
+    loadData();
+  }, [showFriends, showAddFriendForm]);
 
   async function loadPersonData() {
     const webId = session.info.webId
@@ -72,25 +77,32 @@ const FriendsList: React.FC = () => {
   return (
     <div id='div-friends'>
       <h2>Amigos</h2>
-      <div className="friends-container">
-        {friends.map((friend) => (
-          <div key={friend.webId} className="friend-card">
-            <img src={searchProfileImg(friend.photo)} alt="Foto de amigo" className="friend-photo" />
-            <h3>{friend.name}</h3>
-            <a href={friend.webId}>Solid profile</a>
-            <button className="button delete-button" onClick={() => handleRemoveFriend(friend.webId)}>Eliminar</button>
-          </div>
-        ))}
+      { showFriends ? (
+      <div>
+        <div className="friends-container">
+          {friends.map((friend) => (
+            <div key={friend.webId} className="friend-card">
+              <img src={searchProfileImg(friend.photo)} alt="Foto de amigo" className="friend-photo" />
+              <h3>{friend.name}</h3>
+              <a href={friend.webId}>Solid profile</a>
+              <button className="button delete-button" onClick={() => handleRemoveFriend(friend.webId)}>Eliminar</button>
+            </div>
+          ))}
+
+        </div>
+          {showAddFriendForm ? (
+            <div>
+              <AddFriendForm onAddFriend={handleAddFriend} onCancel={handleCancel} />
+            </div>
+          ) : (
+            <div className='add-friend-container'>
+              <button className='button accept-button add-friend-button' type="button" onClick={() => setShowAddFriendForm(true)}>Agregar amigo</button>
+            </div>
+          )}
       </div>
-      {showAddFriendForm ? (
-        <div>
-          <AddFriendForm onAddFriend={handleAddFriend} onCancel={handleCancel} />
-        </div>
-      ) : (
-        <div className='add-friend-container'>
-          <button className='button accept-button add-friend-button' type="button" onClick={() => setShowAddFriendForm(true)}>Agregar amigo</button>
-        </div>
-      )}
+
+      ): <button className='button accept-button add-friend-button' type="button" onClick={() => setShowFriends(true)}>Ver amigos</button>}
+      
     </div>
   );
 };

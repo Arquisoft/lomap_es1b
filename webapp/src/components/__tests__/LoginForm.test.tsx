@@ -1,26 +1,29 @@
-import { render, screen } from "@testing-library/react";
 import { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
 import LoginForm from "../login/LoginForm";
-const mockHandleClose = jest.fn();
+import { render, screen, fireEvent } from '@testing-library/react';
 
-test("Proper render of login form component", () => {
+describe('LoginForm', () => {
+  it('should render select and text field', () => {
+    render(<LoginForm open onClose={() => {}} />);
 
-    const form = render(
-        <LoginForm open={true} onClose={mockHandleClose} />  
-    );
+    expect(screen.getByText("Iniciar sesión"));
 
-    expect(screen.getByText("Por favor, seleccione un proveedor.")).toBeInTheDocument();
-    expect(screen.getByText("Iniciar sesión")).toBeInTheDocument();
-    expect(screen.getByText("Inrupt")).toBeInTheDocument();
-})
+    const select = screen.getByRole('slcRole');
+    expect(select).toBeInTheDocument();
 
-test("Proper close of the form", () => {
-    const form = render(
-        <LoginForm open={false} onClose={mockHandleClose} />  
-    );
+    const textField = screen.getByRole('txtRole');
+    expect(textField).toBeInTheDocument();
+});
 
-    
+//   it('should call onClose when dialog is closed', () => {
+//     const onClose = jest.fn();
+//     render(<LoginForm open onClose={onClose} />);
 
-})
+//     const closeButton = screen.getByRole('button', { name: /close/i });
+//     fireEvent.click(closeButton);
+
+//     expect(onClose).toHaveBeenCalled();
+//   });
+});
 

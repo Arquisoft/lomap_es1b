@@ -27,6 +27,10 @@ _(It will obviously be extended as we find new risks and generate others technic
 |Mandatory use of SOLID
 |Although it may be a great solution to the problem faced, the obligation to use this technology sets a new handicap to the start of the developement
 
+|Medium
+|Learning techincal material along the semester
+|The discovery of some of the technologies of the project and some of good strategies will take place as we attend the course lectures, which coincide with the developement period
+
 |Low
 |The usage of TypeScript and React
 |Even though the advises of our professors may conduct us to use these technologies, we are not familiar with them
