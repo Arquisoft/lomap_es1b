@@ -2,12 +2,12 @@ import { useState} from 'react';
 import { Link } from "react-router-dom";
 import LoginForm from './login/LoginForm';
 import { Stack, Box, Button } from '@mui/material';
-import { useSession } from '@inrupt/solid-ui-react';
-import { LogoutButton } from "@inrupt/solid-ui-react";
+import { useSession, LogoutButton } from '@inrupt/solid-ui-react';
 
 export const NavBar = () => {
     const { session } = useSession();
     const [open, setOpen] = useState(false);
+    const IS_LOGGED_IN = session.info.isLoggedIn
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -27,7 +27,7 @@ export const NavBar = () => {
             >
                 <Link to="/"><img src="/logo-no-background.png" className="App-logo" alt="logo" height="60" /></Link>
                 <Link to="/map">Mapa</Link>
-                {session.info.isLoggedIn ?
+                {IS_LOGGED_IN ? 
                     <>
                         <Link to="/ubications">Mis ubicaciones</Link>
                         <Link to="/friends">Mis amigos</Link>
